@@ -15,7 +15,7 @@ public class Shopkeeper : MonoBehaviour, IInteractable
     }
     public void EnterInteract(PlayerController pc)
     {
-        ShopManager.Instance.ToggleSellMenu();
+        PublicEvents.StartSellInteraction?.Invoke();
     }
 
     public void ExitHover()

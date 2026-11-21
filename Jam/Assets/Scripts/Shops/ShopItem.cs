@@ -2,9 +2,6 @@ using NaughtyAttributes;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.Controls;
-using UnityEngine.ProBuilder;
-using UnityEngine.ProBuilder.Shapes;
 
 public class ShopItem : MonoBehaviour, IInteractable
 {
@@ -24,7 +21,7 @@ public class ShopItem : MonoBehaviour, IInteractable
     }
     public void EnterInteract(PlayerController pc)
     {
-        ShopManager.Instance.ToggleBuyMenu(itemData);
+        PublicEvents.StartBuyInteraction?.Invoke(itemData);
         PublicEvents.ItemBought += OnItemBought;
     }
 
