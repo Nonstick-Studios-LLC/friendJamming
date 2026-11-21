@@ -1,5 +1,8 @@
 /*
  * Does not handle any player input. Other scripts need to call these functions.
+ * Some acceleration is handled in the ship parts (propeller and floater)
+ * 
+ * I actually kinda fucked up and didnt implement turning right sorry gang.
  * 
  * We dont need to store a current turn speed variable because physics actually handle that for us!!
  */
@@ -12,7 +15,8 @@ public class SubmarineInputHandler : MonoBehaviour
     [Header("Designer Settings")]
 
     [Tooltip("If 3, this means there is a -3 to 3 range (total of 7 increments")]
-    [SerializeField] public int MaxRotationAccelerationIncrements = 2;
+    [SerializeField] public int MaxRotationAccelerationIncrements = 3;
+    [SerializeField] public int MaxVerticalAccelerationIncrements = 2;
 
     [Space(10)]
 
@@ -24,7 +28,6 @@ public class SubmarineInputHandler : MonoBehaviour
 
     [Space(10)]
 
-
     [SerializeField] private float backPropellerForwardForce = 10;
     [SerializeField] private float damagedBackPropellerForwardForce = 2;
     [SerializeField] private bool backPropellerContributesToReverse = false;
@@ -32,6 +35,12 @@ public class SubmarineInputHandler : MonoBehaviour
     [SerializeField] private float sidePropellersForwardForce = 3;
     [SerializeField] private float damagedSidePropellersForwardForce = 1;
 
+    [Space(10)]
+
+    [SerializeField] private float floaterUpwardForce = 0.5f;
+    [SerializeField] private float damagedFloaterUpwardForce = 0.125f;
+    [SerializeField] private float floaterDownwardForce = 1;
+    [SerializeField] private float damagedFloaterDownwardForce = 0.25f;
 
     [Space(10)]
 
@@ -43,6 +52,16 @@ public class SubmarineInputHandler : MonoBehaviour
     [SerializeField] Propeller leftPropeller;
     [SerializeField] Propeller rightPropeller;
     [SerializeField] Propeller backPropeller;
+    [SerializeField] Floater floater;
+
+
+    [Foldout("Ship Wheel"), SerializeField] private Transform wheelForwardRotationParent;
+
+    [Foldout("Ship Wheel"), SerializeField] private Transform wheel;
+    [Foldout("Ship Wheel"), SerializeField] private Vector2 wheelTurnRadius;
+
+    [Foldout("Ship Wheel"), SerializeField] private Transform verticalLever;
+    [Foldout("Ship Wheel"), SerializeField] private Vector2 leverRotateRadius;
 
     [Header("Audio")]
     [SerializeField, Foldout("Audio")] AudioSource reversingAudio;
@@ -50,14 +69,19 @@ public class SubmarineInputHandler : MonoBehaviour
     [Header("My variables dont touch")]
     [SerializeField] private Rigidbody rb;
 
-    [SerializeField, ReadOnly] private ForwardDirection currentForwardControls = ForwardDirection.Forward;
-
     public enum TurnDirection{ None, Left, Right }
     public enum ForwardDirection{ None,Forward, Reverse }
 
-    [Header("Debug Values")] public int currentTargetTurnAcceleration { get; private set; }
+    [Header("Debug Values")] 
+    public int currentTargetTurnAcceleration { get; private set; }
+    public int currentVerticalAcceleration { get; private set; }
+
+    [SerializeField, ReadOnly] private ForwardDirection currentForwardControls = ForwardDirection.Forward;
 
     private float _turnAccelerationScalar => Mathf.InverseLerp(0, MaxRotationAccelerationIncrements, (float)Mathf.Abs(currentTargetTurnAcceleration));
+    private float _turnAccelerationPercent => Mathf.InverseLerp(-MaxRotationAccelerationIncrements, MaxRotationAccelerationIncrements, currentTargetTurnAcceleration);
+    private float _verticalAccelerationScalar => Mathf.InverseLerp(0, MaxVerticalAccelerationIncrements, (float)Mathf.Abs(currentVerticalAcceleration));
+    private float _verticalAccelerationPercent => Mathf.InverseLerp(-MaxVerticalAccelerationIncrements, MaxVerticalAccelerationIncrements, currentVerticalAcceleration);
 
     private void Start()
     {
@@ -72,9 +96,9 @@ public class SubmarineInputHandler : MonoBehaviour
         rb.linearDamping = velocityDamping;
 
         // debug for now @jay get rid of this
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.Q))
             SetForwardMode(ForwardDirection.Forward);
-        else if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.E))
             SetForwardMode(ForwardDirection.Reverse);
         else
             SetForwardMode(ForwardDirection.None);
@@ -84,6 +108,12 @@ public class SubmarineInputHandler : MonoBehaviour
             SetTargetTurnSpeed(currentTargetTurnAcceleration - 1);
         if (Input.GetKeyDown(KeyCode.D))
             SetTargetTurnSpeed(currentTargetTurnAcceleration + 1);
+
+        // @jay remove this too
+        if (Input.GetKeyDown(KeyCode.W))
+            SetTargetVerticalSpeed(currentVerticalAcceleration + 1);
+        if (Input.GetKeyDown(KeyCode.S))
+            SetTargetVerticalSpeed(currentVerticalAcceleration - 1);
     }
 
 
@@ -102,6 +132,9 @@ public class SubmarineInputHandler : MonoBehaviour
     {
         leftPropeller.ApplyForce(GetLeftPropellerForce());
         rightPropeller.ApplyForce(GetRightPropellerForce());
+        backPropeller.ApplyForce(GetBackPropellerForce());
+
+        floater.ApplyForce(GetFloaterForce());
     }
 
     private float GetLeftPropellerForce()
@@ -189,15 +222,21 @@ public class SubmarineInputHandler : MonoBehaviour
         }
     }
 
+    private float GetFloaterForce()
+    {
+        if (currentVerticalAcceleration == 0) return 0;
+        if (currentVerticalAcceleration > 0) return _verticalAccelerationScalar * (floater.IsDamaged ? damagedFloaterUpwardForce : floaterUpwardForce) * -1;
+        if (currentVerticalAcceleration < 0) return _verticalAccelerationScalar * (floater.IsDamaged ? damagedFloaterDownwardForce : floaterDownwardForce);
+
+        return float.NaN;
+    }
+
     #endregion
 
     #region Player Input Interface
 
     /*
-     * @jay: implement it like this (every frame just to avoid bugs):
-     * while W down: SetForwardMode(ForwardDirection.Forward);
-     * while S down: SetForwardMode(ForwardDirection.Reverse);
-     * on W *and* S released : SetForwardMode(ForwardDirection.None);
+     * @jay: set tha forward mode
      */
     public void SetForwardMode(ForwardDirection forwardDirection)
     {
@@ -209,12 +248,15 @@ public class SubmarineInputHandler : MonoBehaviour
         {
             case ForwardDirection.Forward:
                 reversingAudio.Stop();
+                wheelForwardRotationParent.localRotation = Quaternion.AngleAxis(-40f, new Vector3(1, 0, 0));
                 break;
             case ForwardDirection.Reverse:
                 reversingAudio.Play();
+                wheelForwardRotationParent.localRotation = Quaternion.AngleAxis(20f, new Vector3(1, 0, 0));
                 break;
             case ForwardDirection.None:
                 reversingAudio.Stop();
+                wheelForwardRotationParent.localRotation = Quaternion.AngleAxis(0, new Vector3(1, 0, 0));
                 break;
         }
     }
@@ -227,8 +269,29 @@ public class SubmarineInputHandler : MonoBehaviour
     public void SetTargetTurnSpeed(int targetSpeed)
     {
         currentTargetTurnAcceleration = targetSpeed;
-        currentTargetTurnAcceleration = (int)Mathf.Clamp(currentTargetTurnAcceleration, - maxHorizontalTurnForce, maxHorizontalTurnForce);
+        currentTargetTurnAcceleration = (int)Mathf.Clamp(currentTargetTurnAcceleration, -MaxRotationAccelerationIncrements, MaxRotationAccelerationIncrements);
         Debug.Log($"New Turning acceleration: {currentTargetTurnAcceleration}");
+
+        float visualAngle = Mathf.Lerp(wheelTurnRadius.x, wheelTurnRadius.y, _turnAccelerationPercent);
+        wheel.transform.localEulerAngles = wheel.transform.localEulerAngles.WithY(visualAngle);
+    }
+
+    /*
+     * -2 for all the way left. 0 for no turn. 2 for all the way right
+     * 
+     * @jay: add code that calls this function. the rest should be handled tbh
+     */
+    public void SetTargetVerticalSpeed(int targetSpeed)
+    {
+        currentVerticalAcceleration = targetSpeed;
+        currentVerticalAcceleration = (int)Mathf.Clamp(currentVerticalAcceleration, -MaxVerticalAccelerationIncrements, MaxVerticalAccelerationIncrements);
+        Debug.Log($"New Vertical acceleration: {currentVerticalAcceleration}");
+
+        float visualAngle = Mathf.Lerp(leverRotateRadius.x, leverRotateRadius.y, _verticalAccelerationPercent);
+        //verticalLever.transform.localEulerAngles = verticalLever.transform.localEulerAngles.WithX(visualAngle);
+        verticalLever.transform.localRotation = Quaternion.AngleAxis(visualAngle, new Vector3(1,0,0));
+        //verticalLever.transform.localRotation = Quaternion.Euler(verticalLever.transform.localEulerAngles.WithX(visualAngle));
+        Debug.Log(visualAngle);
     }
 
     #endregion
