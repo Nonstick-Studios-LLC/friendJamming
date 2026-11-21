@@ -68,7 +68,7 @@ public class LandMovement : Movement
     /// <param name="cameraVector">Vector2 containing the mouse's delta </param>
     protected override void OnMouseMove(Vector2 cameraVector)
     {
-        if (interactingWith != null && interactingWith.ToString().Contains("ShipMovementControllers"))
+        if(!pc.CanMove)
         {
             return;
         }
@@ -170,7 +170,6 @@ public class LandMovement : Movement
             interactingWith = null;
         }
 
-        Debug.Log("E");
     }
 
     /// <summary>
@@ -189,7 +188,6 @@ public class LandMovement : Movement
             float jumpForce = Mathf.Sqrt(fullJumpHeight * landGravity * -2f);
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce, rb.linearVelocity.z);
         }
-        Debug.Log("Space Started");
     }
 
     /// <summary>
@@ -298,15 +296,13 @@ public class LandMovement : Movement
             Mathf.Clamp(accelleration, 1f, maxAccelerationMultiplier);
 
             timer += Time.fixedDeltaTime;
-
-            Debug.Log(accelleration);
             yield return null;
         }
     }
 
     protected override void OnMoveEnd()
     {
-        rb.linearVelocity = Vector3.zero;
+        //rb.linearVelocity = Vector3.zero;
     }
 
     protected override void OnInteractEnd()

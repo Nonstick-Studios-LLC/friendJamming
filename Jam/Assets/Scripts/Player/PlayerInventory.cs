@@ -90,6 +90,7 @@ public class PlayerInventory : MonoBehaviour
     {
         if (sellMenu.activeInHierarchy)
         {
+            Cursor.visible = false;
             pc.CanMove = true;
             sellMenu.SetActive(false);
             itemSellIndex = 0;
@@ -98,11 +99,12 @@ public class PlayerInventory : MonoBehaviour
         }
         else
         {
+            Cursor.visible = true;
             pc.CanMove = false;
             sellMenu.SetActive(true);
             if (personalTreasure.Count > 0)
             {
-                sellMenuText.text = $"Sell {personalTreasure[itemSellIndex].GetName()} for {personalTreasure[itemSellIndex].GetCost().ToString()} Scrap?";
+                sellMenuText.text = $"Sell {personalTreasure[itemSellIndex].GetName()} for {personalTreasure[itemSellIndex].GetSellPrice().ToString()} Scrap?";
                 if (personalTreasure.Count > 1)
                 {
                     nextItemButton.enabled = true;
@@ -134,12 +136,14 @@ public class PlayerInventory : MonoBehaviour
     {
         if (buyMenu.activeInHierarchy)
         {
+            Cursor.visible = false;
             pc.CanMove = true;
             buyMenu.SetActive(false);
             buyButton.enabled = false;
         }
         else
         {
+            Cursor.visible = true;
             pc.CanMove = false;
             heldData = data;
             buyMenu.SetActive(true);

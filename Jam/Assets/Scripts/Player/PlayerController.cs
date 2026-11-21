@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform PickupPoint;
 
-    private bool canMove = true;
+    [SerializeField] private bool canMove = true;
     public bool CanMove { get { return canMove; } set { canMove = value; } } 
 
 

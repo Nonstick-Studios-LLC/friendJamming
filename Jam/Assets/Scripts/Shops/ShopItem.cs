@@ -32,7 +32,7 @@ public class ShopItem : MonoBehaviour, IInteractable
 
     public void ExitInteract()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     private void OnEnable()

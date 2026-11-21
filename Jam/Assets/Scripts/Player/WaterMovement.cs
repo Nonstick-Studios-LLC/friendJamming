@@ -31,7 +31,7 @@ public class WaterMovement : Movement
     private bool descending;
     private bool moving;
 
-    Vector2 rotation;
+    Vector2 cameraRotation;
     Rigidbody rb;
 
     private IInteractable lookingAt;
@@ -47,7 +47,7 @@ public class WaterMovement : Movement
     {
         pc = GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
-        rotation = new Vector2(pc.CameraRotationPoint.eulerAngles.y, pc.CameraRotationPoint.eulerAngles.x);
+        cameraRotation = new Vector2(pc.CameraRotationPoint.eulerAngles.y, pc.CameraRotationPoint.eulerAngles.x);
     }
 
 
@@ -90,11 +90,11 @@ public class WaterMovement : Movement
         }
         Vector2 adjustedDelta = cameraVector * pc.CameraSensitivity * Time.fixedDeltaTime;
 
-        rotation.x -= adjustedDelta.y;
-        rotation.x = Mathf.Clamp(rotation.x, minCameraYClamp, maxCameraYClamp);
-        rotation.y += adjustedDelta.x;
+        cameraRotation.x -= adjustedDelta.y;
+        cameraRotation.x = Mathf.Clamp(cameraRotation.x, minCameraYClamp, maxCameraYClamp);
+        cameraRotation.y += adjustedDelta.x;
 
-        pc.CameraRotationPoint.localEulerAngles = rotation;
+        pc.CameraRotationPoint.localEulerAngles = cameraRotation;
 
 
         if (LookingAtObject())

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +13,8 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     private InputAction shift;
     private InputAction control;
     private InputAction leftClick;
+
+    private Coroutine movementUpdates;
 
     protected override void Awake()
     {
@@ -30,7 +33,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     private void OnEnable()
     {
-        move.started += Move_started;
+        move.performed += Move_started;
         move.canceled += Move_canceled;
         lookAround.performed += LookAround_performed;
         interact.started += Interact_started;
@@ -113,11 +116,30 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
 
     private void Move_canceled(InputAction.CallbackContext obj)
     {
+        if(movementUpdates != null)
+        {
+            StopCoroutine(movementUpdates);
+            movementUpdates = null;
+        }
+        PublicEvents.MoveDirection?.Invoke(move.ReadValue<Vector2>());
         PublicEvents.MoveDirectionStopped?.Invoke();
     }
 
     private void Move_started(InputAction.CallbackContext obj)
     {
-        PublicEvents.MoveDirectionStarted?.Invoke(move.ReadValue<Vector2>());
+        if(movementUpdates == null)
+        {
+            movementUpdates = StartCoroutine(ContinuousMovement());
+        }
+        PublicEvents.MoveDirection?.Invoke(move.ReadValue<Vector2>());
+    }
+
+    private IEnumerator ContinuousMovement()
+    {
+        while(true)
+        {
+            PublicEvents.MoveDirection?.Invoke(move.ReadValue<Vector2>());
+            yield return null;
+        }
     }
 }

@@ -11,22 +11,7 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField, InfoBox("There MUST be two or more items in here. One MUST be the McGuffin", type:EInfoBoxType.Warning)] private List<ItemScriptable> potentialShopItems = new List<ItemScriptable>();
     static private ItemScriptable[] staticShopList;
     private static bool spawnedMcGuffin = false;
-    [Header("UI")]
-    /*
-    [SerializeField] private TMP_Text currencyDisplay;
-    [SerializeField] private GameObject sellMenu;
-    [SerializeField] private TMP_Text sellMenuText;
-    [SerializeField] private Button sellButton;
-    [SerializeField] private Button nextItemButton;
-    [SerializeField] private GameObject buyMenu;
-    [SerializeField] private Button buyButton;
 
-    [SerializeField] private TMP_Text buyMenuText;*/
-    [Header("Testing")]
-    //[SerializeField] private List<ItemScriptable> ownedTreasure;
-    private ItemScriptable heldData;
-
-    int itemSellIndex = 0;
 
 
 
@@ -35,7 +20,6 @@ public class ShopManager : Singleton<ShopManager>
         base.Awake();
         staticShopList = new ItemScriptable[potentialShopItems.Count];
         potentialShopItems.CopyTo(staticShopList);
-        Debug.Log("Copied to array");
         PublicEvents.UpdateScrapCount?.Invoke(0);
     }
 

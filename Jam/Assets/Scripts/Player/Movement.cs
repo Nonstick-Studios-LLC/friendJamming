@@ -15,7 +15,7 @@ public abstract class Movement: MonoBehaviour
     /// </summary>
     protected virtual void OnEnable()
     {
-        PublicEvents.MoveDirectionStarted += OnMove;
+        PublicEvents.MoveDirection += OnMove;
         PublicEvents.MoveDirectionStopped += OnMoveEnd;
         PublicEvents.MousePosition += OnMouseMove;
         PublicEvents.InteractStarted += OnInteractStart;
@@ -34,7 +34,7 @@ public abstract class Movement: MonoBehaviour
     /// </summary>
     protected virtual void OnDisable()
     {
-        PublicEvents.MoveDirectionStarted -= OnMove;
+        PublicEvents.MoveDirection -= OnMove;
         PublicEvents.MoveDirectionStopped -= OnMoveEnd;
         PublicEvents.MousePosition -= OnMouseMove;
         PublicEvents.InteractStarted -= OnInteractStart;

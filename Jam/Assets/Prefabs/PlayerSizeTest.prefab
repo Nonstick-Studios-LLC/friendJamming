@@ -150,12 +150,12 @@ GameObject:
   - component: {fileID: 5504982264192665151}
   - component: {fileID: 6115722771390689190}
   - component: {fileID: 2596108707971295196}
-  - component: {fileID: 6293285102050842470}
   - component: {fileID: 6410245152179005837}
   - component: {fileID: 1581048692775013036}
   - component: {fileID: 5543190634974756408}
   - component: {fileID: 7797644021070661586}
   - component: {fileID: 51936099071377827}
+  - component: {fileID: 1228966893350204436}
   m_Layer: 0
   m_Name: PlayerSizeTest
   m_TagString: Untagged
@@ -237,29 +237,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &6293285102050842470
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 96466021246308504}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6410245152179005837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,7 +279,7 @@ MonoBehaviour:
   cameraRotationParent: {fileID: 333370763377737284}
   playerCrosshair: {fileID: 3247948208792425335}
   standardCrosshair: 43
-  standardCrosshairColor: {r: 0, g: 0, b: 0, a: 0}
+  standardCrosshairColor: {r: 0, g: 0, b: 0, a: 1}
   interactableCrosshair: 42
   interactableCrosshairColor: {r: 1, g: 0.8431373, b: 0, a: 1}
   PickupPoint: {fileID: 0}
@@ -331,7 +308,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &7797644021070661586
 MonoBehaviour:
@@ -345,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8f0a4e9c5b807148bd7180d30192b74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LandMovement
-  minCameraYClamp: 120
+  minCameraYClamp: -60
   maxCameraYClamp: 60
   baseLandMovementSpeed: 3
   tapJumpHeightPercent: 1
@@ -366,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36dd0d9b056b2c74fb51a594aa6fe897, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterMovement
-  minCameraYClamp: 120
+  minCameraYClamp: -60
   maxCameraYClamp: 60
   baseWaterMovementSpeed: 2
   timeToMaxAcceleration: 5
@@ -375,6 +352,27 @@ MonoBehaviour:
   descentWaterMovementSpeed: 2
   waterGravity: -1.5
   sightDistance: 10
+--- !u!65 &1228966893350204436
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 96466021246308504}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &111675536583508102
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,7 +1020,7 @@ Transform:
   m_GameObject: {fileID: 2070982478910053467}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1059,8 +1057,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.01
+  far clip plane: 100
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1559,7 +1557,7 @@ Transform:
   m_GameObject: {fileID: 3904407276245794446}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0.643, z: 0.051}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
