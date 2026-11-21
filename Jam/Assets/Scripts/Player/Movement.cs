@@ -69,7 +69,7 @@ public abstract class Movement: MonoBehaviour
     protected abstract void OnLeftClickStarted();
     protected abstract void OnLeftClickFinished();
 
-    protected abstract bool LookingAtObject();
+    public abstract bool LookingAtObject();
 
 
 

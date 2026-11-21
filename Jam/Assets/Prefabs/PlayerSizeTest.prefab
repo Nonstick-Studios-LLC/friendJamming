@@ -290,12 +290,15 @@ MonoBehaviour:
   playerCamera: {fileID: 7245829552527694936}
   cameraSensitivity: 1
   cameraRotationParent: {fileID: 333370763377737284}
+  minCameraYClamp: -60
+  maxCameraYClamp: 60
   playerCrosshair: {fileID: 3247948208792425335}
   standardCrosshair: 43
   standardCrosshairColor: {r: 0, g: 0, b: 0, a: 1}
   interactableCrosshair: 42
   interactableCrosshairColor: {r: 1, g: 0.8431373, b: 0, a: 1}
   PickupPoint: {fileID: 0}
+  transitionLayer: 6
   canMove: 1
 --- !u!54 &5543190634974756408
 Rigidbody:
@@ -365,6 +368,8 @@ MonoBehaviour:
   ascentWaterMovementSpeed: 0.8
   descentWaterMovementSpeed: 2
   waterGravity: -1.5
+  dampening: 0.5
+  descending: 0
   sightDistance: 10
 --- !u!65 &1228966893350204436
 BoxCollider:
@@ -1076,7 +1081,7 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 10
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
