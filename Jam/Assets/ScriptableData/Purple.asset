@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bf43865344a3ae4ea03b4bce86b94fd, type: 3}
+  m_Name: Purple
+  m_EditorClassIdentifier: Assembly-CSharp::Items
+  itemName: Fish Ring
+  sellPrice: 42
+  purchasePrice: 42
+  isMcGuffin: 0
+  hasUniqueModel: 0
+  modelMeshes: []
+  modelMaterials: []
+  numberOfSides: 12
+  appliedMaterial: {fileID: 2100000, guid: eec9d94dd83041742ba3beb3f79e6874, type: 2}
