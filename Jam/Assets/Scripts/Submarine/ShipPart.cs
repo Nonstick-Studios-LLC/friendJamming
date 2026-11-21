@@ -25,4 +25,10 @@ public abstract class ShipPart : MonoBehaviour
         MaxHealth -= damage;
         MaxHealth = Mathf.Clamp(MaxHealth, 0, MaxHealth);
     }
+
+    [Button]
+    public void DebugBreakInstantly()
+    {
+        currentHealth = 0;
+    }
 }

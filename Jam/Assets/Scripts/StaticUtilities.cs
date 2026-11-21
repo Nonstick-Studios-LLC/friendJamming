@@ -262,6 +262,18 @@ public static class StaticUtilities
         return vector;
     }
 
+    /// <summary>
+    /// Return vector with x and z values changed
+    /// </summary>
+    /// <param name="vector"></param>
+    /// <returns></returns>
+    public static Vector3 WithXZ(this Vector3 vector, float x, float z)
+    {
+        vector.x = x;
+        vector.z = z;
+        return vector;
+    }
+
     public static Vector3 AddX(this Vector3 vector, float o)
     {
         vector.x += o;
