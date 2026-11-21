@@ -36,6 +36,7 @@ public class ShopManager : Singleton<ShopManager>
         potentialShopItems.CopyTo(staticShopList);
         Debug.Log("Copied to array");
         PublicEvents.UpdateScrapCount?.Invoke(0);
+        currencyDisplay.text = "Scrap: $" + playersCurrency.ToString();
     }
 
 
@@ -175,15 +176,25 @@ public class ShopManager : Singleton<ShopManager>
         if(heldData.GetCost() <= playersCurrency)
         {
             playersCurrency -= heldData.GetCost();
+            currencyDisplay.text = "Scrap: $" + playersCurrency.ToString();
+            PublicEvents.UpdateScrapCount?.Invoke(playersCurrency);
             ownedTreasure.Add(heldData);
 
             if(heldData.GetMcGuffin())
             {
                 Debug.Log("McGuffin Obtained. Add logic to end game");
+                heldData = null;
+                return;
             }
 
 
             heldData = null;
+            PublicEvents.ItemBought?.Invoke();
+
+            PublicEvents.ItemBought = null;
+
+            ToggleBuyMenu();
+
 
 
 

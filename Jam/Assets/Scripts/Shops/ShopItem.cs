@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
@@ -10,14 +11,21 @@ public class ShopItem : MonoBehaviour, IInteractable
     [SerializeField] private TMP_Text itemCostDisplay;
     [SerializeField, Tooltip("Can be left null to instantiate a random item")] private ItemScriptable itemData = null;
     int savedScrapCount = 0;
+    private Coroutine spawning;
     public void EnterHover()
     {
         return;
     }
 
+    [Button]
+    public void EnterInteract()
+    {
+        EnterInteract(null);
+    }
     public void EnterInteract(PlayerController pc)
     {
-        throw new System.NotImplementedException();
+        ShopManager.Instance.ToggleBuyMenu(itemData);
+        PublicEvents.ItemBought += OnItemBought;
     }
 
     public void ExitHover()
@@ -40,6 +48,34 @@ public class ShopItem : MonoBehaviour, IInteractable
         PublicEvents.UpdateScrapCount -= UpdatePriceColor;
     }
 
+    public void OnItemBought()
+    {
+        PublicEvents.ItemBought -= OnItemBought;
+        if(spawning != null)
+        {
+            return;
+        }
+        GameObject childVisual = transform.GetChild(1).gameObject;
+        Destroy(childVisual);
+        itemCostDisplay.text = "";
+        spawning = StartCoroutine(GetNewItem());
+
+    }
+
+
+    private IEnumerator GetNewItem()
+    {
+        yield return new WaitForSeconds(3);
+
+        itemData = ShopManager.GetRandomItemData(Random.Range(int.MinValue, int.MaxValue));
+        GameObject visual = Instantiate(itemData.GetVisual(), this.gameObject.transform);
+        visual.name = itemData.GetName();
+        Debug.Log("Saved scrap is " + savedScrapCount);
+        UpdatePriceColor(savedScrapCount);
+        itemCostDisplay.text = "$" + itemData.GetCost().ToString();
+        spawning = null;
+    }
+
     void Start()
     {
         if (itemData == null)
@@ -54,9 +90,9 @@ public class ShopItem : MonoBehaviour, IInteractable
 
     private void UpdatePriceColor(int newAmount)
     {
+        savedScrapCount = newAmount;
         if(itemData == null)
         {
-            savedScrapCount = newAmount;
             return;
         }
         if(newAmount >= itemData.GetCost())

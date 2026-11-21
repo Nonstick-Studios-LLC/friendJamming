@@ -7416,6 +7416,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 40b4a4c454ab64740bd4bf75ab7f5aa7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1791623436}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 40b4a4c454ab64740bd4bf75ab7f5aa7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1791623437}
   m_SourcePrefab: {fileID: 100100000, guid: 40b4a4c454ab64740bd4bf75ab7f5aa7, type: 3}
 --- !u!1 &1048669084
 GameObject:
@@ -9233,7 +9236,7 @@ MonoBehaviour:
         m_MethodName: ToggleBuyMenu
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgument: {fileID: 11400000, guid: 066cd7e199e953c44b9de82dcb01d870, type: 2}
           m_ObjectArgumentAssemblyTypeName: ItemScriptable, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -10239,6 +10242,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 3, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1791623437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791623434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a19dba87ac5d37f449c136935da30ef8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Shopkeeper
 --- !u!43 &1854178899
 Mesh:
   m_ObjectHideFlags: 0
@@ -12259,7 +12274,7 @@ MonoBehaviour:
   sellButton: {fileID: 218859562}
   nextItemButton: {fileID: 380164693}
   buyMenu: {fileID: 701082508}
-  buyButton: {fileID: 0}
+  buyButton: {fileID: 400106674}
   buyMenuText: {fileID: 1048669086}
   ownedTreasure:
   - {fileID: 11400000, guid: ff7ea1cf017c6ff42bafd8b311d5f9e7, type: 2}

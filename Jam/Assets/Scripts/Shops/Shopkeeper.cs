@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 public class Shopkeeper : MonoBehaviour, IInteractable
@@ -7,9 +8,14 @@ public class Shopkeeper : MonoBehaviour, IInteractable
         throw new System.NotImplementedException();
     }
 
+    [Button]
+    public void EnterInteract()
+    {
+        EnterInteract(null);
+    }
     public void EnterInteract(PlayerController pc)
     {
-        throw new System.NotImplementedException();
+        ShopManager.Instance.ToggleSellMenu();
     }
 
     public void ExitHover()
