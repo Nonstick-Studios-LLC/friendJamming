@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &3411885902466545526
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 26.269115
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 26.269115
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 26.269115
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 259.81763
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 242.1675
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 13.767283
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.47766846
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.47766724
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.52800363
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.514664
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f265695070885dc4e9fba9925a893f78, type: 2}
+    - target: {fileID: 919132149155446097, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      propertyPath: m_Name
+      value: gamejam_IrishRose
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2695944494038542237}
+  m_SourcePrefab: {fileID: 100100000, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+--- !u!1 &2564832936002275879 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+  m_PrefabInstance: {fileID: 3411885902466545526}
+  m_PrefabAsset: {fileID: 0}
+--- !u!205 &2695944494038542237
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2564832936002275879}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.00019695982, y: 0.00011082739, z: 0.0038538277}
+  m_Size: 0.087794885
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.075294636
+    fadeTransitionWidth: 0.238
+    renderers:
+    - renderer: {fileID: 4078257434333604850}
+  - screenRelativeHeight: 0.047377497
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.02333919
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
+--- !u!23 &4078257434333604850 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 82d97e17507625b44b995430b42a3b91, type: 3}
+  m_PrefabInstance: {fileID: 3411885902466545526}
+  m_PrefabAsset: {fileID: 0}
