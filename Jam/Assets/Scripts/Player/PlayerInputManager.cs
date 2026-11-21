@@ -13,6 +13,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     private InputAction shift;
     private InputAction control;
     private InputAction leftClick;
+    [HideInInspector] public InputAction secrets;
 
     private Coroutine movementUpdates;
 
@@ -29,6 +30,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         shift = input.currentActionMap.FindAction("Sprint");
         control = input.currentActionMap.FindAction("Control");
         leftClick = input.currentActionMap.FindAction("LeftClick");
+        secrets = input.currentActionMap.FindAction("Why");
     }
 
     private void OnEnable()
@@ -48,6 +50,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         leftClick.canceled += LeftClick_canceled;
     }
 
+
     private void OnDisable()
     {
         move.Disable();
@@ -57,6 +60,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         shift.Disable();
         control.Disable();
         leftClick.Disable();
+        secrets.Disable();
     }
 
     private void LeftClick_canceled(InputAction.CallbackContext obj)

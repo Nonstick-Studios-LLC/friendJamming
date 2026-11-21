@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4034869261698492178}
   - component: {fileID: 4294686165187937963}
   - component: {fileID: 7139007648383738918}
+  - component: {fileID: 8338824221549367015}
   m_Layer: 0
   m_Name: GreenTriangle
   m_TagString: Untagged
@@ -990,3 +991,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8338824221549367015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5152250044693254884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25cf68fac65238c40887979693432a4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Treasure
