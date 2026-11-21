@@ -2,9 +2,6 @@ using NaughtyAttributes;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.Controls;
-using UnityEngine.ProBuilder;
-using UnityEngine.ProBuilder.Shapes;
 
 public class ShopItem : MonoBehaviour, IInteractable
 {
@@ -12,6 +9,9 @@ public class ShopItem : MonoBehaviour, IInteractable
     [SerializeField, Tooltip("Can be left null to instantiate a random item")] private ItemScriptable itemData = null;
     int savedScrapCount = 0;
     private Coroutine spawning;
+
+    Treasure spawnedItem;
+
     public void EnterHover()
     {
         return;
@@ -24,7 +24,7 @@ public class ShopItem : MonoBehaviour, IInteractable
     }
     public void EnterInteract(PlayerController pc)
     {
-        ShopManager.Instance.ToggleBuyMenu(itemData);
+        PublicEvents.StartBuyInteraction?.Invoke(itemData);
         PublicEvents.ItemBought += OnItemBought;
     }
 
@@ -35,7 +35,7 @@ public class ShopItem : MonoBehaviour, IInteractable
 
     public void ExitInteract()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     private void OnEnable()
@@ -51,11 +51,15 @@ public class ShopItem : MonoBehaviour, IInteractable
     public void OnItemBought()
     {
         PublicEvents.ItemBought -= OnItemBought;
+        spawnedItem.SetPurchaseStatus(true);
+        spawnedItem = null;
         if(spawning != null)
         {
             return;
         }
         GameObject childVisual = transform.GetChild(1).gameObject;
+
+        //Should be deparented later
         Destroy(childVisual);
         itemCostDisplay.text = "";
         spawning = StartCoroutine(GetNewItem());
@@ -70,7 +74,9 @@ public class ShopItem : MonoBehaviour, IInteractable
         itemData = ShopManager.GetRandomItemData(Random.Range(int.MinValue, int.MaxValue));
         GameObject visual = Instantiate(itemData.GetVisual(), this.gameObject.transform);
         visual.name = itemData.GetName();
-        Debug.Log("Saved scrap is " + savedScrapCount);
+        spawnedItem = visual.GetComponent<Treasure>();
+        spawnedItem.ItemData = itemData;
+        spawnedItem.SetPurchaseStatus(false);
         UpdatePriceColor(savedScrapCount);
         itemCostDisplay.text = "$" + itemData.GetCost().ToString();
         spawning = null;
@@ -84,6 +90,9 @@ public class ShopItem : MonoBehaviour, IInteractable
         }
         GameObject visual = Instantiate(itemData.GetVisual(), this.gameObject.transform);
         visual.name = itemData.GetName();
+        spawnedItem = visual.GetComponent<Treasure>();
+        spawnedItem.ItemData = itemData;
+        spawnedItem.SetPurchaseStatus(false);
         UpdatePriceColor(savedScrapCount);
         itemCostDisplay.text = "$" + itemData.GetCost().ToString();
     }

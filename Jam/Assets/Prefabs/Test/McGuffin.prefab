@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7446374735875301684}
   - component: {fileID: 6576083744636815120}
   - component: {fileID: 3312849293581028779}
+  - component: {fileID: 7453215087112076244}
   m_Layer: 0
   m_Name: McGuffin
   m_TagString: Untagged
@@ -1530,3 +1531,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7453215087112076244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937978921166524361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25cf68fac65238c40887979693432a4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Treasure
