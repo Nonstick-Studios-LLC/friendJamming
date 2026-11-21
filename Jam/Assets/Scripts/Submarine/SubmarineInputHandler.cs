@@ -10,16 +10,17 @@ using UnityEngine;
 public class SubmarineInputHandler : MonoBehaviour
 {
     [Header("Designer Settings")]
+
+    [Tooltip("If 3, this means there is a -3 to 3 range (total of 7 increments")]
+    [SerializeField] public int MaxRotationAccelerationIncrements = 2;
+
+    [Space(10)]
+
     [Tooltip("Higher number to slow turn speed faster")]
     [SerializeField] private float angularDamping = 0.2f;
     [Tooltip("Higher number to slow speed faster")]
     [SerializeField] private float velocityDamping = 0.5f;
-
-    [Space(10)]
-
-    [SerializeField] private float maxSpeed = 16;
-    [Tooltip("If 3, this means there is a -3 to 3 range (total of 7 increments")]
-    [SerializeField] public int MaxSpeedIncrements = 2;
+    [SerializeField] private float totalMaxSpeed = 16;
 
     [Space(10)]
 
@@ -43,6 +44,9 @@ public class SubmarineInputHandler : MonoBehaviour
     [SerializeField] Propeller rightPropeller;
     [SerializeField] Propeller backPropeller;
 
+    [Header("Audio")]
+    [SerializeField, Foldout("Audio")] AudioSource reversingAudio;
+
     [Header("My variables dont touch")]
     [SerializeField] private Rigidbody rb;
 
@@ -53,7 +57,7 @@ public class SubmarineInputHandler : MonoBehaviour
 
     [Header("Debug Values")] public int currentTargetTurnAcceleration { get; private set; }
 
-    private float _turnAccelerationScalar => Mathf.InverseLerp(0, MaxSpeedIncrements, (float)Mathf.Abs(currentTargetTurnAcceleration));
+    private float _turnAccelerationScalar => Mathf.InverseLerp(0, MaxRotationAccelerationIncrements, (float)Mathf.Abs(currentTargetTurnAcceleration));
 
     private void Start()
     {
@@ -69,11 +73,11 @@ public class SubmarineInputHandler : MonoBehaviour
 
         // debug for now @jay get rid of this
         if (Input.GetKey(KeyCode.W))
-            currentForwardControls = ForwardDirection.Forward;
+            SetForwardMode(ForwardDirection.Forward);
         else if (Input.GetKey(KeyCode.S))
-            currentForwardControls = ForwardDirection.Reverse;
+            SetForwardMode(ForwardDirection.Reverse);
         else
-            currentForwardControls = ForwardDirection.None;
+            SetForwardMode(ForwardDirection.None);
 
         // @jay remove this
         if (Input.GetKeyDown(KeyCode.A))
@@ -190,14 +194,29 @@ public class SubmarineInputHandler : MonoBehaviour
     #region Player Input Interface
 
     /*
-     * @jay: implement it like this:
-     * on W down: SetForwardMode(ForwardDirection.Forward);
-     * on S down: SetForwardMode(ForwardDirection.Reverse);
-     * on W or S released (make sure both are currently released): SetForwardMode(ForwardDirection.None);
+     * @jay: implement it like this (every frame just to avoid bugs):
+     * while W down: SetForwardMode(ForwardDirection.Forward);
+     * while S down: SetForwardMode(ForwardDirection.Reverse);
+     * on W *and* S released : SetForwardMode(ForwardDirection.None);
      */
     public void SetForwardMode(ForwardDirection forwardDirection)
     {
+        if (forwardDirection == currentForwardControls) return;
+
         currentForwardControls = forwardDirection;
+
+        switch (currentForwardControls)
+        {
+            case ForwardDirection.Forward:
+                reversingAudio.Stop();
+                break;
+            case ForwardDirection.Reverse:
+                reversingAudio.Play();
+                break;
+            case ForwardDirection.None:
+                reversingAudio.Stop();
+                break;
+        }
     }
 
     /*
