@@ -24,11 +24,12 @@ public class WaterMovement : Movement
     [SerializeField] private float ascentWaterMovementSpeed = .5f;
     [SerializeField] private float descentWaterMovementSpeed = 1.2f;
     [SerializeField] private float waterGravity = -4f;
+    [SerializeField] private float dampening = .5f;
     private float accelleration = 1f;
     private Coroutine shiftHold;
 
     private bool ascending;
-    private bool descending;
+    [SerializeField]private bool descending;
     private bool moving;
 
     Vector2 cameraRotation;
@@ -39,6 +40,7 @@ public class WaterMovement : Movement
     private bool interacting;
     private Coroutine waterGravityCour;
     [SerializeField] private float sightDistance = 2f;
+    private float scalarValue = 50f;
 
     /// <summary>
     /// Grabs initial references and sets initial variables
@@ -121,15 +123,15 @@ public class WaterMovement : Movement
         }
         moving = true;
         Vector3 newValue = ((pc.CameraRotationPoint.forward * moveVector.y) + (pc.CameraRotationPoint.right * moveVector.x)) * baseWaterMovementSpeed * 100f * accelleration * Time.fixedDeltaTime;
-
+        /*
         if (ascending || descending)
         {
-            newValue.y = rb.linearVelocity.y;
+            newValue.y += rb.linearVelocity.y;
         }
         else
         {
-            newValue.y = waterGravity;
-        }
+            newValue.y += waterGravity;
+        }*/
 
         rb.linearVelocity = newValue;
 
@@ -193,7 +195,7 @@ public class WaterMovement : Movement
         }
         ascending = true;
 
-        float ascendForce = ascentWaterMovementSpeed * accelleration * 100f * Time.fixedDeltaTime;
+        float ascendForce = ascentWaterMovementSpeed * accelleration * scalarValue * Time.fixedDeltaTime;
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, ascendForce, rb.linearVelocity.z);
     }
 
@@ -296,7 +298,6 @@ public class WaterMovement : Movement
 
             timer += Time.fixedDeltaTime;
 
-            Debug.Log(accelleration);
             yield return null;
         }
     }
@@ -344,5 +345,22 @@ public class WaterMovement : Movement
     protected override void OnLeftClickFinished()
     {
         // end held action
+    }
+
+    protected override void OnControlStarted()
+    {
+        Debug.Log("Git");
+        descending = true;
+
+        float ascendForce = descentWaterMovementSpeed * accelleration * scalarValue * Time.fixedDeltaTime * waterGravity;
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, ascendForce, rb.linearVelocity.z);
+    }
+
+    protected override void OnControlEnded()
+    {
+        Debug.Log("Control ended");
+        descending = false;
+
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
     }
 }

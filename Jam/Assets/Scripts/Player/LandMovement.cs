@@ -320,4 +320,13 @@ public class LandMovement : Movement
         // end any hold interactions
     }
 
+    protected override void OnControlStarted()
+    {
+        
+    }
+
+    protected override void OnControlEnded()
+    {
+        
+    }
 }
