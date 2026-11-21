@@ -147,7 +147,7 @@ public class ShopManager : Singleton<ShopManager>
 
     #region Buying
 
-    public void ToggleBuyMenu(ItemScriptable data)
+    public void ToggleBuyMenu(ItemScriptable data = null)
     {
         if (buyMenu.activeInHierarchy)
         {

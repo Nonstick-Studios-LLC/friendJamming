@@ -1930,7 +1930,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 400106675}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2032682182}
+        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
+        m_MethodName: BuyItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &400106675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9215,7 +9227,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1552913234}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2032682182}
+        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
+        m_MethodName: ToggleBuyMenu
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: ItemScriptable, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1552913234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12235,6 +12259,7 @@ MonoBehaviour:
   sellButton: {fileID: 218859562}
   nextItemButton: {fileID: 380164693}
   buyMenu: {fileID: 701082508}
+  buyButton: {fileID: 0}
   buyMenuText: {fileID: 1048669086}
   ownedTreasure:
   - {fileID: 11400000, guid: ff7ea1cf017c6ff42bafd8b311d5f9e7, type: 2}
