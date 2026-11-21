@@ -1,16 +1,24 @@
 using UnityEngine;
 
-public class PeriscopeController : MonoBehaviour
+public class PeriscopeController : MonoBehaviour, IInteractable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void EnterInteract(PlayerController pc)
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ExitInteract()
     {
-        
+
+    }
+
+    public void EnterHover()
+    {
+
+    }
+
+    public void ExitHover()
+    {
+
     }
 }
