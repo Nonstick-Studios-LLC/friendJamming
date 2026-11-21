@@ -7,4 +7,5 @@ public static class PublicEvents
     public static Action MoveDirectionStopped;
 
     public static Action<int> UpdateScrapCount;
+    public static Action ItemBought;
 }
