@@ -41,10 +41,11 @@ public static class StaticUtilities
     public static void StopAndStartCoroutine(ref Coroutine coroutineInstance, IEnumerator coroutineToPlay)
     {
         // If using this code in other projects, replace GuardCoroutineManager with a different singleton
-        if (coroutineInstance != null)
-            CoinPusherManager.Instance.StopCoroutine(coroutineInstance);
+        //if (coroutineInstance != null)
+        //    CoinPusherManager.Instance.StopCoroutine(coroutineInstance);
 
-        coroutineInstance = CoinPusherManager.Instance.StartCoroutine(coroutineToPlay);
+        //coroutineInstance = CoinPusherManager.Instance.StartCoroutine(coroutineToPlay);
+        Debug.LogError("fix this");
     }
 
     #endregion
