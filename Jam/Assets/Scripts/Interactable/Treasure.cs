@@ -14,7 +14,7 @@ public class Treasure : MonoBehaviour, IInteractable
 
     public void EnterHover()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void EnterInteract(PlayerController pc)
@@ -24,7 +24,7 @@ public class Treasure : MonoBehaviour, IInteractable
 
     public void ExitHover()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void ExitInteract()

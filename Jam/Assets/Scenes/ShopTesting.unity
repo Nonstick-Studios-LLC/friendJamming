@@ -4874,7 +4874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &974299033
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6132,9 +6132,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 51936099071377827, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
+      propertyPath: baseWaterMovementSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 51936099071377827, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
+      propertyPath: ascentWaterMovementSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 51936099071377827, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
+      propertyPath: descentWaterMovementSpeed
+      value: 3.5
+      objectReference: {fileID: 0}
     - target: {fileID: 96466021246308504, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
       propertyPath: m_Name
       value: PlayerSizeTest
+      objectReference: {fileID: 0}
+    - target: {fileID: 1581048692775013036, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
+      propertyPath: startingMovement
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5504982264192665151, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
       propertyPath: m_LocalPosition.x
