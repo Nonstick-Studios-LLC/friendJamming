@@ -18,10 +18,12 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField] private Button sellButton;
     [SerializeField] private Button nextItemButton;
     [SerializeField] private GameObject buyMenu;
+    [SerializeField] private Button buyButton;
 
     [SerializeField] private TMP_Text buyMenuText;
     [Header("Testing")]
     [SerializeField] private List<ItemScriptable> ownedTreasure;
+    private ItemScriptable heldData;
 
     int itemSellIndex = 0;
 
@@ -65,6 +67,8 @@ public class ShopManager : Singleton<ShopManager>
         
 
     }
+
+    #region Selling
 
     [Button] public void SellItem()
     {
@@ -136,8 +140,57 @@ public class ShopManager : Singleton<ShopManager>
         {
             itemSellIndex = 0;
         }
-        sellMenuText.text = $"Sell {ownedTreasure[itemSellIndex].GetName()} for {ownedTreasure[itemSellIndex].GetCost().ToString()} Scrap?";
+        sellMenuText.text = $"Sell {ownedTreasure[itemSellIndex].GetName()} for {ownedTreasure[itemSellIndex].GetSellPrice().ToString()} Scrap?";
     }
+
+    #endregion
+
+    #region Buying
+
+    public void ToggleBuyMenu(ItemScriptable data)
+    {
+        if (buyMenu.activeInHierarchy)
+        {
+            buyMenu.SetActive(false);
+            buyButton.enabled = false;
+        }
+        else
+        {
+            heldData = data;
+            buyMenu.SetActive(true);
+            if(data.GetCost() <= playersCurrency)
+            {
+                buyButton.enabled = true;
+                buyMenuText.text = $"Buy {data.GetName()} for {data.GetCost().ToString()} Scrap?";
+            }
+            else
+            {
+                buyMenuText.text = $"You are missing {((int)Mathf.Abs(data.GetCost()-playersCurrency)).ToString()} Scrap to buy {data.GetName()}";
+            }
+        }
+    }
+
+    public void BuyItem()
+    {
+        if(heldData.GetCost() <= playersCurrency)
+        {
+            playersCurrency -= heldData.GetCost();
+            ownedTreasure.Add(heldData);
+
+            if(heldData.GetMcGuffin())
+            {
+                Debug.Log("McGuffin Obtained. Add logic to end game");
+            }
+
+
+            heldData = null;
+
+
+
+        }
+    }
+
+    #endregion
 
 
 }
