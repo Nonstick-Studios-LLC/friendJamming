@@ -21,7 +21,7 @@ public class PeriscopeController : MonoBehaviour, IInteractable
     {
         ChangeCamera();
 
-        PublicEvents.MoveDirectionStarted += RotatePeriscopeStart;
+        PublicEvents.MoveDirection += RotatePeriscopeStart;
         PublicEvents.MoveDirectionStopped += RotatePeriscopeStop;
     }
 
@@ -29,7 +29,7 @@ public class PeriscopeController : MonoBehaviour, IInteractable
     {
         ChangeCamera();
 
-        PublicEvents.MoveDirectionStarted -= RotatePeriscopeStart;
+        PublicEvents.MoveDirection -= RotatePeriscopeStart;
         PublicEvents.MoveDirectionStopped -= RotatePeriscopeStop;
 
         isRotating = false;

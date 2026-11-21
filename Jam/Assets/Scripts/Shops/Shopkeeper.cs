@@ -5,7 +5,7 @@ public class Shopkeeper : MonoBehaviour, IInteractable
 {
     public void EnterHover()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     [Button]
@@ -15,28 +15,17 @@ public class Shopkeeper : MonoBehaviour, IInteractable
     }
     public void EnterInteract(PlayerController pc)
     {
-        ShopManager.Instance.ToggleSellMenu();
+        PublicEvents.StartSellInteraction?.Invoke();
     }
 
     public void ExitHover()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void ExitInteract()
     {
-        throw new System.NotImplementedException();
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
