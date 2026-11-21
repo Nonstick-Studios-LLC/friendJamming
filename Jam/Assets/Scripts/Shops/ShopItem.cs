@@ -9,10 +9,10 @@ public class ShopItem : MonoBehaviour, IInteractable
 {
     [SerializeField] private TMP_Text itemCostDisplay;
     [SerializeField, Tooltip("Can be left null to instantiate a random item")] private ItemScriptable itemData = null;
-
+    int savedScrapCount = 0;
     public void EnterHover()
     {
-        throw new System.NotImplementedException();
+        return;
     }
 
     public void EnterInteract(PlayerController pc)
@@ -22,12 +22,22 @@ public class ShopItem : MonoBehaviour, IInteractable
 
     public void ExitHover()
     {
-        throw new System.NotImplementedException();
+        return;
     }
 
     public void ExitInteract()
     {
         throw new System.NotImplementedException();
+    }
+
+    private void OnEnable()
+    {
+        PublicEvents.UpdateScrapCount += UpdatePriceColor;
+    }
+
+    private void OnDisable()
+    {
+        PublicEvents.UpdateScrapCount -= UpdatePriceColor;
     }
 
     void Start()
@@ -38,12 +48,24 @@ public class ShopItem : MonoBehaviour, IInteractable
         }
         GameObject visual = Instantiate(itemData.GetVisual(), this.gameObject.transform);
         visual.name = itemData.GetName();
+        UpdatePriceColor(savedScrapCount);
         itemCostDisplay.text = "$" + itemData.GetCost().ToString();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void UpdatePriceColor(int newAmount)
     {
-        
+        if(itemData == null)
+        {
+            savedScrapCount = newAmount;
+            return;
+        }
+        if(newAmount >= itemData.GetCost())
+        {
+            itemCostDisplay.color = Color.greenYellow;
+        }
+        else
+        {
+            itemCostDisplay.color = Color.indianRed;
+        }
     }
 }
