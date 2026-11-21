@@ -3,7 +3,7 @@ using UnityEngine;
 public interface IInteractable
 {
 
-    public abstract void EnterInteract();
+    public abstract void EnterInteract(PlayerController pc);
 
 
     public abstract void ExitInteract();
