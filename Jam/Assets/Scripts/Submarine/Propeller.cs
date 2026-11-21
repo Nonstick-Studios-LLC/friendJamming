@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public class Propeller : MonoBehaviour
+public class Propeller : ShipPart
 {
     public KeyCode testKey;
 
@@ -12,14 +12,14 @@ public class Propeller : MonoBehaviour
     public float TestSpeed = 5;
 
     private Vector3 actualPhyiscsApplyPoint => physicsApplyPoint + transform.position;
-    private Vector3 adjustedForwardDirection => Vector3.Cross(ForwardDirection,transform.forward); // idk what a cross product is
+    private Vector3 adjustedForwardDirection => rb.transform.up; // idk what a cross product is
 
     private void FixedUpdate()
     {
         if (Input.GetKey(testKey))
         {
-            Vector3 force = transform.forward * TestSpeed;
-            rb.AddForce(force, ForceMode.Force);
+            Vector3 force = adjustedForwardDirection * TestSpeed;
+            rb.AddForceAtPosition(force, actualPhyiscsApplyPoint, ForceMode.Force);
         }   
     }
 
