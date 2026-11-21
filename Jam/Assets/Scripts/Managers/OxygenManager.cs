@@ -5,22 +5,26 @@ using UnityEngine;
 public class OxygenManager : Singleton<OxygenManager>
 {
     [SerializeField] private float maxOxygen = 10;
+    public static float BASE_REGEN_RATE = 1;
 
-    //Add player list var
     private List<List<Coroutine>> activeRegenCoroutines;
     private List<float> oxygenValues;
-
-    private void Initialize()
-    {
-        //Set up procedures
-    }
 
     /// <summary>
     /// Registers an active player.
     /// </summary>
-    public void RegisterActivePlayer(/* Add player script var*/)
+    public void RegisterActivePlayer()
     {
+        activeRegenCoroutines.Add(new List<Coroutine>());
+    }
 
+    /// <summary>
+    /// Stops all oxygen regen for a player who is no longer in the game and clears their active regen coroutines.
+    /// </summary>
+    /// <param name="playerID"></param>
+    public void DeregisterPlayer(int playerID)
+    {
+        StopPlayerOxygenRegen(playerID);
     }
 
     /// <summary>
