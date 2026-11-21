@@ -9,40 +9,55 @@ using UnityEngine;
 public class Propeller : ShipPart
 {
     //public KeyCode testKey;
+    [Header("Design Variables")]
+    [SerializeField] float acceleration;
 
     [Header("My variables dont touch")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Vector3 physicsApplyPoint;
-    [SerializeField] private Vector3 ForwardDirection;
 
     private Vector3 actualPhyiscsApplyPoint => physicsApplyPoint + transform.position;
     private Vector3 adjustedForwardDirection => rb.transform.forward; // idk what a cross product is
 
-    private void FixedUpdate()
-    {
-        /*
-        if (Input.GetKey(testKey))
-        {
-            Vector3 force = adjustedForwardDirection * TestSpeed;
-            rb.AddForceAtPosition(force, actualPhyiscsApplyPoint, ForceMode.Force);
-        }*/
-    }
+    private Vector3 _lastForceApplied;
 
-    public void ApplyForce(float currentSpeed)
+    [Header("Debug")]
+    [SerializeField,ReadOnly] private float _realForce;
+
+
+    /// <summary>
+    /// This function is to be called every fixed frame that the propeller is active.
+    /// </summary>
+    /// <param name="targetForce"></param>
+    public void ApplyForce(float targetForce)
     {
-        // todo: add acceleration
-        Vector3 force = adjustedForwardDirection * currentSpeed;
+        _realForce = Mathf.MoveTowards(_realForce, targetForce, acceleration * Time.fixedDeltaTime);
+
+        Vector3 force = adjustedForwardDirection * _realForce;
         rb.AddForceAtPosition(force, actualPhyiscsApplyPoint, ForceMode.Force);
+
+        _lastForceApplied = force;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.orange;
 
-        Vector3 a = actualPhyiscsApplyPoint;
-        Vector3 b = a + (-adjustedForwardDirection * 5);
+        if (Application.isPlaying)
+        {
+            Vector3 a = actualPhyiscsApplyPoint;
+            Vector3 b = a + _lastForceApplied;
 
-        Gizmos.DrawLine(a, b);
+            Gizmos.DrawLine(a, b);
+        }
+        else
+        {
+            Vector3 a = actualPhyiscsApplyPoint;
+            Vector3 b = a + (-adjustedForwardDirection * 5);
+
+            Gizmos.DrawLine(a, b);
+        }
+
     }
 
    
