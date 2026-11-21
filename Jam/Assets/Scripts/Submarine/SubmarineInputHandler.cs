@@ -6,7 +6,10 @@ using UnityEngine;
 
 public class SubmarineInputHandler : MonoBehaviour
 {
-    [Header("Debug Values")]
+    [Header("Designer Settings")]
+    [SerializeField] private float horizontalTurnScalar = 10;
+    [SerializeField] private float damagedHorizontalTurnScalar = 2.5f;
 
-    int idk;
+    [Header("Debug Values")]
+    [SerializeField] private float currentHorizontalTurnSpeed;
 }
