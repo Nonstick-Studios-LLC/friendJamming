@@ -16,8 +16,4 @@ MonoBehaviour:
   sellPrice: 5
   purchasePrice: 8
   isMcGuffin: 0
-  hasUniqueModel: 0
-  modelMeshes: []
-  modelMaterials: []
-  numberOfSides: 3
-  appliedMaterial: {fileID: 2100000, guid: eec9d94dd83041742ba3beb3f79e6874, type: 2}
+  visual: {fileID: 5152250044693254884, guid: fc826796b24f11045bfc1a93a0df2665, type: 3}
