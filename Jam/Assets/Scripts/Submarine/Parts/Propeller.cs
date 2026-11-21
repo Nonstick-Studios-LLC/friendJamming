@@ -46,7 +46,7 @@ public class Propeller : ShipPart
         if (Application.isPlaying)
         {
             Vector3 a = actualPhyiscsApplyPoint;
-            Vector3 b = a + _lastForceApplied;
+            Vector3 b = a - _lastForceApplied;
 
             Gizmos.DrawLine(a, b);
         }
