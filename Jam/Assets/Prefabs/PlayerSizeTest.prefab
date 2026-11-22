@@ -348,10 +348,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8f0a4e9c5b807148bd7180d30192b74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LandMovement
-  baseLandMovementSpeed: 3
-  fullJumpHeight: 2
-  timeToMaxAcceleration: 5
-  maxAccelerationMultiplier: 3
+  baseLandMovementSpeed: 2
+  fullJumpHeight: 1.5
+  timeToMaxAcceleration: 0.125
+  maxAccelerationMultiplier: 1.175
   landGravity: -10
   sightDistance: 10
 --- !u!114 &51936099071377827
@@ -368,12 +368,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WaterMovement
   baseWaterMovementSpeed: 1.5
   maxWaterMovementSpeed: 10
-  maxWaterVerticalSpeed: 10
-  timeToMaxAcceleration: 5
-  maxAccelerationMultiplier: 3
+  maxWaterVerticalSpeed: 2
+  timeToMaxAcceleration: 0.125
+  maxAccelerationMultiplier: 1.175
   ascentWaterMovementSpeed: 1
   descentWaterMovementSpeed: 1
-  waterGravity: 0.25
+  waterGravity: 0
   descending: 0
 --- !u!65 &1228966893350204436
 BoxCollider:
