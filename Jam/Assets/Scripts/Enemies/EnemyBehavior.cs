@@ -33,14 +33,13 @@ public class EnemyBehavior : MonoBehaviour
     [Space(5)]
 
     Coroutine moving;
+    bool chasing = false;
 
     [SerializeField, ShowIf("fishType", FishType.PlayerOriented)] float damageToPlayer;
 
     [SerializeField, Tooltip("How far does a collision send the player or PHISH back?")] float knockback;
 
     [SerializeField, ShowIf("fishType", FishType.ShipOriented)] FishEffect effectOnShip;
-
-    //TODO: make an iinteractable for the clam's pearl
 
     private void Start()
     {
@@ -93,11 +92,19 @@ public class EnemyBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider trigger)
     {
-        if((fishType == FishType.PlayerOriented && trigger.GetComponent<PlayerController>()) ||
-           (fishType == FishType.ShipOriented && effectOnShip == FishEffect.MovePHISH && trigger.gameObject.GetComponent<SubmarineInputHandler>()))
+        if(chasing)
         {
+            return;
+        }
+
+        if((fishType == FishType.PlayerOriented && trigger.GetComponent<PlayerController>()) ||
+           (fishType == FishType.ShipOriented && effectOnShip == FishEffect.MovePHISH && trigger.gameObject.GetComponentInParent<SubmarineInputHandler>()))
+        {
+            StopCoroutine(moving);
             moving = null;
             moving = StartCoroutine(SwimmingTowardsTarget(trigger.gameObject));
+
+            chasing = true;
         }
     }
 
@@ -106,8 +113,15 @@ public class EnemyBehavior : MonoBehaviour
         if ((fishType == FishType.PlayerOriented && trigger.GetComponent<PlayerController>()) ||
            (fishType == FishType.ShipOriented && trigger.GetComponent<SubmarineInputHandler>()))
         {
+            StopCoroutine(moving);
             moving = null;
-            moving = StartCoroutine(SwimmingIdle());
+
+            if(hasPath)
+            {
+                moving = StartCoroutine(SwimmingIdle());
+            }
+
+            chasing = false;
         }
     }
 
@@ -116,8 +130,7 @@ public class EnemyBehavior : MonoBehaviour
         if(fishType == FishType.PlayerOriented && collision.gameObject.GetComponent<PlayerController>())
         {
             collision.gameObject.GetComponent<PlayerHealthManager>().ChangeHealthValue(damageToPlayer);
-            collision.gameObject.GetComponent<Rigidbody>().AddForce
-            ((transform.position - collision.gameObject.transform.position).normalized * knockback, ForceMode.Impulse);
+            collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * knockback, ForceMode.Impulse);
         }
 
         if(fishType == FishType.ShipOriented && collision.gameObject.GetComponent<SubmarineInputHandler>())
@@ -133,8 +146,8 @@ public class EnemyBehavior : MonoBehaviour
             }
             else if(effectOnShip == FishEffect.MovePHISH)
             {
-                collision.gameObject.GetComponent<Rigidbody>().AddForce
-                ((transform.position - collision.gameObject.transform.position).normalized * knockback, ForceMode.Impulse);
+                //the phish has a shit ton of mass so the knockback will have to be super high for now lol
+                collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * knockback, ForceMode.Impulse);
             }
         }
     }
