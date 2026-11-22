@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public enum MovementType
@@ -38,6 +39,7 @@ public class ShipController : MonoBehaviour, IInteractable
         
         pc.CanMoveDirections = false;
         pc.transform.position = teleportPlayerSpot.position;
+
     }
 
     public void ExitInteract()
