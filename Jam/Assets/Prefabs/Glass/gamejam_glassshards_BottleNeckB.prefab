@@ -9,45 +9,61 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 374
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 374
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 374
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 269.80804
+      value: 70.16
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 239.78557
+      value: 289.20236
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 14.832229
+      value: 122.16981
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071067
+      value: -0.029725082
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: -0.14988247
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.9722083
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.17737737
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 20.72
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -180.283
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 17.476
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3e2e8723689d8c24ab57e90b807f73e4, type: 2}
     - target: {fileID: 919132149155446097, guid: 5d300dccf88f0db41a8e37cc1d04dd29, type: 3}
       propertyPath: m_Name
       value: gamejam_glassshards_BottleNeckB
