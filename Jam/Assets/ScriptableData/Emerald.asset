@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Emerald
   m_EditorClassIdentifier: Assembly-CSharp::ItemScriptable
   itemName: Emerald
-  sellPrice: 15
-  purchasePrice: 15
+  sellPrice: 50
+  purchasePrice: 50
   isMcGuffin: 0
   visual: {fileID: 944284242498997466, guid: 972e02b6654d7d94aa0f93725b06da40, type: 3}

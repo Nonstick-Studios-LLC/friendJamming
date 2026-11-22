@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Goblet
   m_EditorClassIdentifier: Assembly-CSharp::ItemScriptable
   itemName: Golden Goblet Of Ra'Ul
-  sellPrice: 25
-  purchasePrice: 25
+  sellPrice: 75
+  purchasePrice: 75
   isMcGuffin: 0
   visual: {fileID: 844036930948757794, guid: fb52f0ee6993af34fb6972a36f9e34e9, type: 3}
