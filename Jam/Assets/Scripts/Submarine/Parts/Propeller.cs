@@ -34,7 +34,7 @@ public class Propeller : ShipPart
         _realForce = Mathf.MoveTowards(_realForce, targetForce, acceleration * Time.fixedDeltaTime);
 
         Vector3 force = adjustedForwardDirection * _realForce;
-        rb.AddForceAtPosition(force, actualPhyiscsApplyPoint, ForceMode.Force);
+        rb.AddForceAtPosition(force * 5000, actualPhyiscsApplyPoint, ForceMode.Force);
 
         _lastForceApplied = force;
     }
