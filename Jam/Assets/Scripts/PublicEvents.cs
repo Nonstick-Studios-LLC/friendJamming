@@ -25,4 +25,7 @@ public static class PublicEvents
     public static Action LeftClickEnded;
     public static Action<PlayerController.MovementType> ToggleMovement;
 
+    public static Action<ItemScriptable> AddToInventory;
+    public static Action RemoveFromInventory;
+
 }

@@ -552,7 +552,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &303004322
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5395,6 +5395,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerSizeTest
       objectReference: {fileID: 0}
+    - target: {fileID: 2781461146731526589, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5504982264192665151, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -724.44385
@@ -9008,6 +9012,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: TreasureSpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 7508344758696736340, guid: 4d46df946f4105a43acec025b73e8ee5, type: 3}
+      propertyPath: spawnsMultiple
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508344758696736340, guid: 4d46df946f4105a43acec025b73e8ee5, type: 3}
+      propertyPath: maxTreasureAtOnce
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508344758696736340, guid: 4d46df946f4105a43acec025b73e8ee5, type: 3}
+      propertyPath: moreThanOnePresentAtATime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508344758696736340, guid: 4d46df946f4105a43acec025b73e8ee5, type: 3}
+      propertyPath: canSpawnUnlimitedTreasures
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508344758696736340, guid: 4d46df946f4105a43acec025b73e8ee5, type: 3}
+      propertyPath: potentialTreasures.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508344758696736340, guid: 4d46df946f4105a43acec025b73e8ee5, type: 3}
+      propertyPath: 'potentialTreasures.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: ff7ea1cf017c6ff42bafd8b311d5f9e7, type: 2}
     - target: {fileID: 7780152189815213824, guid: 4d46df946f4105a43acec025b73e8ee5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -718.86

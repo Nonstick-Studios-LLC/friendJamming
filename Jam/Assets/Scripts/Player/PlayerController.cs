@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform PickupPoint;
     [Layer] public int transitionLayer;
+    private bool lookingAtShopkeeper = false;
 
 
     private IInteractable lookingAt;
@@ -133,6 +134,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void ResetInteraction()
+    {
+        interactingWith = null;
+    }
+
     public void SetCursorType(InteractStates type)
     {
         playerCrosshair.text = (type == InteractStates.NonInteractable ? standardCrosshair : interactableCrosshair).ToString();
@@ -171,7 +177,14 @@ public class PlayerController : MonoBehaviour
         {
             if (hit.transform.GetComponent<IInteractable>() != null)
             {
-
+                if(hit.transform.GetComponent<Shopkeeper>()!=null)
+                {
+                    lookingAtShopkeeper = true;
+                }
+                else
+                {
+                    lookingAtShopkeeper = false;
+                }
                 if (interactingWith != null && hit.transform.GetComponent<IInteractable>() == interactingWith)
                 {
                     return true;
@@ -214,8 +227,18 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        if(interactingWith == null)
+        {
+            interactingWith = null;
+        }
+
         if (lookingAt != null)
         {
+            if(lookingAtShopkeeper)
+            {
+                lookingAt.EnterInteract(this);
+                return;
+            }
             if (interactingWith == null)
             {
                 interactingWith = lookingAt;
@@ -225,6 +248,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (lookingAt != interactingWith)
                 {
+                    
                     interactingWith.ExitInteract();
                     interactingWith = lookingAt;
                     interactingWith.EnterInteract(this);
