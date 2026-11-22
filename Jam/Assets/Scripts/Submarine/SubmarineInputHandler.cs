@@ -96,17 +96,17 @@ public class SubmarineInputHandler : MonoBehaviour
         rb.linearDamping = velocityDamping;
 
         // debug for now @jay get rid of this
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKey(KeyCode.A))
             SetForwardMode(ForwardDirection.Forward);
-        else if (Input.GetKey(KeyCode.E))
+        else if (Input.GetKey(KeyCode.D))
             SetForwardMode(ForwardDirection.Reverse);
         else
             SetForwardMode(ForwardDirection.None);
 
         // @jay remove this
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.Q))
             SetTargetTurnSpeed(currentTargetTurnAcceleration - 1);
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.E))
             SetTargetTurnSpeed(currentTargetTurnAcceleration + 1);
 
         // @jay remove this too

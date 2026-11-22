@@ -1,7 +1,7 @@
 /*************************************************
 Author Names : 		    Cade Naylor
 Date Created : 		    11/21/2026
-Brief Description : 	Actually defines and handles land movement
+Brief Description : 	Handles unique land movement functionality and checks
 
 External Resources :    Yoinked these from the first prototype and modified them
 ***************************************************/
@@ -52,39 +52,7 @@ public class LandMovement : Movement
         rb = GetComponent<Rigidbody>();
     }
 
-    /// <summary>
-    /// Override from Movement base class
-    /// Adjusts the delta using sensitivity and fixed timee
-    /// Rotates the camera between clamps
-    /// also lowkey this wont work as well for multiplayer but for now i'm throwing rayxast look logic in here
-    /// </summary>
-    /// <param name="cameraVector">Vector2 containing the mouse's delta </param>
-    protected override void OnMouseMove(Vector2 cameraVector)
-    {
-        /*if(!pc.CanMove)
-        {
-            return;
-        }
-
-        Vector2 adjustedDelta = cameraVector * pc.CameraSensitivity * Time.fixedDeltaTime;
-
-        cameraRotation.x -= adjustedDelta.y;
-        cameraRotation.x = Mathf.Clamp(cameraRotation.x, minCameraYClamp, maxCameraYClamp);
-        cameraRotation.y += adjustedDelta.x;
-
-        pc.CameraRotationPoint.localEulerAngles = cameraRotation;
-
-
-
-        if (LookingAtObject())
-        {
-            pc.SetCursorType(PlayerController.InteractStates.Interactable);
-        }
-        else
-        {
-            pc.SetCursorType(PlayerController.InteractStates.NonInteractable);
-        }*/
-    }
+    
 
     /// <summary>
     /// Return the jump height
@@ -121,49 +89,7 @@ public class LandMovement : Movement
 
     }
 
-    /// <summary>
-    /// Override from Movement base class
-    /// </summary>
-    protected override void OnInteractStart()
-    {
-        if(!pc.CanMove)
-        {
-            return;
-        }
-
-        if (lookingAt != null)
-        {
-            if (interactingWith == null)
-            {
-                interactingWith = lookingAt;
-                interactingWith.EnterInteract(pc);
-            }
-            else
-            {
-                if (lookingAt != interactingWith)
-                {
-                    interactingWith.ExitInteract();
-                    interactingWith = lookingAt;
-                    interactingWith.EnterInteract(pc);
-                }
-                else
-                {
-                    interactingWith.ExitInteract();
-                    interactingWith = null;
-                }
-            }
-        }
-        else if (interactingWith != null)
-        {
-            interactingWith.ExitInteract();
-            if (interactingWith == lookingAt)
-            {
-                interactingWith.EnterHover();
-            }
-            interactingWith = null;
-        }
-
-    }
+    
 
     /// <summary>
     /// Override from movement base class
@@ -231,50 +157,7 @@ public class LandMovement : Movement
         return Physics.Raycast(transform.position, Vector3.down, out hit, groundCheckDistance);
     }
 
-    /// <summary>
-    /// Checks if the player is looking at an object that can be interacted with
-    /// </summary>
-    /// <returns>Returns true if they are</returns>
-    public override bool LookingAtObject()
-    {
-        RaycastHit hit;
-        Vector3 direction = pc.CameraRotationPoint.forward;
 
-        if (Physics.Raycast(pc.CameraRotationPoint.transform.position, direction, out hit, sightDistance))
-        {
-            if (hit.transform.GetComponent<IInteractable>() != null)
-            {
-                if (interactingWith != null && hit.transform.GetComponent<IInteractable>() == interactingWith)
-                {
-                    return true;
-                }
-
-                if (lookingAt != null && hit.transform.GetComponent<IInteractable>() != lookingAt)
-                {
-                    lookingAt.ExitHover();
-                }
-
-                lookingAt = hit.transform.GetComponent<IInteractable>();
-                lookingAt.EnterHover();
-
-                pc.SetCursorType(PlayerController.InteractStates.Interactable);
-
-                return true;
-            }
-        }
-
-        if (lookingAt != null)
-        {
-            if (lookingAt != interactingWith)
-            {
-                lookingAt.ExitHover();
-            }
-            lookingAt = null;
-        }
-
-        pc.SetCursorType(PlayerController.InteractStates.NonInteractable);
-        return false;
-    }
 
     /// <summary>
     /// Accellerates the player while shift is held

@@ -21,7 +21,7 @@ public class Pickup : MonoBehaviour, IInteractable
     public void EnterInteract(PlayerController pc)
     {
         if (isHeld) return;
-
+        heldBy = pc;
         PickupItem(pc);
 
         Debug.Log($"{gameObject.name} is starting its interaction");
@@ -40,16 +40,30 @@ public class Pickup : MonoBehaviour, IInteractable
     /// <summary>
     /// Sets the item as picked up
     /// </summary>
-    public void PickupItem(PlayerController pc)
+    public virtual void PickupItem(PlayerController pc)
     {
+        PublicEvents.RemoveFromInventory += DestroyItem;
         heldBy = pc;
         TogglePhysics(false);
         transform.parent = pc.PickupPoint;
         transform.localPosition = Vector3.zero;
     }
 
-    public void DropItem()
+    public virtual void DestroyItem()
     {
+        heldBy.ResetInteraction();
+        heldBy = null;
+        Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        PublicEvents.RemoveFromInventory -= DestroyItem;
+    }
+
+    public virtual void DropItem()
+    {
+        PublicEvents.RemoveFromInventory -= DestroyItem;
         heldBy = null;
         transform.parent = null;
         TogglePhysics(true);

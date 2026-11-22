@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 [RequireComponent (typeof(Rigidbody), typeof(Collider))]
 
@@ -12,14 +13,16 @@ public class Treasure : Pickup, IInteractable
         bought = status;
     }
 
-    public void EnterInteract(PlayerController pc)
+    public override void PickupItem(PlayerController pc)
     {
-        Debug.Log("Hit");
-        if (isHeld) return;
+        base.PickupItem(pc);
+        PublicEvents.AddToInventory(itemData);
+    }
 
-        PickupItem(pc);
-
-        Debug.Log($"{gameObject.name} is starting its interaction");
+    public override void DropItem()
+    {
+        base.DropItem();
+        PublicEvents.RemoveFromInventory?.Invoke();
     }
 
 
