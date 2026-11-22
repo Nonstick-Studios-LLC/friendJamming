@@ -90,6 +90,7 @@ public class ShopItem : MonoBehaviour, IInteractable
             itemData = ShopManager.GetRandomItemData(Random.Range(int.MinValue, int.MaxValue));
         }
         GameObject visual = Instantiate(itemData.GetVisual(), this.gameObject.transform);
+        visual.transform.localPosition = Vector3.zero;
         visual.name = itemData.GetName();
         spawnedItem = visual.GetComponent<Treasure>();
         spawnedItem.SetItemScriptableStatus(itemData);
