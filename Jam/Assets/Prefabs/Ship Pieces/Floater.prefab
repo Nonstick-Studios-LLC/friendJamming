@@ -129,7 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Floater
   MaxHealth: 10
   currentHealth: 0
-  acceleration: 0.1
+  acceleration: 100
   rb: {fileID: 0}
   physicsApplyPoint: {x: 0, y: 0, z: 0}
   _realForce: 0
