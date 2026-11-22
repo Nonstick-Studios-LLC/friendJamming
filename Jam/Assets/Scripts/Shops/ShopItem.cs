@@ -59,8 +59,8 @@ public class ShopItem : MonoBehaviour, IInteractable
         }
         GameObject childVisual = transform.GetChild(1).gameObject;
 
-        //Should be deparented later
-        Destroy(childVisual);
+        childVisual.transform.parent = null;
+        childVisual.GetComponent<Treasure>().TogglePhysics(true);
         itemCostDisplay.text = "";
         spawning = StartCoroutine(GetNewItem());
 

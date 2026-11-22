@@ -12,15 +12,6 @@ public class Treasure : Pickup, IInteractable
         bought = status;
     }
 
-    public void EnterInteract(PlayerController pc)
-    {
-        Debug.Log("Hit");
-        if (isHeld) return;
-
-        PickupItem(pc);
-
-        Debug.Log($"{gameObject.name} is starting its interaction");
-    }
 
 
 }
