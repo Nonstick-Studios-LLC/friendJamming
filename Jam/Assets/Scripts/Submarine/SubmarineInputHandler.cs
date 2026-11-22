@@ -73,13 +73,14 @@ public class SubmarineInputHandler : MonoBehaviour
     [Header("My variables dont touch")]
     [SerializeField] private Rigidbody rb;
 
-    [Header("Debug Values")] 
+    [Header("Debug Values")]
+
+    private ForwardDirection currentForwardControls = ForwardDirection.None;
     public int currentTargetTurnAcceleration { get; private set; }
-    public int currentVerticalAcceleration { get; private set; }
+    public int currentVerticalAcceleration { get; private set; } = 0;
 
     bool controlsDisabled = false;
 
-    [SerializeField, ReadOnly] private ForwardDirection currentForwardControls = ForwardDirection.None;
 
     private float _turnAccelerationScalar => Mathf.InverseLerp(0, MaxRotationAccelerationIncrements, (float)Mathf.Abs(currentTargetTurnAcceleration));
     private float _turnAccelerationPercent => Mathf.InverseLerp(-MaxRotationAccelerationIncrements, MaxRotationAccelerationIncrements, currentTargetTurnAcceleration);

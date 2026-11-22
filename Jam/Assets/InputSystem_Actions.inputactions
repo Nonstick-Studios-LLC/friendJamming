@@ -501,17 +501,6 @@
                 },
                 {
                     "name": "negative",
-                    "id": "337931bf-80fd-4cfc-9a0e-2852e03b5983",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Ship Up Down",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "negative",
                     "id": "afac9ce7-56ca-4bd0-a23c-9da75db878f2",
                     "path": "<Keyboard>/ctrl",
                     "interactions": "",
@@ -525,17 +514,6 @@
                     "name": "negative",
                     "id": "72fcc01d-02cb-4af2-b79c-6c9fab88b676",
                     "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Ship Up Down",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "cf998add-243e-439d-bb5a-f9297632e0d4",
-                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

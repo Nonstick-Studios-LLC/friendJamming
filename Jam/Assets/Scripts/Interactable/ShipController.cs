@@ -51,6 +51,9 @@ public class ShipController : MonoBehaviour, IInteractable
         PublicEvents.MoveDirectionStarted -= Move_controls_staert;
         PublicEvents.UpdownShipStarted -= Updownship_start;
 
+        submarineInputHandler.SetForwardMode(ForwardDirection.None);
+        submarineInputHandler.SetTargetTurnSpeed(0);
+
         playerController.CanMoveDirections = true;
         StopCoroutine(whileInteractingCoroutine);
     }
@@ -122,54 +125,5 @@ public class ShipController : MonoBehaviour, IInteractable
 
         return;
 
-        switch (movementType)
-        {
-            case MovementType.ForwardBackward:
-
-                //Debug.Log("forwart");
-                if(dir.y >= 0.5)
-                {
-                    submarineInputHandler.SetForwardMode(ForwardDirection.Forward);
-                }
-                else if(dir.y <= -0.5)
-                {
-                    submarineInputHandler.SetForwardMode(ForwardDirection.Reverse);
-                }
-                else
-                {
-                    submarineInputHandler.SetForwardMode(ForwardDirection.None);
-                }
-
-                break;
-
-            case MovementType.UpDown:
-
-                if (dir.y >= 0.5)
-                {
-                    submarineInputHandler.SetTargetVerticalSpeed(submarineInputHandler.currentVerticalAcceleration +1);
-                }
-                else if (dir.y <= -0.5)
-                {
-                    submarineInputHandler.SetTargetVerticalSpeed(submarineInputHandler.currentVerticalAcceleration - 1);
-                }
-
-                break;
-
-            case MovementType.LeftRight:
-
-                if (dir.x >= 0.5)
-                {
-                    submarineInputHandler.SetTargetTurnSpeed(submarineInputHandler.currentTargetTurnAcceleration + 1);
-                }
-                else if (dir.x <= -0.5)
-                {
-                    submarineInputHandler.SetTargetTurnSpeed(submarineInputHandler.currentTargetTurnAcceleration - 1);
-                }
-
-                break;
-
-            default:
-                break;
-        }
     }
 }
