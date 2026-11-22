@@ -16,6 +16,7 @@ public class OxygenManager : Singleton<OxygenManager>
     public void RegisterActivePlayer()
     {
         activeRegenCoroutines.Add(new List<Coroutine>());
+        oxygenValues.Add(maxOxygen);
     }
 
     /// <summary>
