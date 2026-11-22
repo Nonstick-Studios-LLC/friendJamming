@@ -296,6 +296,12 @@ public class PlayerController : MonoBehaviour
     // hmm this seems like a good place to put this region,. yes.
     void WhileReelHeld(float duration)
     {
+        if(currentMovement == MovementType.Land)
+        {
+            reelInTimer.value = 0;
+            return;
+        }
+
         reelInTimer.value = duration / secondsToReelIn;
     }
 
@@ -313,6 +319,7 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    #region movement type
     /// <summary>
     /// Toggles movement based on event call
     /// checks for all of dictionary and turns off all other 
@@ -363,6 +370,8 @@ public class PlayerController : MonoBehaviour
             ToggleMovement(MovementType.Land);
         }
     }
+
+    #endregion
 
     private void OnTriggerEnter(Collider other)
     {

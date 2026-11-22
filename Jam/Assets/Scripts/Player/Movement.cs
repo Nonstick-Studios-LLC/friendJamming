@@ -19,10 +19,12 @@ public abstract class Movement: MonoBehaviour
         PublicEvents.MoveDirectionStopped += OnMoveEnd;
         PublicEvents.InteractCancelled += OnInteractEnd;
         PublicEvents.SpaceStarted += OnSpaceStarted;
+        PublicEvents.SpaceHeld += WhileSpaceHeld;
         PublicEvents.SpaceEnded += OnSpaceFinished;
         PublicEvents.ShiftStarted += OnShiftStarted;
         PublicEvents.ShiftEnded += OnShiftFinished;
         PublicEvents.ControlStarted += OnControlStarted;
+        PublicEvents.ControlHeld += WhileControlHeld;
         PublicEvents.ControlEnded += OnControlEnded;
 
         PublicEvents.LeftClickStarted += OnLeftClickStarted;
@@ -53,11 +55,13 @@ public abstract class Movement: MonoBehaviour
     protected abstract void OnMoveEnd();
     protected abstract void OnInteractEnd();
     protected abstract void OnSpaceStarted();
+    protected abstract void WhileSpaceHeld();
     protected abstract void OnSpaceFinished();
     protected abstract void OnShiftStarted();
     protected abstract void OnShiftFinished();
 
     protected abstract void OnControlStarted();
+    protected abstract void WhileControlHeld();
     protected abstract void OnControlEnded();
 
     protected abstract void OnLeftClickStarted();

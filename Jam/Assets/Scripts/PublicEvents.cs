@@ -16,10 +16,12 @@ public static class PublicEvents
     public static Action InteractStarted;
     public static Action InteractCancelled;
     public static Action SpaceStarted;
+    public static Action SpaceHeld;
     public static Action SpaceEnded;
     public static Action ShiftStarted;
     public static Action ShiftEnded;
     public static Action ControlStarted;
+    public static Action ControlHeld;
     public static Action ControlEnded;
     public static Action LeftClickStarted;
     public static Action LeftClickEnded;
@@ -27,6 +29,7 @@ public static class PublicEvents
     public static Action ReelStarted;
     public static Action<float> ReelHeld; // float duration
     public static Action<float> Reeleased; // get it
+    public static Action DisconnectTetherStarted;
 
     public static Action<ItemScriptable> AddToInventory;
     public static Action RemoveFromInventory;

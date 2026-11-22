@@ -16,6 +16,8 @@ public class WaterMovement : Movement
     private PlayerController pc;
 
     [SerializeField] private float baseWaterMovementSpeed = 1f;
+    [SerializeField] private float maxWaterMovementSpeed = 10f;
+    [SerializeField] private float maxWaterVerticalSpeed = 10f;
     [SerializeField] private float timeToMaxAcceleration = 5f;
     [SerializeField] private float maxAccelerationMultiplier = 3f;
     [SerializeField] private float ascentWaterMovementSpeed = .5f;
@@ -36,7 +38,9 @@ public class WaterMovement : Movement
     private IInteractable interactingWith;
     private float scalarValue = 3f;
     private float magicNumber = 2f;
+
     private bool holdingOtherYAffecter = false;
+
 
     /// <summary>
     /// Grabs initial references and sets initial variables
@@ -95,9 +99,15 @@ public class WaterMovement : Movement
     /// </summary>
     private void FixedUpdate()
     {
+        if (pc.ActivelyGettingReeled) return;
+
+        // gravity
+        rb.AddForce(Vector3.down * waterGravity, ForceMode.Acceleration);
+
         // If the player gave input, calculate the new value
         if (moving || ascending || descending)
         {
+            /*
             movementValue.y += yAdjustment;
 
             // Checks to stop them from launching up/down when trying to go the other wat
@@ -112,19 +122,20 @@ public class WaterMovement : Movement
             }
 
             movementValue.y = Mathf.Clamp(movementValue.y, -(maxAccelerationMultiplier*descentWaterMovementSpeed*.5f), maxAccelerationMultiplier*ascentWaterMovementSpeed*.5f);
-            movementValue.y *= accelleration;
-            rb.linearVelocity = movementValue;
+            movementValue.y *= accelleration;*/
+
+            Vector3 horizontalMovement = Vector3.ClampMagnitude(movementValue.WithY(0),maxWaterMovementSpeed);
+            float y = Mathf.Clamp(rb.linearVelocity.y, -maxWaterVerticalSpeed, maxWaterVerticalSpeed);
+
+            rb.linearVelocity = horizontalMovement.WithY(y);
         }
         // Otherwise, apply gravity
         else
         {
-            rb.linearVelocity = new Vector3(0f, waterGravity, 0f);
+            //rb.linearVelocity = new Vector3(0f, waterGravity, 0f);
         }
         
     }
-
-
-
 
     /// <summary>
     /// Override from movement base class
@@ -144,6 +155,13 @@ public class WaterMovement : Movement
         ascending = true;
 
         yAdjustment = ascentWaterMovementSpeed * accelleration * scalarValue * Time.fixedDeltaTime;
+        
+    }
+
+    protected override void WhileSpaceHeld()
+    {
+        Debug.Log("up held");
+        rb.AddForce(Vector3.up * ascentWaterMovementSpeed, ForceMode.Acceleration);
     }
 
     /// <summary>
@@ -159,9 +177,10 @@ public class WaterMovement : Movement
             holdingOtherYAffecter = false;
             OnControlStarted();
         }
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        //rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
     }
 
+    #region sprint
     /// <summary>
     /// override from movement base class
     /// </summary>
@@ -212,29 +231,8 @@ public class WaterMovement : Movement
         }
     }
 
-    /// <summary>
-    /// Fakes adding water gravity
-    /// </summary>
-    /// <returns></returns>
+    #endregion
 
-    protected IEnumerator WaterGravity()
-    {
-        Vector3 newValue;
-        while(true)
-        {
-            if (!pc.ActivelyGettingReeled)
-            {
-                newValue = rb.linearVelocity;
-                if (!moving && !ascending && !descending)
-                {
-                    newValue.y = waterGravity;
-                }
-                rb.linearVelocity = newValue;
-            }
-
-            yield return null;
-        }
-    }
 
     /// <summary>
     /// Override from movement class
@@ -276,6 +274,13 @@ public class WaterMovement : Movement
 
         yAdjustment = -1 * descentWaterMovementSpeed * accelleration * scalarValue * Time.fixedDeltaTime;
         //rb.linearVelocity = new Vector3(rb.linearVelocity.x, ascendForce, rb.linearVelocity.z);
+        //targetVerticalVelocity = descentWaterMovementSpeed;
+        //rb.AddForce(Vector3.down * descentWaterMovementSpeed, ForceMode.Force);
+    }
+
+    protected override void WhileControlHeld()
+    {
+        rb.AddForce(Vector3.down * descentWaterMovementSpeed, ForceMode.Force);
     }
 
     protected override void OnControlEnded()
@@ -290,4 +295,6 @@ public class WaterMovement : Movement
         }
         //rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
     }
+
+    
 }
