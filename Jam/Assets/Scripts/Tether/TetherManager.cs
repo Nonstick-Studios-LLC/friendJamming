@@ -52,7 +52,7 @@ public class TetherManager : Singleton<TetherManager>
 
     void Start()
     {
-        PublicEvents.DisconnectTetherStarted += DisconnectTetherStarted;
+        PublicEvents.DisconnectTetherStarted += () => DisconnectTetherStarted() ;
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.useWorldSpace = true;
 
@@ -71,6 +71,9 @@ public class TetherManager : Singleton<TetherManager>
     [Button]
     public void ResetTether()
     {
+        if (reelCoroutine != null) StopCoroutine(reelCoroutine);
+
+        ziiiiipSound.Stop();
         playerConnected = true;
         ropeNodes.Clear();
         if (anchorPoint != null && followPoint != null)
@@ -199,6 +202,8 @@ public class TetherManager : Singleton<TetherManager>
 
     private IEnumerator ReeeelItInBuddy2()
     {
+        ziiiiipSound.Play();
+
         int currentNodeIdx = endIdx-1;
         float timeAtThisNode = 0;
 
@@ -245,6 +250,7 @@ public class TetherManager : Singleton<TetherManager>
         Debug.Log("reel done go home");
 
         followRB.detectCollisions = true;
+        ziiiiipSound.Stop();
         reelCoroutine = null;
     }
 
@@ -252,20 +258,24 @@ public class TetherManager : Singleton<TetherManager>
 
     #region disconnect moments
 
-    public void DisconnectTetherStarted()
+    public void DisconnectTetherStarted(bool playSound = true)
     {
+        if(playSound && playerConnected) AudioSource.PlayClipAtPoint(unhookTetherSound, soundPlayPoint.position, 0.85f);
+
         playerConnected = false;
 
-        if (reelCoroutine != null) return;
+        if (reelCoroutine != null) StopCoroutine(reelCoroutine);
 
-        reelCoroutine = StartCoroutine(ReelItInNoPlayer());
+        reelCoroutine = StartCoroutine(ReelItInNoPlayer(playSound));
     }
 
-    IEnumerator ReelItInNoPlayer()
+    IEnumerator ReelItInNoPlayer(bool playSound)
     {
         Debug.Log("Playing reel in animation (no player)");
 
         playerConnected = false;
+        
+        if (playSound) ziiiiipSound.Play();
 
         while (ropeNodes.Count > 2)
         {
@@ -289,6 +299,7 @@ public class TetherManager : Singleton<TetherManager>
             yield return null;
         }
 
+        ziiiiipSound.Stop();
         reelCoroutine = null;
     }
 
@@ -296,6 +307,12 @@ public class TetherManager : Singleton<TetherManager>
 
     void FixedUpdate()
     {
+        if(playerConnected && ropeNodes.Count < 2)
+        {
+            ResetTether();
+            return;
+        }
+
         if(playerConnected)
             ropeNodes[endIdx] = followPoint.position;
 
