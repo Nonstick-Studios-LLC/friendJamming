@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
         {
             var hitObject = hit.collider.transform;
             var hitInteractable = hit.collider.transform.GetComponent<IInteractable>();
-            Debug.Log("Hit " + hitObject.name);
+            //Debug.Log("Hit " + hitObject.name);
 
             if (hitInteractable != null)
             {
@@ -357,10 +357,12 @@ public class PlayerController : MonoBehaviour
         if(newType == MovementType.Land)
         {
             GetComponent<BoxCollider>().size = landCollider;
+            TetherManager.Instance.DisconnectTetherStarted();
         }
         else
         {
             GetComponent<BoxCollider>().size = waterCollider;
+            TetherManager.Instance.ResetTether();
         }
 
         Debug.Log("Current movement set to " + newType.ToString());

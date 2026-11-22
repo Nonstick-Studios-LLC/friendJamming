@@ -3156,6 +3156,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5067677950214171255, guid: 30af77f8f0749934fbbb9556ff82a89b, type: 3}
+      propertyPath: updownship.m_Name
+      value: Updownship
+      objectReference: {fileID: 0}
     - target: {fileID: 8836057193476298755, guid: 30af77f8f0749934fbbb9556ff82a89b, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -43649,7 +43653,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5504982264192665151, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 252.55923
+      value: 251.46
       objectReference: {fileID: 0}
     - target: {fileID: 5504982264192665151, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -43657,7 +43661,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5504982264192665151, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -56.78297
+      value: -65.1
       objectReference: {fileID: 0}
     - target: {fileID: 5504982264192665151, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
       propertyPath: m_LocalRotation.w

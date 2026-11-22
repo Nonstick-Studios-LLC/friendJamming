@@ -35,6 +35,7 @@ public class TetherManager : Singleton<TetherManager>
     [Header("Reels")] // like instagram
     [SerializeField] float ReelSpeed = 5;
 
+    [Foldout("Audio")] public Transform soundPlayPoint;
     [Foldout("Audio")] public AudioClip unhookTetherSound;
 
     private LineRenderer lineRenderer;
@@ -43,13 +44,14 @@ public class TetherManager : Singleton<TetherManager>
 
     private bool playerLandMode => playerController.currentMovement == PlayerController.MovementType.Land; 
     private bool reelingIn = false; 
-    private bool calculateTether => !playerLandMode && !reelingIn;
+    [ReadOnly] public bool playerConnected = false; 
+    private bool calculateTether => !playerLandMode && !reelingIn && playerConnected;
 
     private Coroutine reelCoroutine;
 
     void Start()
     {
-
+        PublicEvents.DisconnectTetherStarted += DisconnectTetherStarted;
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.useWorldSpace = true;
 
@@ -68,6 +70,7 @@ public class TetherManager : Singleton<TetherManager>
     [Button]
     public void ResetTether()
     {
+        playerConnected = true;
         ropeNodes.Clear();
         if (anchorPoint != null && followPoint != null)
         {
@@ -78,7 +81,7 @@ public class TetherManager : Singleton<TetherManager>
 
     void LateUpdate()
     {
-        if (!calculateTether)
+        if (!calculateTether || reelingIn || !playerConnected)
         {
             UpdateLineRenderer();
             return;
@@ -188,7 +191,7 @@ public class TetherManager : Singleton<TetherManager>
         reelingIn = true;
         playerController.ActivelyGettingReeled = true;
 
-        if (reelCoroutine != null) StopCoroutine(reelCoroutine);
+        if (reelCoroutine != null) return;
 
         reelCoroutine = StartCoroutine(ReeeelItInBuddy2());
     }
@@ -241,13 +244,59 @@ public class TetherManager : Singleton<TetherManager>
         Debug.Log("reel done go home");
 
         followRB.detectCollisions = true;
+        reelCoroutine = null;
+    }
+
+    #endregion
+
+    #region disconnect moments
+
+    public void DisconnectTetherStarted()
+    {
+        playerConnected = false;
+
+        if (reelCoroutine != null) return;
+
+        reelCoroutine = StartCoroutine(ReelItInNoPlayer());
+    }
+
+    IEnumerator ReelItInNoPlayer()
+    {
+        Debug.Log("Playing reel in animation (no player)");
+
+        playerConnected = false;
+
+        while (ropeNodes.Count > 2)
+        {
+            ropeNodes[0] = anchorPoint.position;
+
+            // were close enough! yay!
+            if (Vector3.Distance(ropeNodes[endIdx-1], ropeNodes[endIdx]) < 0.1f)
+            {
+                ropeNodes.RemoveAt(endIdx);
+            }
+
+            //followRB.linearVelocity = direction * ReelSpeed;
+            ropeNodes[endIdx] = Vector3.MoveTowards(ropeNodes[endIdx], ropeNodes[endIdx-1], Time.fixedDeltaTime * ReelSpeed);
+
+            yield return null;
+        }
+
+        while (Vector3.Distance(ropeNodes[0], ropeNodes[1]) > 0.1f)
+        {
+            ropeNodes[1] = Vector3.MoveTowards(ropeNodes[1], ropeNodes[0], Time.fixedDeltaTime * ReelSpeed);
+            yield return null;
+        }
+
+        reelCoroutine = null;
     }
 
     #endregion
 
     void FixedUpdate()
     {
-        ropeNodes[endIdx] = followPoint.position;
+        if(playerConnected)
+            ropeNodes[endIdx] = followPoint.position;
 
         if (!calculateTether) return;
 
@@ -263,18 +312,20 @@ public class TetherManager : Singleton<TetherManager>
 
             if (lastSegmentDist > Mathf.Epsilon)
             {
-                Vector3 outwardDir = toPlayer / lastSegmentDist;
-
-                Vector3 springForce = -outwardDir * (stretch * springStiffness);
-
-                float radialVelocity = Vector3.Dot(followRB.linearVelocity, outwardDir);
-                Vector3 dampingForce = -outwardDir * (radialVelocity * springDamping);
+                
 
                 // this makes the tether feel good but breaks literally everything
                 //followRB.AddForce(springForce + dampingForce, ForceMode.Force);
 
-                if (maxStretchLimit > maxTetherLength && currentLength > maxStretchLimit)
+                if ((maxStretchLimit > maxTetherLength && currentLength > maxStretchLimit) || ropeNodes.Count > maxWrapPoints)
                 {
+                    Vector3 outwardDir = toPlayer / lastSegmentDist;
+
+                    Vector3 springForce = -outwardDir * (stretch * springStiffness);
+
+                    float radialVelocity = Vector3.Dot(followRB.linearVelocity, outwardDir);
+                    Vector3 dampingForce = -outwardDir * (radialVelocity * springDamping);
+
                     if (radialVelocity > 0f)
                         followRB.linearVelocity -= outwardDir * radialVelocity;
 
@@ -283,41 +334,6 @@ public class TetherManager : Singleton<TetherManager>
                 }
             }
         }
-
-        //if (ropeNodes.Count < 2)
-        //   return;
-
-        // Update the player's current position in the node list for accurate length math
-
-        /*
-        ropeNodes[endIdx] = followPoint.position;
-
-        float currentLength = GetCurrentLength();
-        if (currentLength >= maxTetherLength)
-        {
-            Vector3 lastPivot = ropeNodes[endIdx - 1];
-            Vector3 toPlayer = followPoint.position - lastPivot;
-            float lastSegmentDist = toPlayer.magnitude;
-
-            if (lastSegmentDist > Mathf.Epsilon)
-            {
-                Vector3 outwardDir = toPlayer / lastSegmentDist;
-
-                // strip out any velocity moving away from the pivot (preserves swinging/tangential movement)
-                float outwardSpeed = Vector3.Dot(followPoint.linearVelocity, outwardDir);
-                if (outwardSpeed > 0f)
-                {
-                    followPoint.linearVelocity -= outwardDir * outwardSpeed;
-                }
-
-                // clamp position so the player can't slowly drift past maxTetherLength
-                float overshoot = currentLength - maxTetherLength;
-                if (overshoot > 0f)
-                {
-                    followPoint.MovePosition(followPoint.position - outwardDir * overshoot);
-                }
-            }
-        }*/
     }
 
     private void UpdateLineRenderer()
@@ -330,6 +346,7 @@ public class TetherManager : Singleton<TetherManager>
 
         lineRenderer.positionCount = ropeNodes.Count;
         lineRenderer.SetPositions(ropeNodes.ToArray());
+        soundPlayPoint.position = ropeNodes[endIdx];
     }
 
     void OnDrawGizmos()

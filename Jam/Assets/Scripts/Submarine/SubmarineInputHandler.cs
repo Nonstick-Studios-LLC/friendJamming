@@ -79,7 +79,7 @@ public class SubmarineInputHandler : MonoBehaviour
 
     bool controlsDisabled = false;
 
-    [SerializeField, ReadOnly] private ForwardDirection currentForwardControls = ForwardDirection.Forward;
+    [SerializeField, ReadOnly] private ForwardDirection currentForwardControls = ForwardDirection.None;
 
     private float _turnAccelerationScalar => Mathf.InverseLerp(0, MaxRotationAccelerationIncrements, (float)Mathf.Abs(currentTargetTurnAcceleration));
     private float _turnAccelerationPercent => Mathf.InverseLerp(-MaxRotationAccelerationIncrements, MaxRotationAccelerationIncrements, currentTargetTurnAcceleration);
