@@ -13,12 +13,9 @@ using UnityEngine;
 public class LandMovement : Movement
 {
     private PlayerController pc;
-    [SerializeField] private float minCameraYClamp = -60;
-    [SerializeField] private float maxCameraYClamp = 60f;
 
     [Header("Movement Variables")]
     [SerializeField] private float baseLandMovementSpeed = 1f;
-    [SerializeField] private float tapJumpHeightPercent = .5f;
     [SerializeField] private float fullJumpHeight;
     [SerializeField] private float timeToMaxAcceleration = 5f;
     [SerializeField] private float maxAccelerationMultiplier = 3f;
@@ -28,17 +25,14 @@ public class LandMovement : Movement
 
     private IInteractable lookingAt;
     private IInteractable interactingWith;
-    private bool interacting;
 
     [Header("Camera Interaction")]
     [SerializeField] private float sightDistance = 2f;
 
     bool jumpThisFrame;
 
-    Vector2 cameraRotation;
     Rigidbody rb;
 
-    private Vector3 LookingDirection(Vector2 moveVector) => (pc.CameraRotationPoint.forward * moveVector.y) + (pc.CameraRotationPoint.right * moveVector.x);
 
     /// <summary>
     /// runs when loaded into a scene
@@ -56,7 +50,6 @@ public class LandMovement : Movement
     {
         pc = GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
-        cameraRotation = new Vector2(pc.CameraRotationPoint.eulerAngles.y, pc.CameraRotationPoint.eulerAngles.x);
     }
 
     /// <summary>
@@ -68,7 +61,7 @@ public class LandMovement : Movement
     /// <param name="cameraVector">Vector2 containing the mouse's delta </param>
     protected override void OnMouseMove(Vector2 cameraVector)
     {
-        if(!pc.CanMove)
+        /*if(!pc.CanMove)
         {
             return;
         }
@@ -90,7 +83,7 @@ public class LandMovement : Movement
         else
         {
             pc.SetCursorType(PlayerController.InteractStates.NonInteractable);
-        }
+        }*/
     }
 
     /// <summary>
@@ -242,7 +235,7 @@ public class LandMovement : Movement
     /// Checks if the player is looking at an object that can be interacted with
     /// </summary>
     /// <returns>Returns true if they are</returns>
-    protected override bool LookingAtObject()
+    public override bool LookingAtObject()
     {
         RaycastHit hit;
         Vector3 direction = pc.CameraRotationPoint.forward;
@@ -320,4 +313,13 @@ public class LandMovement : Movement
         // end any hold interactions
     }
 
+    protected override void OnControlStarted()
+    {
+        
+    }
+
+    protected override void OnControlEnded()
+    {
+        
+    }
 }

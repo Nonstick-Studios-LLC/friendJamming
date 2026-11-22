@@ -24,6 +24,8 @@ public abstract class Movement: MonoBehaviour
         PublicEvents.SpaceEnded += OnSpaceFinished;
         PublicEvents.ShiftStarted += OnShiftStarted;
         PublicEvents.ShiftEnded += OnShiftFinished;
+        PublicEvents.ControlStarted += OnControlStarted;
+        PublicEvents.ControlEnded += OnControlEnded;
 
         PublicEvents.LeftClickStarted += OnLeftClickStarted;
         PublicEvents.LeftClickEnded += OnLeftClickFinished;
@@ -43,6 +45,8 @@ public abstract class Movement: MonoBehaviour
         PublicEvents.SpaceEnded -= OnSpaceFinished;
         PublicEvents.ShiftStarted -= OnShiftStarted;
         PublicEvents.ShiftEnded -= OnShiftFinished;
+        PublicEvents.ControlStarted -= OnControlStarted;
+        PublicEvents.ControlEnded -= OnControlEnded;
 
         PublicEvents.LeftClickStarted -= OnLeftClickStarted;
         PublicEvents.LeftClickEnded -= OnLeftClickFinished;
@@ -59,10 +63,13 @@ public abstract class Movement: MonoBehaviour
     protected abstract void OnShiftStarted();
     protected abstract void OnShiftFinished();
 
+    protected abstract void OnControlStarted();
+    protected abstract void OnControlEnded();
+
     protected abstract void OnLeftClickStarted();
     protected abstract void OnLeftClickFinished();
 
-    protected abstract bool LookingAtObject();
+    public abstract bool LookingAtObject();
 
 
 

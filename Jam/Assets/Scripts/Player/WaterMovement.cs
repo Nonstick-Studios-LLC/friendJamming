@@ -15,8 +15,6 @@ using UnityEngine.InputSystem;
 public class WaterMovement : Movement
 {
     private PlayerController pc;
-    [SerializeField] private float minCameraYClamp = -60;
-    [SerializeField] private float maxCameraYClamp = 60f;
 
     [SerializeField] private float baseWaterMovementSpeed = 1f;
     [SerializeField] private float timeToMaxAcceleration = 5f;
@@ -26,19 +24,21 @@ public class WaterMovement : Movement
     [SerializeField] private float waterGravity = -4f;
     private float accelleration = 1f;
     private Coroutine shiftHold;
+    private float yAdjustment;
+    private Vector3 movementValue;
 
     private bool ascending;
-    private bool descending;
+    [SerializeField] private bool descending;
     private bool moving;
 
-    Vector2 cameraRotation;
     Rigidbody rb;
 
     private IInteractable lookingAt;
     private IInteractable interactingWith;
-    private bool interacting;
-    private Coroutine waterGravityCour;
     [SerializeField] private float sightDistance = 2f;
+    private float scalarValue = 3f;
+    private float magicNumber = 2f;
+    private bool holdingOtherYAffecter = false;
 
     /// <summary>
     /// Grabs initial references and sets initial variables
@@ -47,7 +47,6 @@ public class WaterMovement : Movement
     {
         pc = GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
-        cameraRotation = new Vector2(pc.CameraRotationPoint.eulerAngles.y, pc.CameraRotationPoint.eulerAngles.x);
     }
 
 
@@ -61,7 +60,7 @@ public class WaterMovement : Movement
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y * .5f, rb.linearVelocity.z);
-        waterGravityCour = StartCoroutine(WaterGravity());
+        //waterGravityCour = StartCoroutine(WaterGravity());
 
     }
 
@@ -73,7 +72,7 @@ public class WaterMovement : Movement
     {
         base.OnDisable();
         rb.useGravity = true;
-        StopCoroutine(waterGravityCour);
+        //StopCoroutine(waterGravityCour);
     }
 
     /// <summary>
@@ -84,7 +83,7 @@ public class WaterMovement : Movement
     /// <param name="cameraVector">Vector2 containing the mouse's delta </param>
     protected override void OnMouseMove(Vector2 cameraVector)
     {
-        if (!pc.CanMove)
+        /*if (!pc.CanMove)
         {
             return;
         }
@@ -104,7 +103,7 @@ public class WaterMovement : Movement
         else
         {
             pc.SetCursorType(PlayerController.InteractStates.NonInteractable);
-        }
+        }*/
 
     }
 
@@ -122,20 +121,37 @@ public class WaterMovement : Movement
         moving = true;
         Vector3 newValue = ((pc.CameraRotationPoint.forward * moveVector.y) + (pc.CameraRotationPoint.right * moveVector.x)) * baseWaterMovementSpeed * 100f * accelleration * Time.fixedDeltaTime;
 
-        if (ascending || descending)
-        {
-            newValue.y = rb.linearVelocity.y;
-        }
-        else
-        {
-            newValue.y = waterGravity;
-        }
+        movementValue = newValue;
 
-        rb.linearVelocity = newValue;
+        //rb.linearVelocity = newValue;
 
     }
 
+    private void FixedUpdate()
+    {
+        if (moving || ascending || descending)
+        {
+            movementValue.y += yAdjustment;
 
+            while(ascending && movementValue.y < -.5f*magicNumber)
+            {
+                movementValue.y += .2f * yAdjustment;
+            }
+            while(descending && movementValue.y > magicNumber)
+            {
+                movementValue.y += .2f* yAdjustment;
+            }
+
+            movementValue.y = Mathf.Clamp(movementValue.y, -(maxAccelerationMultiplier*descentWaterMovementSpeed*.5f), maxAccelerationMultiplier*ascentWaterMovementSpeed*.5f);
+            movementValue.y*= accelleration;
+            rb.linearVelocity = movementValue;
+        }
+        else
+        {
+            rb.linearVelocity = new Vector3(0f, waterGravity, 0f);
+        }
+        
+    }
 
 
     /// <summary>
@@ -191,10 +207,14 @@ public class WaterMovement : Movement
         {
             return;
         }
+        if (descending)
+        {
+            holdingOtherYAffecter = true;
+            return;
+        }
         ascending = true;
 
-        float ascendForce = ascentWaterMovementSpeed * accelleration * 100f * Time.fixedDeltaTime;
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, ascendForce, rb.linearVelocity.z);
+        yAdjustment = ascentWaterMovementSpeed * accelleration * scalarValue * Time.fixedDeltaTime;
     }
 
     /// <summary>
@@ -203,6 +223,13 @@ public class WaterMovement : Movement
     protected override void OnSpaceFinished()
     {
         ascending = false;
+
+
+        if (holdingOtherYAffecter)
+        {
+            holdingOtherYAffecter = false;
+            OnControlStarted();
+        }
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
     }
 
@@ -240,7 +267,7 @@ public class WaterMovement : Movement
     /// Checks if the player is looking at an object that can be interacted with
     /// </summary>
     /// <returns>Returns true if they are</returns>
-    protected override bool LookingAtObject()
+    public override bool LookingAtObject()
     {
         RaycastHit hit;
         Vector3 direction = pc.CameraRotationPoint.forward;
@@ -296,7 +323,6 @@ public class WaterMovement : Movement
 
             timer += Time.fixedDeltaTime;
 
-            Debug.Log(accelleration);
             yield return null;
         }
     }
@@ -344,5 +370,35 @@ public class WaterMovement : Movement
     protected override void OnLeftClickFinished()
     {
         // end held action
+    }
+
+    protected override void OnControlStarted()
+    {
+        if (!pc.CanMove)
+        {
+            return;
+        }
+        if (ascending)
+        {
+            holdingOtherYAffecter = true;
+            return;
+        }
+
+        descending = true;
+
+        yAdjustment = -1 * descentWaterMovementSpeed * accelleration * scalarValue * Time.fixedDeltaTime;
+        //rb.linearVelocity = new Vector3(rb.linearVelocity.x, ascendForce, rb.linearVelocity.z);
+    }
+
+    protected override void OnControlEnded()
+    {
+        descending = false;
+
+        if (holdingOtherYAffecter)
+        {
+            holdingOtherYAffecter = false;
+            OnSpaceStarted();
+        }
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
     }
 }

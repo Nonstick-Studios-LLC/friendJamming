@@ -1902,8 +1902,8 @@
     "m_ObjectId": "9605e208dd92446d84d17c8b979d8d6f",
     "m_Title": "World To Screen Space",
     "m_Position": {
-        "x": -1333.0001220703125,
-        "y": -448.0000305175781
+        "x": -1333.0,
+        "y": -448.0
     }
 }
 

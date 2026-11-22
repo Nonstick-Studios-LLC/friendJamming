@@ -1,6 +1,7 @@
 using UnityEngine;
+[RequireComponent (typeof(Rigidbody), typeof(Collider))]
 
-public class Treasure : MonoBehaviour, IInteractable
+public class Treasure : Pickup, IInteractable
 {
     private bool bought = true;
     private ItemScriptable itemData;
@@ -11,36 +12,15 @@ public class Treasure : MonoBehaviour, IInteractable
         bought = status;
     }
 
-
-    public void EnterHover()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public void EnterInteract(PlayerController pc)
     {
-        // get picked up
+        Debug.Log("Hit");
+        if (isHeld) return;
+
+        PickupItem(pc);
+
+        Debug.Log($"{gameObject.name} is starting its interaction");
     }
 
-    public void ExitHover()
-    {
-        throw new System.NotImplementedException();
-    }
 
-    public void ExitInteract()
-    {
-        // get dropped?
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
