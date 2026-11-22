@@ -16,7 +16,7 @@ public enum FishEffect
 {
     MovePHISH,
     DrainPHISH,
-    DisablePHISH,
+    StopPHISH,
 }
 
 public class EnemyBehavior : MonoBehaviour
@@ -40,6 +40,8 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField, Tooltip("How far does a collision send the player or PHISH back?")] float knockback;
 
     [SerializeField, ShowIf("fishType", FishType.ShipOriented)] FishEffect effectOnShip;
+    [SerializeField, ShowIf("effectOnShip", FishEffect.StopPHISH), Tooltip("How long does this enemy disable the PHISH controls?")]
+    int stunTime;
 
     private void Start()
     {
@@ -135,10 +137,11 @@ public class EnemyBehavior : MonoBehaviour
 
         if(fishType == FishType.ShipOriented && collision.gameObject.GetComponent<SubmarineInputHandler>())
         {
-            if(effectOnShip == FishEffect.DisablePHISH)
+            if(effectOnShip == FishEffect.StopPHISH)
             {
-                //TODO: disable controllers
-                //i'll do this after making phish controllers 
+                //so that the phish doesn't get stunlocked
+                collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * knockback, ForceMode.Impulse);
+                collision.gameObject.GetComponent<SubmarineInputHandler>().StartStunCycle(stunTime);
             }
             else if(effectOnShip == FishEffect.DrainPHISH)
             {
