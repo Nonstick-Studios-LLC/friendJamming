@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Green
   m_EditorClassIdentifier: Assembly-CSharp::Items
   itemName: Normal Triangle
+  canBeSold: 1
   sellPrice: 5
   purchasePrice: 8
   isMcGuffin: 0

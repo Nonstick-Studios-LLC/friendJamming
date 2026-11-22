@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Diamond
   m_EditorClassIdentifier: Assembly-CSharp::ItemScriptable
   itemName: Diamond
+  canBeSold: 1
   sellPrice: 50
   purchasePrice: 50
   isMcGuffin: 0

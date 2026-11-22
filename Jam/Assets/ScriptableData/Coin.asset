@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Coin
   m_EditorClassIdentifier: Assembly-CSharp::ItemScriptable
   itemName: Grimalkin Coin
+  canBeSold: 1
   sellPrice: 25
   purchasePrice: 25
   isMcGuffin: 0

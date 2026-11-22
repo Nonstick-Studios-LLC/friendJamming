@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Purple
   m_EditorClassIdentifier: Assembly-CSharp::Items
   itemName: Fish Ring
+  canBeSold: 1
   sellPrice: 42
   purchasePrice: 42
   isMcGuffin: 0

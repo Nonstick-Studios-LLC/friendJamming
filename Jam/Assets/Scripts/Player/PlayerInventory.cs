@@ -70,7 +70,7 @@ public class PlayerInventory : MonoBehaviour
     {
         if (personalTreasure.Count > 0)
         {
-            if (!personalTreasure[itemSellIndex].GetMcGuffin())
+            if (!personalTreasure[itemSellIndex].GetMcGuffin() && personalTreasure[itemSellIndex].GetSellStatus())
             {
                 PublicEvents.RemoveFromInventory?.Invoke();
                 localScrapReference += personalTreasure[itemSellIndex].GetSellPrice();
@@ -107,6 +107,7 @@ public class PlayerInventory : MonoBehaviour
         if (sellMenu.activeInHierarchy)
         {
             Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
             pc.CanMove = true;
             sellMenu.SetActive(false);
             itemSellIndex = 0;
@@ -115,9 +116,10 @@ public class PlayerInventory : MonoBehaviour
         else
         {
             Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
             pc.CanMove = false;
             sellMenu.SetActive(true);
-            if (personalTreasure.Count > 0)
+            if (personalTreasure.Count > 0 && personalTreasure[itemSellIndex].GetSellStatus() && !personalTreasure[itemSellIndex].GetMcGuffin())
             {
                 sellMenuText.text = $"Sell {personalTreasure[itemSellIndex].GetName()} for {personalTreasure[itemSellIndex].GetSellPrice().ToString()} Scrap?";
                 sellButton.enabled = true;
@@ -139,6 +141,7 @@ public class PlayerInventory : MonoBehaviour
         if (buyMenu.activeInHierarchy)
         {
             Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
             pc.CanMove = true;
             buyMenu.SetActive(false);
             buyButton.enabled = false;
@@ -146,6 +149,7 @@ public class PlayerInventory : MonoBehaviour
         else
         {
             Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
             pc.CanMove = false;
             heldData = data;
             buyMenu.SetActive(true);

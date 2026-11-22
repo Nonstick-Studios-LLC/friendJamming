@@ -180,6 +180,7 @@ public class PlayerController : MonoBehaviour
 
     #region interac
 
+
     /// <summary>
     /// Checks if the player is looking at an object that can be interacted with
     /// </summary>
@@ -189,8 +190,9 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         Vector3 direction = CameraRotationPoint.forward;
 
-        if (Physics.Raycast(CameraRotationPoint.transform.position, direction, out hit, sightDistance))
+        if (Physics.Raycast(CameraRotationPoint.transform.position, direction, out hit, sightDistance, 7))
         {
+            Debug.Log("Hit " + gameObject.name);
             if (hit.transform.GetComponent<IInteractable>() != null)
             {
                 if(hit.transform.GetComponent<Shopkeeper>()!=null)
