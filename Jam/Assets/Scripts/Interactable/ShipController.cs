@@ -24,6 +24,8 @@ public class ShipController : MonoBehaviour, IInteractable
 
     #region INTERACTABLE
 
+    Coroutine whileInteractingCoroutine;
+
     public void EnterInteract(PlayerController pc)
     {
         Debug.Log("interact ship control");
@@ -36,10 +38,10 @@ public class ShipController : MonoBehaviour, IInteractable
         {
             playerController = pc;
         }
-        
+
         pc.CanMoveDirections = false;
         pc.transform.position = teleportPlayerSpot.position;
-
+        whileInteractingCoroutine = StartCoroutine(WhileDrivingUpdate());
     }
 
     public void ExitInteract()
@@ -50,6 +52,17 @@ public class ShipController : MonoBehaviour, IInteractable
         PublicEvents.UpdownShipStarted -= Updownship_start;
 
         playerController.CanMoveDirections = true;
+        StopCoroutine(whileInteractingCoroutine);
+    }
+
+    IEnumerator WhileDrivingUpdate()
+    {
+        // stop coroutine is called later dw
+        while (true)
+        {
+            playerController.transform.position = teleportPlayerSpot.position;
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     public void EnterHover()

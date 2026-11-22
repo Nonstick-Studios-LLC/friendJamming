@@ -91,8 +91,23 @@ public class SubmarineInputHandler : MonoBehaviour
         rb.angularDamping = angularDamping;
         rb.linearDamping = velocityDamping;
 
+        #region visual inits
         float visualAngle = Mathf.Lerp(wheelTurnRadius.x, wheelTurnRadius.y, _turnAccelerationPercent);
         wheel.transform.localEulerAngles = wheel.transform.localEulerAngles.WithY(visualAngle);
+
+        switch (currentForwardControls)
+        {
+            case ForwardDirection.Forward:
+                wheelForwardRotationParent.localRotation = Quaternion.AngleAxis(-40f, new Vector3(1, 0, 0));
+                break;
+            case ForwardDirection.Reverse:
+                wheelForwardRotationParent.localRotation = Quaternion.AngleAxis(20f, new Vector3(1, 0, 0));
+                break;
+            case ForwardDirection.None:
+                wheelForwardRotationParent.localRotation = Quaternion.AngleAxis(0, new Vector3(1, 0, 0));
+                break;
+        }
+        #endregion
     }
 
     public void StartStunCycle(int stunTime)
