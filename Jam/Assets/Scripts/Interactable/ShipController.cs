@@ -24,6 +24,8 @@ public class ShipController : MonoBehaviour, IInteractable
 
     #region INTERACTABLE
 
+    Coroutine whileInteractingCoroutine;
+
     public void EnterInteract(PlayerController pc)
     {
         Debug.Log("interact ship control");
@@ -36,16 +38,34 @@ public class ShipController : MonoBehaviour, IInteractable
         {
             playerController = pc;
         }
-        
+
         pc.CanMoveDirections = false;
         pc.transform.position = teleportPlayerSpot.position;
-
+        whileInteractingCoroutine = StartCoroutine(WhileDrivingUpdate());
     }
 
     public void ExitInteract()
     {
+
         PublicEvents.MoveDirection -= MoveControls_Held;
+        PublicEvents.MoveDirectionStarted -= Move_controls_staert;
+        PublicEvents.UpdownShipStarted -= Updownship_start;
+
+        submarineInputHandler.SetForwardMode(ForwardDirection.None);
+        submarineInputHandler.SetTargetTurnSpeed(0);
+
         playerController.CanMoveDirections = true;
+        StopCoroutine(whileInteractingCoroutine);
+    }
+
+    IEnumerator WhileDrivingUpdate()
+    {
+        // stop coroutine is called later dw
+        while (true)
+        {
+            playerController.transform.position = teleportPlayerSpot.position;
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     public void EnterHover()
@@ -105,54 +125,5 @@ public class ShipController : MonoBehaviour, IInteractable
 
         return;
 
-        switch (movementType)
-        {
-            case MovementType.ForwardBackward:
-
-                //Debug.Log("forwart");
-                if(dir.y >= 0.5)
-                {
-                    submarineInputHandler.SetForwardMode(ForwardDirection.Forward);
-                }
-                else if(dir.y <= -0.5)
-                {
-                    submarineInputHandler.SetForwardMode(ForwardDirection.Reverse);
-                }
-                else
-                {
-                    submarineInputHandler.SetForwardMode(ForwardDirection.None);
-                }
-
-                break;
-
-            case MovementType.UpDown:
-
-                if (dir.y >= 0.5)
-                {
-                    submarineInputHandler.SetTargetVerticalSpeed(submarineInputHandler.currentVerticalAcceleration +1);
-                }
-                else if (dir.y <= -0.5)
-                {
-                    submarineInputHandler.SetTargetVerticalSpeed(submarineInputHandler.currentVerticalAcceleration - 1);
-                }
-
-                break;
-
-            case MovementType.LeftRight:
-
-                if (dir.x >= 0.5)
-                {
-                    submarineInputHandler.SetTargetTurnSpeed(submarineInputHandler.currentTargetTurnAcceleration + 1);
-                }
-                else if (dir.x <= -0.5)
-                {
-                    submarineInputHandler.SetTargetTurnSpeed(submarineInputHandler.currentTargetTurnAcceleration - 1);
-                }
-
-                break;
-
-            default:
-                break;
-        }
     }
 }
