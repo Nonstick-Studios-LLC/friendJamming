@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
         NonInteractable, Interactable
     }
     [SerializeField] private MovementType startingMovement;
-    public MovementType currentMovement { get; private set; }
+    [ReadOnly] public MovementType currentMovement;
 
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float cameraSensitivity;
@@ -317,7 +317,7 @@ public class PlayerController : MonoBehaviour
     /// movment scripts and activates the toggled one.
     /// </summary>
     /// <param name="type"></param>
-    private void ToggleMovement(MovementType newType)
+    public void ToggleMovement(MovementType newType)
     {
         currentMovement = newType;
         
@@ -366,7 +366,7 @@ public class PlayerController : MonoBehaviour
     {
         if(other.gameObject.layer == transitionLayer)
         {
-            ToggleMovement();
+            //ToggleMovement();
         }
     }
 

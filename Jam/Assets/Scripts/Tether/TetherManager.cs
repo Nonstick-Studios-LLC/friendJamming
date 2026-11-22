@@ -41,7 +41,9 @@ public class TetherManager : Singleton<TetherManager>
 
     private bool playerLandMode => playerController.currentMovement == PlayerController.MovementType.Land; 
     private bool reelingIn = false; 
-    private bool calculateTether => !playerLandMode && !reelingIn; 
+    private bool calculateTether => !playerLandMode && !reelingIn;
+
+    private Coroutine reelCoroutine;
 
     void Start()
     {
@@ -184,7 +186,9 @@ public class TetherManager : Singleton<TetherManager>
         reelingIn = true;
         playerController.ActivelyGettingReeled = true;
 
-        StartCoroutine(ReeeelItInBuddy2());
+        if (reelCoroutine != null) StopCoroutine(reelCoroutine);
+
+        reelCoroutine = StartCoroutine(ReeeelItInBuddy2());
     }
 
     private IEnumerator ReeeelItInBuddy2()
@@ -219,8 +223,10 @@ public class TetherManager : Singleton<TetherManager>
             yield return new WaitForFixedUpdate();
         }
 
-        while(Vector3.Distance(ropeNodes[0], ropeNodes[endIdx]) < 5)
+        timeAtThisNode = 0;
+        while (Vector3.Distance(ropeNodes[0], ropeNodes[endIdx]) > 5 || timeAtThisNode < 1)
         {
+            timeAtThisNode += Time.fixedDeltaTime;
             followRB.position = Vector3.MoveTowards(followRB.position, ropeNodes[0], Time.fixedDeltaTime * ReelSpeed);
             yield return new WaitForFixedUpdate();
         }
@@ -232,7 +238,7 @@ public class TetherManager : Singleton<TetherManager>
         playerController.ActivelyGettingReeled = false;
         Debug.Log("reel done go home");
 
-        followRB.GetComponent<Collider>().enabled = true;
+        followRB.detectCollisions = true;
     }
 
     #endregion
