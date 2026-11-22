@@ -22,7 +22,6 @@ public class OxygenBubble : MonoBehaviour
     {
         if(collision.gameObject.TryGetComponent<PlayerController>(out PlayerController player))
         {
-
             Debug.Log($"bubble on chest: {parentChest.gameObject.name} has been popped");
             parentChest.BubbleHasBeenPopped = true;
 

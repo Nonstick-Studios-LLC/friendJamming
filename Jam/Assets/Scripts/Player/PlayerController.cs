@@ -300,12 +300,14 @@ public class PlayerController : MonoBehaviour
 
     void OnReeleased(float duration)
     {
-        reelInTimer.value = 0;
+        //reelInTimer.value = 0;
 
-        if (duration > secondsToReelIn)
+        //if (duration > secondsToReelIn)
+        if(reelInTimer.value >= 1)
         {
             TetherManager.Instance.ReeelItInBuddy();
         }
+        reelInTimer.value = 0;
     }
 
     #endregion

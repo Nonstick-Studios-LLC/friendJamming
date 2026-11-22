@@ -72,7 +72,13 @@ public class TetherManager : Singleton<TetherManager>
 
     void LateUpdate()
     {
-        if (!calculateTether || anchorPoint == null || followPoint == null || ropeNodes.Count < 2)
+        if (!calculateTether)
+        {
+            UpdateLineRenderer();
+            return;
+        }
+
+        if (anchorPoint == null || followPoint == null || ropeNodes.Count < 2)
             return;
 
         ropeNodes[0] = anchorPoint.transform.position;
@@ -172,6 +178,7 @@ public class TetherManager : Singleton<TetherManager>
     /// </summary>
     public void ReeelItInBuddy()
     {
+        Debug.Log("reeling it in!");
         calculateTether = false;
         playerController.ActivelyGettingReeled = true;
 
@@ -182,6 +189,10 @@ public class TetherManager : Singleton<TetherManager>
     {
         int currentNodeIdx = endIdx-1;
         float timeAtThisNode = 0;
+
+        //followRB.GetComponent<Collider>().enabled = false;
+        followRB.detectCollisions = false;
+
         while(ropeNodes.Count > 2)
         {
             timeAtThisNode += Time.deltaTime;
@@ -198,22 +209,28 @@ public class TetherManager : Singleton<TetherManager>
             }
 
             Vector3 direction = (ropeNodes[currentNodeIdx] - followPoint.position).normalized;
-            followRB.linearVelocity = direction * ReelSpeed;
+            //followRB.linearVelocity = direction * ReelSpeed;
+            followRB.position += direction;
 
             yield return new WaitForFixedUpdate();
         }
+        Vector3 direction2 = (anchorPoint.position - followPoint.position).normalized;
+        followRB.linearVelocity = direction2 * ReelSpeed;
 
         calculateTether = true;
         playerController.ActivelyGettingReeled = false;
+        Debug.Log("reel done go home");
+
+        followRB.GetComponent<Collider>().enabled = true;
     }
 
     #endregion
 
     void FixedUpdate()
     {
-        if (!calculateTether) return;
-
         ropeNodes[endIdx] = followPoint.position;
+
+        if (!calculateTether) return;
 
         float currentLength = GetCurrentLength();
         float stretch = currentLength - maxTetherLength;
@@ -282,8 +299,6 @@ public class TetherManager : Singleton<TetherManager>
             }
         }*/
     }
-
-    
 
     private void UpdateLineRenderer()
     {

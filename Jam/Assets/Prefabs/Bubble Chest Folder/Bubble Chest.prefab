@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 238270004592445474}
   - component: {fileID: 5397460623140637837}
   - component: {fileID: 709854797636529095}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Chest_Lid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 9203227177619268904}
   - component: {fileID: 1581428934789092633}
   - component: {fileID: 7384452066182353291}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Chest_Gold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,7 +193,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1920596737456158405}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Chest Lid Rotation Parent (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 5597364745845487245}
   - component: {fileID: 643827418958471454}
   - component: {fileID: 4572293841466812130}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bubble Chest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6186743785957623349}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EVIL rotation Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 8277723563648297227}
   - component: {fileID: 5328810523577088364}
   - component: {fileID: 1557376566682235460}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Chest_Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
