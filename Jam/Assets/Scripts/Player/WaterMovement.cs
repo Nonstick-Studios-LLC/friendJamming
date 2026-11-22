@@ -15,8 +15,6 @@ using UnityEngine.InputSystem;
 public class WaterMovement : Movement
 {
     private PlayerController pc;
-    [SerializeField] private float minCameraYClamp = -60;
-    [SerializeField] private float maxCameraYClamp = 60f;
 
     [SerializeField] private float baseWaterMovementSpeed = 1f;
     [SerializeField] private float timeToMaxAcceleration = 5f;
@@ -24,7 +22,6 @@ public class WaterMovement : Movement
     [SerializeField] private float ascentWaterMovementSpeed = .5f;
     [SerializeField] private float descentWaterMovementSpeed = 1.2f;
     [SerializeField] private float waterGravity = -4f;
-    [SerializeField] private float dampening = .5f;
     private float accelleration = 1f;
     private Coroutine shiftHold;
     private float yAdjustment;
@@ -34,13 +31,10 @@ public class WaterMovement : Movement
     [SerializeField] private bool descending;
     private bool moving;
 
-    Vector2 cameraRotation;
     Rigidbody rb;
 
     private IInteractable lookingAt;
     private IInteractable interactingWith;
-    private bool interacting;
-    private Coroutine waterGravityCour;
     [SerializeField] private float sightDistance = 2f;
     private float scalarValue = 3f;
     private float magicNumber = 2f;
@@ -53,7 +47,6 @@ public class WaterMovement : Movement
     {
         pc = GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
-        cameraRotation = new Vector2(pc.CameraRotationPoint.eulerAngles.y, pc.CameraRotationPoint.eulerAngles.x);
     }
 
 

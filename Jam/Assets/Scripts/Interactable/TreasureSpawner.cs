@@ -44,6 +44,7 @@ public class TreasureSpawner : MonoBehaviour
         spawnedItemCount++;
         Treasure t = spawnedItem.GetComponent<Treasure>();
         t.ItemData = potentialTreasures[spawnIndex];
+        t.TogglePhysics(true);
     }
 
     private IEnumerator Spawner()
