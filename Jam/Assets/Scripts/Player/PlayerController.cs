@@ -202,8 +202,8 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(CameraRotationPoint.transform.position, direction);
         if (Physics.Raycast(CameraRotationPoint.transform.position, direction, out hitInfo, sightDistance, lm))
         {
-            var hitObject = hit.collider.transform;
-            var hitInteractable = hit.collider.transform.GetComponent<IInteractable>();
+            var hitObject = hitInfo.collider.transform;
+            var hitInteractable = hitInfo.collider.transform.GetComponent<IInteractable>();
             //Debug.Log("Hit " + hitObject.name);
 
             if (hitInteractable != null)

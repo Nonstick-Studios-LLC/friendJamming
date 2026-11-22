@@ -118,4 +118,13 @@ public class OxygenManager : Singleton<OxygenManager>
             yield return new WaitForSeconds(1f);
         }
     }
+
+    private IEnumerator OxygenDepletionUntilEmpty(int playerID, float rate)
+    {
+        while (oxygenValues[playerID] > 0)
+        {
+            oxygenValues[playerID] = Mathf.Clamp(oxygenValues[playerID] - rate, 0, maxOxygen);
+            yield return new WaitForSeconds(1f);
+        }
+    }
 }
