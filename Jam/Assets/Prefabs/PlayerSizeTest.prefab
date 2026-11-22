@@ -351,7 +351,7 @@ MonoBehaviour:
   baseLandMovementSpeed: 2
   fullJumpHeight: 1.5
   timeToMaxAcceleration: 0.125
-  maxAccelerationMultiplier: 1.175
+  maxAccelerationMultiplier: 1.125
   landGravity: -10
   sightDistance: 10
 --- !u!114 &51936099071377827
