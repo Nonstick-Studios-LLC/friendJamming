@@ -14,6 +14,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     private InputAction control;
     private InputAction leftClick;
     [HideInInspector] public InputAction secrets;
+    private InputAction reel;
 
     private Coroutine movementUpdates;
 
@@ -30,7 +31,8 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         shift = input.currentActionMap.FindAction("Sprint");
         control = input.currentActionMap.FindAction("Control");
         leftClick = input.currentActionMap.FindAction("LeftClick");
-        secrets = input.currentActionMap.FindAction("Why");
+        secrets = input.currentActionMap.FindAction("Why"); // bro what are we doing
+        reel = input.currentActionMap.FindAction("Reel In");
     }
 
     private void OnEnable()
@@ -48,6 +50,8 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         control.canceled += Control_canceled;
         leftClick.started += LeftClick_started;
         leftClick.canceled += LeftClick_canceled;
+        reel.started += Reel_Started;
+        reel.canceled += Reeleased;
     }
 
 
@@ -61,6 +65,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         control.Disable();
         leftClick.Disable();
         secrets.Disable();
+        reel.Disable();
     }
 
     private void LeftClick_canceled(InputAction.CallbackContext obj)
@@ -136,6 +141,31 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
             movementUpdates = StartCoroutine(ContinuousMovement());
         }
         PublicEvents.MoveDirection?.Invoke(move.ReadValue<Vector2>());
+    }
+
+    private bool reelHeld;
+
+    private void Reel_Started(InputAction.CallbackContext obj)
+    {
+        reelHeld = true;
+        PublicEvents.ReelStarted?.Invoke();
+        StartCoroutine(ContinuousReelGaming());
+    }
+
+    private void Reeleased(InputAction.CallbackContext obj)
+    {
+        reelHeld = false;
+        PublicEvents.Reeleased?.Invoke((float)obj.duration);
+    }
+
+    private IEnumerator ContinuousReelGaming()
+    {
+        float timeStarted = Time.time;
+        while (reelHeld)
+        {
+            PublicEvents.ReelHeld?.Invoke(Time.time - timeStarted);
+            yield return null;
+        }
     }
 
     private IEnumerator ContinuousMovement()

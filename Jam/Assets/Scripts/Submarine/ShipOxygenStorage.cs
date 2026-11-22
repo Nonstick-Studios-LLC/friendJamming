@@ -4,6 +4,9 @@ using System.Collections;
 
 public class ShipOxygenStorage : MonoBehaviour
 {
+    //call me paparazzi or whatever caleb said
+    [HideInInspector] public int DrainModifier = 0;
+
     private float totalOxygen => Mathf.Clamp((batteries[0].CurrentOxygenPercentage + batteries[1].CurrentOxygenPercentage) / 2f, 0f, 100f);
     [SerializeField] private float drainRate = 1;
     [SerializeField] private int drainAmount = 1;
@@ -40,9 +43,9 @@ public class ShipOxygenStorage : MonoBehaviour
         for(; ; )
         {
             if (batteries[0].CurrentOxygenPercentage > 0)
-                batteries[0].CurrentOxygenPercentage -= drainAmount;
+                batteries[0].CurrentOxygenPercentage -= (drainAmount + DrainModifier);
             else if (batteries[1].CurrentOxygenPercentage > 0)
-                batteries[1].CurrentOxygenPercentage -= drainAmount;
+                batteries[1].CurrentOxygenPercentage -= (drainAmount + DrainModifier);
             else
             {
                 StartCoroutine(EmptyBatteryBuffer());

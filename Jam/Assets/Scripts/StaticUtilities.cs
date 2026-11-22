@@ -50,6 +50,39 @@ public static class StaticUtilities
 
     #endregion
 
+    #region phyiscs
+
+    public static bool SphereLinecast(
+        Vector3 start,
+        Vector3 end,
+        float radius,
+        out RaycastHit hitInfo,
+        int layerMask = Physics.DefaultRaycastLayers,
+        QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal)
+    {
+        Vector3 direction = end - start;
+        float distance = direction.magnitude;
+
+        // Avoid division by zero / NaN normalization if start and end are identical
+        if (distance <= Mathf.Epsilon)
+        {
+            hitInfo = default;
+            return false;
+        }
+
+        return Physics.SphereCast(
+            start,
+            radius,
+            direction / distance, // Normalized direction
+            out hitInfo,
+            distance,
+            layerMask,
+            queryTriggerInteraction
+        );
+    }
+
+    #endregion
+
     #region Components
 
     // Stole ts from the internet
@@ -227,6 +260,11 @@ public static class StaticUtilities
             total += v;
         }
         return total / vectors.Length;
+    }
+
+    public static float ManhattanDistance(Vector3 a, Vector3 b)
+    {
+        return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y) + Mathf.Abs(a.z - b.z);
     }
 
     /// <summary>
