@@ -294,6 +294,12 @@ public class PlayerController : MonoBehaviour
     // hmm this seems like a good place to put this region,. yes.
     void WhileReelHeld(float duration)
     {
+        if(currentMovement == MovementType.Land)
+        {
+            reelInTimer.value = 0;
+            return;
+        }
+
         reelInTimer.value = duration / secondsToReelIn;
     }
 

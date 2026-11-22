@@ -36,6 +36,7 @@ public class WaterMovement : Movement
     private IInteractable interactingWith;
     private float scalarValue = 3f;
     private float magicNumber = 2f;
+
     private bool holdingOtherYAffecter = false;
 
     /// <summary>
