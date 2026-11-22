@@ -334,7 +334,7 @@ public class PlayerController : MonoBehaviour
     // hmm this seems like a good place to put this region,. yes.
     void WhileReelHeld(float duration)
     {
-        if(currentMovement == MovementType.Land)
+        if(currentMovement == MovementType.Land || !TetherManager.Instance.playerConnected)
         {
             reelInTimer.value = 0;
             return;
@@ -348,7 +348,7 @@ public class PlayerController : MonoBehaviour
         //reelInTimer.value = 0;
 
         //if (duration > secondsToReelIn)
-        if(reelInTimer.value >= 1)
+        if(reelInTimer.value >= 1 && TetherManager.Instance.playerConnected)
         {
             TetherManager.Instance.ReeelItInBuddy();
         }
@@ -393,7 +393,7 @@ public class PlayerController : MonoBehaviour
         if(newType == MovementType.Land)
         {
             GetComponent<BoxCollider>().size = landCollider;
-            TetherManager.Instance.DisconnectTetherStarted();
+            TetherManager.Instance.DisconnectTetherStarted(playSound:false);
         }
         else
         {
@@ -404,17 +404,6 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Current movement set to " + newType.ToString());
     }
 
-    private void ToggleMovement()
-    {
-        if(currentMovement == MovementType.Land)
-        {
-            ToggleMovement(MovementType.Water);
-        }
-        else
-        {
-            ToggleMovement(MovementType.Land);
-        }
-    }
 
     #endregion
 
