@@ -162,7 +162,7 @@ MonoBehaviour:
   maxStretchLimit: 60
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 87
   surfaceOffset: 0.05
   maxWrapPoints: 32
   springStiffness: 50
