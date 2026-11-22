@@ -40,6 +40,9 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField, Tooltip("How far does a collision send the player or PHISH back?")] float knockback;
 
     [SerializeField, ShowIf("fishType", FishType.ShipOriented)] FishEffect effectOnShip;
+
+    [SerializeField, ShowIf("effectOnShip", FishEffect.DrainPHISH), Tooltip("How much more oxygen will this enemy drain from the PHISH?")]
+    int drainAmount;
     [SerializeField, ShowIf("effectOnShip", FishEffect.StopPHISH), Tooltip("How long does this enemy disable the PHISH controls?")]
     int stunTime;
 
@@ -147,12 +150,28 @@ public class EnemyBehavior : MonoBehaviour
             }
             else if(effectOnShip == FishEffect.DrainPHISH)
             {
-                //TODO: drain oxygen
+                collision.gameObject.GetComponent<ShipOxygenStorage>().DrainModifier += drainAmount;
             }
             else if(effectOnShip == FishEffect.MovePHISH)
             {
                 //the phish has a shit ton of mass so the knockback will have to be super high for now lol
                 collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * knockback, ForceMode.Impulse);
+            }
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (fishType == FishType.ShipOriented && collision.gameObject.GetComponent<SubmarineInputHandler>() &&
+            effectOnShip == FishEffect.DrainPHISH)
+        {
+            ShipOxygenStorage storage = collision.gameObject.GetComponent<ShipOxygenStorage>();
+
+            storage.DrainModifier -= drainAmount;
+
+            if(storage.DrainModifier < 0)
+            {
+                storage.DrainModifier = 0;
             }
         }
     }
