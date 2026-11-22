@@ -48,6 +48,9 @@ public class TetherManager : Singleton<TetherManager>
     [ReadOnly] public bool playerConnected = false; 
     private bool calculateTether => !playerLandMode && !reelingIn && playerConnected;
 
+    [SerializeField] private float oxygenDepletionRateOffTether = .5f;
+    [SerializeField] private float oxygenRegenerationRateOnTether = 1f;
+
     private Coroutine reelCoroutine;
 
     void Start()

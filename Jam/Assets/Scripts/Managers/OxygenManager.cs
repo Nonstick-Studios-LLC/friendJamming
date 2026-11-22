@@ -7,15 +7,22 @@ public class OxygenManager : Singleton<OxygenManager>
     [SerializeField] private float maxOxygen = 10;
     public static float BASE_REGEN_RATE = 1;
 
-    private List<List<Coroutine>> activeRegenCoroutines;
-    private List<float> oxygenValues;
+    private List<Coroutine> activeRegenCoroutines = new List<Coroutine>();
+    private List<Coroutine> activeDepletionCoroutines = new List<Coroutine>();
+    private float oxygenValues;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        RegisterActivePlayer();
+    }
 
     /// <summary>
     /// Registers an active player.
     /// </summary>
     public void RegisterActivePlayer()
     {
-        activeRegenCoroutines.Add(new List<Coroutine>());
+        //activeRegenCoroutines.Add(new List<Coroutine>());
     }
 
     /// <summary>
@@ -24,7 +31,8 @@ public class OxygenManager : Singleton<OxygenManager>
     /// <param name="playerID"></param>
     public void DeregisterPlayer(int playerID)
     {
-        StopPlayerOxygenRegen(playerID);
+        StopPlayerOxygenRegen();
+        StopPlayerOxygenDepletion();
     }
 
     /// <summary>
@@ -32,9 +40,9 @@ public class OxygenManager : Singleton<OxygenManager>
     /// </summary>
     /// <param name="playerID"></param>
     /// <param name="amount"></param>
-    public void AddOxygenFlat(int playerID, float amount)
+    public void AddOxygenFlat(float amount)
     {
-        oxygenValues[playerID] = Mathf.Clamp(oxygenValues[playerID] + amount, 0, maxOxygen);
+        oxygenValues = Mathf.Clamp(oxygenValues+amount, 0, maxOxygen);
     }
 
     /// <summary>
@@ -43,9 +51,14 @@ public class OxygenManager : Singleton<OxygenManager>
     /// <param name="playerID"></param>
     /// <param name="time"></param>
     /// <param name="regenRate"> Amount of oxygen a player gains per second </param>
-    public void AddOxygenOverTime(int playerID, int time, float regenRate)
+    public void AddOxygenOverTime(int time, float regenRate)
     {
-        activeRegenCoroutines[playerID].Add(StartCoroutine(OxygenRegen(playerID, time, regenRate)));
+        activeRegenCoroutines.Add(StartCoroutine(OxygenRegen(time, regenRate)));
+    }
+
+    public void RemoveOxygenUntilEmpty(float depletionRate)
+    {
+        activeDepletionCoroutines.Add(StartCoroutine(OxygenDepletionUntilEmpty(depletionRate)));
     }
 
     /// <summary>
@@ -53,23 +66,33 @@ public class OxygenManager : Singleton<OxygenManager>
     /// </summary>
     /// <param name="playerID"></param>
     /// <param name="regenRate"> Amount of oxygen a player gains per second. </param>
-    public void AddOxygenUntilFull(int playerID, float regenRate)
+    public void AddOxygenUntilFull(float regenRate)
     {
-        activeRegenCoroutines[playerID].Add(StartCoroutine(OxygenRegenUntilFull(playerID, regenRate)));
+        activeRegenCoroutines.Add(StartCoroutine(OxygenRegenUntilFull( regenRate)));
     }
 
     /// <summary>
     /// Stops all oxygen regen for a player of given playerID.
     /// </summary>
     /// <param name="playerID"></param>
-    public void StopPlayerOxygenRegen(int playerID)
+    public void StopPlayerOxygenRegen()
     {
-        foreach(Coroutine c in activeRegenCoroutines[playerID])
+        foreach(Coroutine c in activeRegenCoroutines)
         {
             StopCoroutine(c);
         }
 
-        activeRegenCoroutines[playerID].Clear();
+        activeRegenCoroutines.Clear();
+    }
+
+    public void StopPlayerOxygenDepletion()
+    {
+        foreach(Coroutine c in activeDepletionCoroutines)
+        {
+            StopCoroutine(c);
+        }
+
+        activeDepletionCoroutines.Clear();
     }
 
     /// <summary>
@@ -77,15 +100,12 @@ public class OxygenManager : Singleton<OxygenManager>
     /// </summary>
     public void StopAllPlayersOxygenRegen()
     {
-        foreach (List<Coroutine> l in activeRegenCoroutines)
+        foreach (Coroutine c in activeRegenCoroutines)
         {
-            foreach(Coroutine c in l)
-            {
-                StopCoroutine(c);
-            }
+            StopCoroutine(c);
 
-            l.Clear();
         }
+        activeRegenCoroutines.Clear();
     }
 
     /// <summary>
@@ -95,11 +115,11 @@ public class OxygenManager : Singleton<OxygenManager>
     /// <param name="time"></param>
     /// <param name="rate"></param>
     /// <returns></returns>
-    private IEnumerator OxygenRegen(int playerID, int time, float rate)
+    private IEnumerator OxygenRegen(int time, float rate)
     {
         for(int i = 0; i < time; i++)
         {
-            oxygenValues[playerID] = Mathf.Clamp(oxygenValues[playerID] + rate, 0, maxOxygen);
+            oxygenValues = Mathf.Clamp(oxygenValues + rate, 0, maxOxygen);
             yield return new WaitForSeconds(1f);
         }
     }
@@ -110,20 +130,20 @@ public class OxygenManager : Singleton<OxygenManager>
     /// <param name="playerID"></param>
     /// <param name="rate"></param>
     /// <returns></returns>
-    private IEnumerator OxygenRegenUntilFull(int playerID, float rate)
+    private IEnumerator OxygenRegenUntilFull(float rate)
     {
-        while (oxygenValues[playerID] < maxOxygen)
+        while (oxygenValues < maxOxygen)
         {
-            oxygenValues[playerID] = Mathf.Clamp(oxygenValues[playerID] + rate, 0, maxOxygen);
+            oxygenValues = Mathf.Clamp(oxygenValues + rate, 0, maxOxygen);
             yield return new WaitForSeconds(1f);
         }
     }
 
-    private IEnumerator OxygenDepletionUntilEmpty(int playerID, float rate)
+    private IEnumerator OxygenDepletionUntilEmpty(float rate)
     {
-        while (oxygenValues[playerID] > 0)
+        while (oxygenValues > 0)
         {
-            oxygenValues[playerID] = Mathf.Clamp(oxygenValues[playerID] - rate, 0, maxOxygen);
+            oxygenValues = Mathf.Clamp(oxygenValues - rate, 0, maxOxygen);
             yield return new WaitForSeconds(1f);
         }
     }

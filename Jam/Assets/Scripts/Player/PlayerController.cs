@@ -79,12 +79,20 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         PublicEvents.HoldingBattery += BatteryState;
+        PublicEvents.DisconnectTetherStarted += TetherUpdate;
+
     }
 
     private void OnDestroy()
     {
         PublicEvents.MousePosition -= OnMouseMove;
         PublicEvents.HoldingBattery -= BatteryState;
+        PublicEvents.DisconnectTetherStarted -= TetherUpdate;
+    }
+
+    private void TetherUpdate()
+    {
+        //if(!status && MovementType)
     }
 
     private void BatteryState(bool b)

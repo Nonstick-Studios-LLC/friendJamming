@@ -37,5 +37,6 @@ public static class PublicEvents
     public static Action<ItemScriptable> AddToInventory;
     public static Action RemoveFromInventory;
     public static Action<bool> HoldingBattery;
+    public static Action<bool> TetherAttatchmentStatusChanged;
 
 }
