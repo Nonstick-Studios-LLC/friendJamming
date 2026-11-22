@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ruby
   m_EditorClassIdentifier: Assembly-CSharp::ItemScriptable
   itemName: Ruby
-  sellPrice: 30
-  purchasePrice: 30
+  sellPrice: 50
+  purchasePrice: 50
   isMcGuffin: 0
   visual: {fileID: 2336487036437413558, guid: a2d8cce993acc8c4885076c967e49264, type: 3}
