@@ -43,6 +43,10 @@ public class OxygenManager : Singleton<OxygenManager>
     public void AddOxygenFlat(float amount)
     {
         oxygenValues = Mathf.Clamp(oxygenValues+amount, 0, maxOxygen);
+        if (oxygenValues == maxOxygen)
+        {
+            Debug.LogFormat("<color=green>The player has full personal oxygen reserves</color>");
+        }
     }
 
     /// <summary>
@@ -137,6 +141,7 @@ public class OxygenManager : Singleton<OxygenManager>
             oxygenValues = Mathf.Clamp(oxygenValues + rate, 0, maxOxygen);
             yield return new WaitForSeconds(1f);
         }
+        Debug.LogFormat("<color=green>The player has full personal oxygen reserves/color>");
     }
 
     private IEnumerator OxygenDepletionUntilEmpty(float rate)
@@ -146,5 +151,6 @@ public class OxygenManager : Singleton<OxygenManager>
             oxygenValues = Mathf.Clamp(oxygenValues - rate, 0, maxOxygen);
             yield return new WaitForSeconds(1f);
         }
+        Debug.LogFormat("<color=red>The player has lost all personal oxygen</color>");
     }
 }

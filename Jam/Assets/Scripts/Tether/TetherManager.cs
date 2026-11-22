@@ -74,6 +74,7 @@ public class TetherManager : Singleton<TetherManager>
     [Button]
     public void ResetTether()
     {
+        PublicEvents.JoinTether?.Invoke();
         if (reelCoroutine != null) StopCoroutine(reelCoroutine);
 
         ziiiiipSound.Stop();

@@ -30,6 +30,7 @@ public static class PublicEvents
     public static Action ReelStarted;
     public static Action<float> ReelHeld; // float duration
     public static Action<float> Reeleased; // get it
+    public static Action JoinTether;
     public static Action DisconnectTetherStarted;
     public static Action<float> UpdownShipStarted;
     public static Action<float> UpdownShipHeld;

@@ -71,6 +71,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public bool ActivelyGettingReeled = false;
     public bool CanMove { get { return canMove && !ActivelyGettingReeled; } set { canMove = value; } }
     public bool CanMoveDirections { get { return canMoveDirections && !ActivelyGettingReeled; } set { canMoveDirections = value; } }
+    [SerializeField] private float detattchedOxygenDepletionRate = .3f;
+    [SerializeField] private float attatchedOxygenGainRate = .1f;
 
     private void Awake()
     {
@@ -79,7 +81,8 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         PublicEvents.HoldingBattery += BatteryState;
-        PublicEvents.DisconnectTetherStarted += TetherUpdate;
+        PublicEvents.DisconnectTetherStarted += TetherOffUpdate;
+        PublicEvents.JoinTether += TetherOnUpdate;
 
     }
 
@@ -87,12 +90,29 @@ public class PlayerController : MonoBehaviour
     {
         PublicEvents.MousePosition -= OnMouseMove;
         PublicEvents.HoldingBattery -= BatteryState;
-        PublicEvents.DisconnectTetherStarted -= TetherUpdate;
+        PublicEvents.DisconnectTetherStarted -= TetherOffUpdate;
+        PublicEvents.JoinTether -= TetherOnUpdate;
     }
 
-    private void TetherUpdate()
+    private void TetherOffUpdate()
     {
-        //if(!status && MovementType)
+        OxygenManager.Instance.StopPlayerOxygenDepletion();
+        OxygenManager.Instance.StopPlayerOxygenDepletion();
+        if(currentMovement == MovementType.Land)
+        {
+            OxygenManager.Instance.AddOxygenFlat(100);
+        }
+        else
+        {
+            OxygenManager.Instance.RemoveOxygenUntilEmpty(detattchedOxygenDepletionRate);
+        }
+    }
+
+    private void TetherOnUpdate()
+    {
+        OxygenManager.Instance.StopPlayerOxygenDepletion();
+        OxygenManager.Instance.StopPlayerOxygenDepletion();
+        OxygenManager.Instance.AddOxygenUntilFull(attatchedOxygenGainRate);
     }
 
     private void BatteryState(bool b)
