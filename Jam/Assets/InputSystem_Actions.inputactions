@@ -104,6 +104,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Disconnect Tether",
+                    "type": "Button",
+                    "id": "21639498-93b8-4157-a138-6dd17ad806fe",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -456,6 +465,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Reel In",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f13285e7-a1e3-4efd-8170-b6fdcbbd4cc7",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Disconnect Tether",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

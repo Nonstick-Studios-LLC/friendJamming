@@ -205,4 +205,12 @@ public class LandMovement : Movement
     {
         
     }
+
+    protected override void WhileSpaceHeld()
+    {
+    }
+
+    protected override void WhileControlHeld()
+    {
+    }
 }

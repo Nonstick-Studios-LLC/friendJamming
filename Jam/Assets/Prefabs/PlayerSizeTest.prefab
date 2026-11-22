@@ -287,7 +287,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b0d70dea8bd86049a0c7c78bb04956c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  startingMovement: 1
+  startingMovement: 0
+  currentMovement: 0
   playerCamera: {fileID: 7245829552527694936}
   cameraSensitivity: 1.5
   cameraRotationParent: {fileID: 333370763377737284}
@@ -317,7 +318,7 @@ Rigidbody:
   m_GameObject: {fileID: 96466021246308504}
   serializedVersion: 5
   m_Mass: 1
-  m_LinearDamping: 1
+  m_LinearDamping: 3
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -366,11 +367,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterMovement
   baseWaterMovementSpeed: 1.5
+  maxWaterMovementSpeed: 10
+  maxWaterVerticalSpeed: 10
   timeToMaxAcceleration: 5
   maxAccelerationMultiplier: 3
-  ascentWaterMovementSpeed: 2
-  descentWaterMovementSpeed: 3.5
-  waterGravity: -0.25
+  ascentWaterMovementSpeed: 0.6
+  descentWaterMovementSpeed: 1
+  waterGravity: 0.25
   descending: 0
 --- !u!65 &1228966893350204436
 BoxCollider:

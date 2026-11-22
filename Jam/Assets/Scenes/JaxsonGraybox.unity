@@ -43635,10 +43635,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerSizeTest
       objectReference: {fileID: 0}
-    - target: {fileID: 1581048692775013036, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
-      propertyPath: startingMovement
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5504982264192665151, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 252.55923

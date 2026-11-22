@@ -15,6 +15,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     private InputAction leftClick;
     [HideInInspector] public InputAction secrets;
     private InputAction reel;
+    private InputAction disconnectTether;
 
     private Coroutine movementUpdates;
 
@@ -33,6 +34,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         leftClick = input.currentActionMap.FindAction("LeftClick");
         secrets = input.currentActionMap.FindAction("Why"); // bro what are we doing
         reel = input.currentActionMap.FindAction("Reel In");
+        disconnectTether = input.currentActionMap.FindAction("Disconnect Tether");
     }
 
     private void OnEnable()
@@ -52,6 +54,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         leftClick.canceled += LeftClick_canceled;
         reel.started += Reel_Started;
         reel.canceled += Reeleased;
+        disconnectTether.started += DisconnectTether_Started;
     }
 
 
@@ -78,14 +81,27 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         PublicEvents.LeftClickStarted?.Invoke();
     }
 
+    public bool controlHeld;
     private void Control_canceled(InputAction.CallbackContext obj)
     {
+        controlHeld = false;
         PublicEvents.ControlEnded?.Invoke();
     }
 
     private void Control_started(InputAction.CallbackContext obj)
     {
+        controlHeld = true;
         PublicEvents.ControlStarted?.Invoke();
+        StartCoroutine(ContinuousControlGaming());
+    }
+
+    private IEnumerator ContinuousControlGaming()
+    {
+        while (controlHeld)
+        {
+            PublicEvents.ControlHeld?.Invoke();
+            yield return null;
+        }
     }
 
     private void Shift_canceled(InputAction.CallbackContext obj)
@@ -98,14 +114,27 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         PublicEvents.ShiftStarted?.Invoke();
     }
 
+    public bool spaceHeld;
     private void Space_canceled(InputAction.CallbackContext obj)
     {
+        spaceHeld = false;
         PublicEvents.SpaceEnded?.Invoke();
     }
 
     private void Space_started(InputAction.CallbackContext obj)
     {
+        spaceHeld = true;
         PublicEvents.SpaceStarted?.Invoke();
+        StartCoroutine(ContinuousSpaceGaming());
+    }
+
+    private IEnumerator ContinuousSpaceGaming()
+    {
+        while (spaceHeld)
+        {
+            PublicEvents.SpaceHeld?.Invoke();
+            yield return null;
+        }
     }
 
     private void Interact_canceled(InputAction.CallbackContext obj)
@@ -166,6 +195,11 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
             PublicEvents.ReelHeld?.Invoke(Time.time - timeStarted);
             yield return null;
         }
+    }
+
+    private void DisconnectTether_Started(InputAction.CallbackContext obj)
+    {
+        PublicEvents.DisconnectTetherStarted?.Invoke();
     }
 
     private IEnumerator ContinuousMovement()
