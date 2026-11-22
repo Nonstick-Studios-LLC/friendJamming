@@ -59,7 +59,11 @@ public class PlayerController : MonoBehaviour
     private IInteractable interactingWith;
 
     [SerializeField] private bool canMove = true;
+
+    //this sucks but i just want a solution rn man
+    [SerializeField] private bool canMoveDirections = true;
     public bool CanMove { get { return canMove; } set { canMove = value; } }
+    public bool CanMoveDirections { get { return canMoveDirections; } set { canMoveDirections = value; } }
 
     private void Awake()
     {

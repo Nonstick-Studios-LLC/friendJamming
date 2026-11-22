@@ -16,7 +16,7 @@ public enum FishEffect
 {
     MovePHISH,
     DrainPHISH,
-    DisablePHISH,
+    StopPHISH,
 }
 
 public class EnemyBehavior : MonoBehaviour
@@ -24,7 +24,7 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] FishType fishType;
 
     [SerializeField, Tooltip("Does this enemy swim around?")] bool hasPath;
-    [SerializeField, ShowIf("hasPath"), Tooltip("What points does this enemy swim in between?")] List<Vector3> pathingPoints;
+    [SerializeField, ShowIf("hasPath"), Tooltip("What points does this enemy swim in between?")] List<Transform> pathingPoints;
     [SerializeField, ShowIf("hasPath")] float idleSpeed;
 
     [Space(5)]
@@ -40,6 +40,8 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField, Tooltip("How far does a collision send the player or PHISH back?")] float knockback;
 
     [SerializeField, ShowIf("fishType", FishType.ShipOriented)] FishEffect effectOnShip;
+    [SerializeField, ShowIf("effectOnShip", FishEffect.StopPHISH), Tooltip("How long does this enemy disable the PHISH controls?")]
+    int stunTime;
 
     private void Start()
     {
@@ -56,7 +58,9 @@ public class EnemyBehavior : MonoBehaviour
 
     IEnumerator SwimmingIdle()
     {
-        Vector3 currentCoordinate = pathingPoints[0];
+        Vector3 currentCoordinate = pathingPoints[0].transform.position;
+        int currentLoop = 1;
+
         transform.rotation = Quaternion.LookRotation(currentCoordinate);
 
         while (true)
@@ -65,14 +69,14 @@ public class EnemyBehavior : MonoBehaviour
 
             if(transform.position == currentCoordinate)
             {
-                int currentLoop = pathingPoints.IndexOf(currentCoordinate) + 1;
+                currentLoop++;
 
-                if(currentLoop > pathingPoints.Count - 1)
+                if(currentLoop > pathingPoints.Count)
                 {
-                    currentCoordinate = pathingPoints[0];
+                    currentLoop = 1;
                 }
-                else { currentCoordinate = pathingPoints[currentLoop]; }
 
+                currentCoordinate = pathingPoints[currentLoop - 1].transform.position;
                 transform.rotation = Quaternion.LookRotation(currentCoordinate);
             }
 
@@ -135,10 +139,11 @@ public class EnemyBehavior : MonoBehaviour
 
         if(fishType == FishType.ShipOriented && collision.gameObject.GetComponent<SubmarineInputHandler>())
         {
-            if(effectOnShip == FishEffect.DisablePHISH)
+            if(effectOnShip == FishEffect.StopPHISH)
             {
-                //TODO: disable controllers
-                //i'll do this after making phish controllers 
+                //so that the phish doesn't get stunlocked
+                collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * knockback, ForceMode.Impulse);
+                collision.gameObject.GetComponent<SubmarineInputHandler>().StartStunCycle(stunTime);
             }
             else if(effectOnShip == FishEffect.DrainPHISH)
             {

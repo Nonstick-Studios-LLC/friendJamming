@@ -70,7 +70,7 @@ public class LandMovement : Movement
     /// <param name="moveVector"></param>
     protected override void OnMove(Vector2 moveVector)
     {
-        if (!pc.CanMove)
+        if (!pc.CanMove || !pc.CanMoveDirections)
         {
             return;
         }
