@@ -75,6 +75,7 @@ public class ShipOxygenStorage : MonoBehaviour
             {
                 //Activate game over
                 Debug.Log("Game Over");
+                PublicEvents.CallEndState?.Invoke(EndStateManager.EndType.Ship_Oxygen_Depletion);
             }
             else
             {

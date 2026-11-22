@@ -152,5 +152,6 @@ public class OxygenManager : Singleton<OxygenManager>
             yield return new WaitForSeconds(1f);
         }
         Debug.LogFormat("<color=red>The player has lost all personal oxygen</color>");
+        PublicEvents.CallEndState?.Invoke(EndStateManager.EndType.Personal_Oxygen_Depletion);
     }
 }
