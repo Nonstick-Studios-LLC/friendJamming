@@ -8,7 +8,7 @@ public class Pickup : MonoBehaviour, IInteractable
     protected Collider col;
     protected bool isHeld;
 
-    protected void Start()
+    protected virtual void Start()
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();

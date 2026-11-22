@@ -55,5 +55,82 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5504cac0bdba94547a83d80399129372, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4795790574459568843}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5504cac0bdba94547a83d80399129372, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1892681415175130734}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5504cac0bdba94547a83d80399129372, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6306653641524164507}
   m_SourcePrefab: {fileID: 100100000, guid: 5504cac0bdba94547a83d80399129372, type: 3}
+--- !u!1 &625601704755343609 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5504cac0bdba94547a83d80399129372, type: 3}
+  m_PrefabInstance: {fileID: 319751993467801000}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &-4795790574459568843
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625601704755343609}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!64 &-1892681415175130734
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625601704755343609}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -6891629864767253411, guid: 5504cac0bdba94547a83d80399129372, type: 3}
+--- !u!114 &6306653641524164507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625601704755343609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25cf68fac65238c40887979693432a4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Treasure
+  itemData: {fileID: 11400000, guid: 958186efc522fd940a082e620b717b93, type: 2}
+  spawned: 0
