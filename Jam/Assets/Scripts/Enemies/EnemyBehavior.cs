@@ -35,8 +35,8 @@ public class EnemyBehavior : MonoBehaviour
     Coroutine moving;
 
     [SerializeField, ShowIf("fishType", FishType.PlayerOriented)] float damageToPlayer;
-    [SerializeField, ShowIf("fishType", FishType.PlayerOriented), 
-     Tooltip("How far does the player fly back after an attack?")] float playerKB;
+
+    [SerializeField, Tooltip("How far does a collision send the player or PHISH back?")] float knockback;
 
     [SerializeField, ShowIf("fishType", FishType.ShipOriented)] FishEffect effectOnShip;
 
@@ -94,7 +94,7 @@ public class EnemyBehavior : MonoBehaviour
     private void OnTriggerEnter(Collider trigger)
     {
         if((fishType == FishType.PlayerOriented && trigger.GetComponent<PlayerController>()) ||
-           (fishType == FishType.ShipOriented && trigger.GetComponent<SubmarineInputHandler>()))
+           (fishType == FishType.ShipOriented && effectOnShip == FishEffect.MovePHISH && trigger.gameObject.GetComponent<SubmarineInputHandler>()))
         {
             moving = null;
             moving = StartCoroutine(SwimmingTowardsTarget(trigger.gameObject));
@@ -116,22 +116,25 @@ public class EnemyBehavior : MonoBehaviour
         if(fishType == FishType.PlayerOriented && collision.gameObject.GetComponent<PlayerController>())
         {
             collision.gameObject.GetComponent<PlayerHealthManager>().ChangeHealthValue(damageToPlayer);
-            collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * playerKB, ForceMode.Impulse);
+            collision.gameObject.GetComponent<Rigidbody>().AddForce
+            ((transform.position - collision.gameObject.transform.position).normalized * knockback, ForceMode.Impulse);
         }
 
         if(fishType == FishType.ShipOriented && collision.gameObject.GetComponent<SubmarineInputHandler>())
         {
             if(effectOnShip == FishEffect.DisablePHISH)
             {
-
+                //TODO: disable controllers
+                //i'll do this after making phish controllers 
             }
             else if(effectOnShip == FishEffect.DrainPHISH)
             {
-
+                //TODO: drain oxygen
             }
             else if(effectOnShip == FishEffect.MovePHISH)
             {
-
+                collision.gameObject.GetComponent<Rigidbody>().AddForce
+                ((transform.position - collision.gameObject.transform.position).normalized * knockback, ForceMode.Impulse);
             }
         }
     }
