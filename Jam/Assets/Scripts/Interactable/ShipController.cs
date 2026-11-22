@@ -14,6 +14,8 @@ public class ShipController : MonoBehaviour, IInteractable
 
     [SerializeField] MovementType movementType;
 
+    [SerializeField] Transform teleportPlayerSpot;
+
     void Start()
     {
         submarineInputHandler = GetComponentInParent<SubmarineInputHandler>();
@@ -23,7 +25,11 @@ public class ShipController : MonoBehaviour, IInteractable
 
     public void EnterInteract(PlayerController pc)
     {
-        PublicEvents.MoveDirection += MoveControls;
+        Debug.Log("interact ship control");
+
+        PublicEvents.MoveDirection += MoveControls_Held;
+        PublicEvents.MoveDirectionStarted += Move_controls_staert;
+        PublicEvents.UpdownShipStarted += Updownship_start;
 
         if(playerController == null)
         {
@@ -31,11 +37,12 @@ public class ShipController : MonoBehaviour, IInteractable
         }
         
         pc.CanMoveDirections = false;
+        pc.transform.position = teleportPlayerSpot.position;
     }
 
     public void ExitInteract()
     {
-        PublicEvents.MoveDirection -= MoveControls;
+        PublicEvents.MoveDirection -= MoveControls_Held;
         playerController.CanMoveDirections = true;
     }
 
@@ -51,12 +58,56 @@ public class ShipController : MonoBehaviour, IInteractable
 
     #endregion INTERACTABLE
 
-    void MoveControls(Vector2 dir)
+    void Move_controls_staert(Vector2 dir)
     {
-        switch(movementType)
+        // left right
+        if (dir.x >= 0.5)
+        {
+            submarineInputHandler.SetTargetTurnSpeed(submarineInputHandler.currentTargetTurnAcceleration + 1);
+        }
+        else if (dir.x <= -0.5)
+        {
+            submarineInputHandler.SetTargetTurnSpeed(submarineInputHandler.currentTargetTurnAcceleration - 1);
+        }
+    }
+
+    void Updownship_start(float dir)
+    {
+        Debug.Log("updown");
+        //updown albumn
+        if (dir > 0)
+        {
+            submarineInputHandler.SetTargetVerticalSpeed(submarineInputHandler.currentVerticalAcceleration + 1);
+        }
+        else if (dir < 0)
+        {
+            submarineInputHandler.SetTargetVerticalSpeed(submarineInputHandler.currentVerticalAcceleration - 1);
+        }
+    }
+
+    void MoveControls_Held(Vector2 dir)
+    {
+        // forward
+        if (dir.y >= 0.5)
+        {
+            submarineInputHandler.SetForwardMode(ForwardDirection.Forward);
+        }
+        else if (dir.y <= -0.5)
+        {
+            submarineInputHandler.SetForwardMode(ForwardDirection.Reverse);
+        }
+        else
+        {
+            submarineInputHandler.SetForwardMode(ForwardDirection.None);
+        }
+
+        return;
+
+        switch (movementType)
         {
             case MovementType.ForwardBackward:
 
+                //Debug.Log("forwart");
                 if(dir.y >= 0.5)
                 {
                     submarineInputHandler.SetForwardMode(ForwardDirection.Forward);

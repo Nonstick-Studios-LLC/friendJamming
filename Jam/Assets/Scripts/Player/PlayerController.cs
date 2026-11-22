@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float secondsToReelIn = 2;
 
     public Transform PickupPoint;
+    public LayerMask lm;
     [Layer] public int transitionLayer;
     private bool lookingAtShopkeeper = false;
 
@@ -99,7 +100,7 @@ public class PlayerController : MonoBehaviour
                 { MovementType.Water, GetComponent<WaterMovement>() }
             };
 
-        ToggleMovement(startingMovement);
+        ToggleMovement(startingMovement, force:true);
 
     }
 
@@ -161,7 +162,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
-        PublicEvents.ToggleMovement += ToggleMovement;
+        //PublicEvents.ToggleMovement += ToggleMovement;
         PublicEvents.InteractStarted += OnInteractStart;
         PublicEvents.ReelHeld += WhileReelHeld;
         PublicEvents.Reeleased += OnReeleased;
@@ -172,7 +173,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnDisable()
     {
-        PublicEvents.ToggleMovement -= ToggleMovement;
+        //PublicEvents.ToggleMovement -= ToggleMovement;
         PublicEvents.InteractStarted -= OnInteractStart;
         PublicEvents.ReelHeld -= WhileReelHeld;
         PublicEvents.Reeleased -= OnReeleased;
@@ -190,30 +191,31 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         Vector3 direction = CameraRotationPoint.forward;
 
-        if (Physics.Raycast(CameraRotationPoint.transform.position, direction, out hit, sightDistance, 7))
+        Debug.DrawRay(CameraRotationPoint.transform.position, direction);
+        if (Physics.Raycast(CameraRotationPoint.transform.position, direction, out hit, sightDistance, lm))
         {
-            Debug.Log("Hit " + gameObject.name);
-            if (hit.transform.GetComponent<IInteractable>() != null)
+            var hitObject = hit.collider.transform;
+            var hitInteractable = hit.collider.transform.GetComponent<IInteractable>();
+            Debug.Log("Hit " + hitObject.name);
+
+            if (hitInteractable != null)
             {
-                if(hit.transform.GetComponent<Shopkeeper>()!=null)
-                {
+                if(hitObject.GetComponent<Shopkeeper>()!=null)
                     lookingAtShopkeeper = true;
-                }
                 else
-                {
                     lookingAtShopkeeper = false;
-                }
-                if (interactingWith != null && hit.transform.GetComponent<IInteractable>() == interactingWith)
+
+                if (interactingWith != null && hitInteractable == interactingWith)
                 {
                     return true;
                 }
 
-                if (lookingAt != null && hit.transform.GetComponent<IInteractable>() != lookingAt)
+                if (lookingAt != null && hitInteractable != lookingAt)
                 {
                     lookingAt.ExitHover();
                 }
 
-                lookingAt = hit.transform.GetComponent<IInteractable>();
+                lookingAt = hitInteractable;
                 lookingAt.EnterHover();
 
                 SetCursorType(InteractStates.Interactable);
@@ -326,10 +328,15 @@ public class PlayerController : MonoBehaviour
     /// movment scripts and activates the toggled one.
     /// </summary>
     /// <param name="type"></param>
-    public void ToggleMovement(MovementType newType)
+    public void ToggleMovement(MovementType newType, bool force=false)
     {
+        if (currentMovement == newType && !force)
+        {
+            return;
+        }
+
         currentMovement = newType;
-        
+
         Movement newMovement = movementScripts[0];
         foreach (var movement in movementScripts.Values)
         {

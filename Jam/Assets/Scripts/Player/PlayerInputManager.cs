@@ -7,6 +7,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
     [SerializeField] private PlayerInput input;
 
     private InputAction move;
+    public InputAction updownship;
     private InputAction lookAround;
     private InputAction interact;
     private InputAction space;
@@ -35,6 +36,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         secrets = input.currentActionMap.FindAction("Why"); // bro what are we doing
         reel = input.currentActionMap.FindAction("Reel In");
         disconnectTether = input.currentActionMap.FindAction("Disconnect Tether");
+        updownship = input.currentActionMap.FindAction("Ship Up Down");
     }
 
     private void OnEnable()
@@ -55,8 +57,11 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         reel.started += Reel_Started;
         reel.canceled += Reeleased;
         disconnectTether.started += DisconnectTether_Started;
+        updownship.started += Updownship_started;
+        updownship.canceled += Updownship_canceled; ;
     }
 
+    
 
     private void OnDisable()
     {
@@ -169,11 +174,33 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         {
             movementUpdates = StartCoroutine(ContinuousMovement());
         }
-        PublicEvents.MoveDirection?.Invoke(move.ReadValue<Vector2>());
+        PublicEvents.MoveDirectionStarted?.Invoke(move.ReadValue<Vector2>());
+    }
+
+    public bool updownship_held;
+    private void Updownship_canceled(InputAction.CallbackContext obj)
+    {
+        updownship_held = false;
+    }
+
+    private void Updownship_started(InputAction.CallbackContext obj)
+    {
+        updownship_held = true;
+        StartCoroutine(ContinuousUptownShipGaming());
+        PublicEvents.UpdownShipStarted?.Invoke(updownship.ReadValue<float>());
+    }
+
+    private IEnumerator ContinuousUptownShipGaming()
+    {
+        float timeStarted = Time.time;
+        while (updownship_held)
+        {
+            PublicEvents.UpdownShipHeld?.Invoke(updownship.ReadValue<float>());
+            yield return null;
+        }
     }
 
     private bool reelHeld;
-
     private void Reel_Started(InputAction.CallbackContext obj)
     {
         reelHeld = true;

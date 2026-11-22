@@ -160,7 +160,6 @@ public class WaterMovement : Movement
 
     protected override void WhileSpaceHeld()
     {
-        Debug.Log("up held");
         rb.AddForce(Vector3.up * ascentWaterMovementSpeed, ForceMode.Acceleration);
     }
 

@@ -35,6 +35,8 @@ public class TetherManager : Singleton<TetherManager>
     [Header("Reels")] // like instagram
     [SerializeField] float ReelSpeed = 5;
 
+    [Foldout("Audio")] public AudioClip unhookTetherSound;
+
     private LineRenderer lineRenderer;
     private readonly List<Vector3> ropeNodes = new List<Vector3>();
     private int endIdx => ropeNodes.Count - 1;

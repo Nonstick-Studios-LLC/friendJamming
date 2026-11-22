@@ -96,7 +96,7 @@ public class LandMovement : Movement
     /// </summary>
     protected override void OnSpaceStarted()
     {
-        if (!pc.CanMove || pc.ActivelyGettingReeled)
+        if (!pc.CanMove || pc.ActivelyGettingReeled || !pc.CanMoveDirections)
         {
             return;
         }

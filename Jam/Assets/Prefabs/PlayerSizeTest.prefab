@@ -1391,7 +1391,7 @@ GameObject:
   - component: {fileID: 2102737990778999466}
   - component: {fileID: 3773548143388308141}
   - component: {fileID: 8887540608521003610}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sphere (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1748,7 +1748,7 @@ GameObject:
   - component: {fileID: 820022553443942190}
   - component: {fileID: 768162551640617278}
   - component: {fileID: 6186526983648054489}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2135,7 +2135,7 @@ GameObject:
   - component: {fileID: 5784708979204852754}
   - component: {fileID: 6286032655107197747}
   - component: {fileID: 8455126661060121154}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2225,7 +2225,7 @@ GameObject:
   - component: {fileID: 4465920925419702680}
   - component: {fileID: 3867962877771489125}
   - component: {fileID: 1835792766945471925}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2560,7 +2560,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6818088809401137259}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PickupPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3143,7 +3143,7 @@ GameObject:
   - component: {fileID: 7189174877045301819}
   - component: {fileID: 2308085955173527199}
   - component: {fileID: 5080735424608105570}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Health Display
   m_TagString: Untagged
   m_Icon: {fileID: 0}

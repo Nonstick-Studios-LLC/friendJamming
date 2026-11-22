@@ -90,6 +90,9 @@ public class SubmarineInputHandler : MonoBehaviour
     {
         rb.angularDamping = angularDamping;
         rb.linearDamping = velocityDamping;
+
+        float visualAngle = Mathf.Lerp(wheelTurnRadius.x, wheelTurnRadius.y, _turnAccelerationPercent);
+        wheel.transform.localEulerAngles = wheel.transform.localEulerAngles.WithY(visualAngle);
     }
 
     public void StartStunCycle(int stunTime)

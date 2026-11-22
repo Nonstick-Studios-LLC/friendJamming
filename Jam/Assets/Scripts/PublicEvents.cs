@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class PublicEvents
 {
+    public static Action<Vector2> MoveDirectionStarted;
     public static Action<Vector2> MoveDirection;
     public static Action MoveDirectionStopped;
 
@@ -30,6 +31,8 @@ public static class PublicEvents
     public static Action<float> ReelHeld; // float duration
     public static Action<float> Reeleased; // get it
     public static Action DisconnectTetherStarted;
+    public static Action<float> UpdownShipStarted;
+    public static Action<float> UpdownShipHeld;
 
     public static Action<ItemScriptable> AddToInventory;
     public static Action RemoveFromInventory;
