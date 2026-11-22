@@ -27,7 +27,7 @@ public class PlayerHealthManager : MonoBehaviour
 
         if (CurrentHealth <= 0)
         {
-            //TODO: KILL player
+            PublicEvents.CallEndState?.Invoke(EndStateManager.EndType.No_Health);
         }
     }
 }
