@@ -115,6 +115,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         if(fishType == FishType.PlayerOriented && collision.gameObject.GetComponent<PlayerController>())
         {
+            collision.gameObject.GetComponent<PlayerHealthManager>().ChangeHealthValue(damageToPlayer);
             collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * playerKB, ForceMode.Impulse);
         }
 
