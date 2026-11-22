@@ -13,6 +13,7 @@ using UnityEngine;
 public class ItemScriptable : ScriptableObject
 {
     [Foldout("Item Statistics"), SerializeField] private string itemName;
+    [Foldout("Item Statistics"), SerializeField] private bool canBeSold;
     [Foldout("Item Statistics"), SerializeField] private int sellPrice;
     [Foldout("Item Statistics"), SerializeField] private int purchasePrice;
     [Foldout("Item Statistics"), SerializeField] private bool isMcGuffin;
@@ -24,6 +25,11 @@ public class ItemScriptable : ScriptableObject
     public string GetName()
     {
         return name;
+    }
+
+    public bool GetSellStatus()
+    {
+        return canBeSold;
     }
 
     public int GetSellPrice()

@@ -288,6 +288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   startingMovement: 1
+  currentMovement: 0
   playerCamera: {fileID: 7245829552527694936}
   cameraSensitivity: 1.5
   cameraRotationParent: {fileID: 333370763377737284}
@@ -3477,7 +3478,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5407131019179812868}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Arms
   m_TagString: Untagged
   m_Icon: {fileID: 0}

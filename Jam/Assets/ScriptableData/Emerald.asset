@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Emerald
   m_EditorClassIdentifier: Assembly-CSharp::ItemScriptable
   itemName: Emerald
+  canBeSold: 1
   sellPrice: 50
   purchasePrice: 50
   isMcGuffin: 0
