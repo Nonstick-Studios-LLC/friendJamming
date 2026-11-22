@@ -135,8 +135,6 @@ public class PlayerController : MonoBehaviour
 
         CameraRotationPoint.localEulerAngles = cameraRotation;
 
-
-
         if (LookingAtObject())
         {
             SetCursorType(InteractStates.Interactable);
