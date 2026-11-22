@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="cameraVector">Vector2 containing the mouse's delta </param>
     private void OnMouseMove(Vector2 cameraVector)
     {
-        if (!CanMove)
+        if (!CanMove || ActivelyGettingReeled)
         {
             return;
         }

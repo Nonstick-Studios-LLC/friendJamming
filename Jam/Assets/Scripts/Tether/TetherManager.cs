@@ -200,7 +200,9 @@ public class TetherManager : Singleton<TetherManager>
             // were close enough! yay!
             // or
             // ur taking too long. just fuckin teleport
-            if(Vector3.Distance(followPoint.position, ropeNodes[currentNodeIdx]) < 0 || timeAtThisNode > 2)
+            if(Vector3.Distance(followPoint.position, ropeNodes[currentNodeIdx]) < 0.2f 
+                || Vector3.Distance(followRB.position, ropeNodes[currentNodeIdx]) < 0.2f
+                || timeAtThisNode > 3)
             {
                 followRB.position = ropeNodes[currentNodeIdx];
                 ropeNodes.RemoveAt(currentNodeIdx);
@@ -210,10 +212,17 @@ public class TetherManager : Singleton<TetherManager>
 
             Vector3 direction = (ropeNodes[currentNodeIdx] - followPoint.position).normalized;
             //followRB.linearVelocity = direction * ReelSpeed;
-            followRB.position += direction;
+            followRB.position = Vector3.MoveTowards(followRB.position, ropeNodes[currentNodeIdx], Time.fixedDeltaTime * ReelSpeed);
 
             yield return new WaitForFixedUpdate();
         }
+
+        while(Vector3.Distance(ropeNodes[0], ropeNodes[endIdx]) < 5)
+        {
+            followRB.position = Vector3.MoveTowards(followRB.position, ropeNodes[0], Time.fixedDeltaTime * ReelSpeed);
+            yield return new WaitForFixedUpdate();
+        }
+
         Vector3 direction2 = (anchorPoint.position - followPoint.position).normalized;
         followRB.linearVelocity = direction2 * ReelSpeed;
 
