@@ -90,7 +90,7 @@ public class WaterMovement : Movement
     /// <param name="cameraVector">Vector2 containing the mouse's delta </param>
     protected override void OnMouseMove(Vector2 cameraVector)
     {
-        if (!pc.CanMove)
+        /*if (!pc.CanMove)
         {
             return;
         }
@@ -110,7 +110,7 @@ public class WaterMovement : Movement
         else
         {
             pc.SetCursorType(PlayerController.InteractStates.NonInteractable);
-        }
+        }*/
 
     }
 
@@ -274,7 +274,7 @@ public class WaterMovement : Movement
     /// Checks if the player is looking at an object that can be interacted with
     /// </summary>
     /// <returns>Returns true if they are</returns>
-    protected override bool LookingAtObject()
+    public override bool LookingAtObject()
     {
         RaycastHit hit;
         Vector3 direction = pc.CameraRotationPoint.forward;
