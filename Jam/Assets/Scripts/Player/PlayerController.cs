@@ -1,7 +1,9 @@
 /*************************************************
 Author Names        : 		Jay Embry, Cade Naylor
 Date Created        : 		11/20/2026
-Brief Description   : 		Handles player input
+Brief Description   : 		Handles player input functions
+                            Handles shared behavior across input systems (look, interact)
+                            
 External Resources  : 	    Nonme
 ***************************************************/
 using System.Collections.Generic;
@@ -46,9 +48,14 @@ public class PlayerController : MonoBehaviour
     private Vector3 waterCollider = new Vector3(1, 1, 2);
     Movement activeMovement;
     Vector2 cameraRotation;
+    [SerializeField] private float sightDistance = 10f;
 
     public Transform PickupPoint;
     [Layer] public int transitionLayer;
+
+
+    private IInteractable lookingAt;
+    private IInteractable interactingWith;
 
     [SerializeField] private bool canMove = true;
     public bool CanMove { get { return canMove; } set { canMove = value; } }
@@ -108,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-        if (activeMovement.LookingAtObject())
+        if (LookingAtObject())
         {
             SetCursorType(InteractStates.Interactable);
         }
@@ -137,7 +144,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
-       PublicEvents.ToggleMovement += ToggleMovement;
+        PublicEvents.ToggleMovement += ToggleMovement;
+        PublicEvents.InteractStarted += OnInteractStart;
     }
 
     /// <summary>
@@ -146,8 +154,99 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         PublicEvents.ToggleMovement -= ToggleMovement;
+        PublicEvents.InteractStarted -= OnInteractStart;
+
     }
 
+    /// <summary>
+    /// Checks if the player is looking at an object that can be interacted with
+    /// </summary>
+    /// <returns>Returns true if they are</returns>
+    public bool LookingAtObject()
+    {
+        RaycastHit hit;
+        Vector3 direction = CameraRotationPoint.forward;
+
+        if (Physics.Raycast(CameraRotationPoint.transform.position, direction, out hit, sightDistance))
+        {
+            if (hit.transform.GetComponent<IInteractable>() != null)
+            {
+
+                if (interactingWith != null && hit.transform.GetComponent<IInteractable>() == interactingWith)
+                {
+                    return true;
+                }
+
+                if (lookingAt != null && hit.transform.GetComponent<IInteractable>() != lookingAt)
+                {
+                    lookingAt.ExitHover();
+                }
+
+                lookingAt = hit.transform.GetComponent<IInteractable>();
+                lookingAt.EnterHover();
+
+                SetCursorType(InteractStates.Interactable);
+
+                return true;
+            }
+        }
+
+        if (lookingAt != null)
+        {
+            if (lookingAt != interactingWith)
+            {
+                lookingAt.ExitHover();
+            }
+            lookingAt = null;
+        }
+
+        SetCursorType(InteractStates.NonInteractable);
+        return false;
+    }
+
+    /// <summary>
+    /// Override from Movement base class
+    /// </summary>
+    public void OnInteractStart()
+    {
+        if (!CanMove)
+        {
+            return;
+        }
+
+        if (lookingAt != null)
+        {
+            if (interactingWith == null)
+            {
+                interactingWith = lookingAt;
+                interactingWith.EnterInteract(this);
+            }
+            else
+            {
+                if (lookingAt != interactingWith)
+                {
+                    interactingWith.ExitInteract();
+                    interactingWith = lookingAt;
+                    interactingWith.EnterInteract(this);
+                }
+                else
+                {
+                    interactingWith.ExitInteract();
+                    interactingWith = null;
+                }
+            }
+        }
+        else if (interactingWith != null)
+        {
+            interactingWith.ExitInteract();
+            if (interactingWith == lookingAt)
+            {
+                interactingWith.EnterHover();
+            }
+            interactingWith = null;
+        }
+
+    }
 
     /// <summary>
     /// Toggles movement based on event call
