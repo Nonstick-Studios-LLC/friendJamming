@@ -39,7 +39,9 @@ public class TetherManager : Singleton<TetherManager>
     private readonly List<Vector3> ropeNodes = new List<Vector3>();
     private int endIdx => ropeNodes.Count - 1;
 
-    private bool calculateTether = true; // uhh TODO set to false if player starts in the phish
+    private bool playerLandMode => playerController.currentMovement == PlayerController.MovementType.Land; 
+    private bool reelingIn = false; 
+    private bool calculateTether => !playerLandMode && !reelingIn; 
 
     void Start()
     {
@@ -179,7 +181,7 @@ public class TetherManager : Singleton<TetherManager>
     public void ReeelItInBuddy()
     {
         Debug.Log("reeling it in!");
-        calculateTether = false;
+        reelingIn = true;
         playerController.ActivelyGettingReeled = true;
 
         StartCoroutine(ReeeelItInBuddy2());
@@ -226,7 +228,7 @@ public class TetherManager : Singleton<TetherManager>
         Vector3 direction2 = (anchorPoint.position - followPoint.position).normalized;
         followRB.linearVelocity = direction2 * ReelSpeed;
 
-        calculateTether = true;
+        reelingIn = false;
         playerController.ActivelyGettingReeled = false;
         Debug.Log("reel done go home");
 
@@ -311,6 +313,12 @@ public class TetherManager : Singleton<TetherManager>
 
     private void UpdateLineRenderer()
     {
+        if (playerLandMode)
+        {
+            lineRenderer.positionCount = 0;
+            return;
+        }
+
         lineRenderer.positionCount = ropeNodes.Count;
         lineRenderer.SetPositions(ropeNodes.ToArray());
     }

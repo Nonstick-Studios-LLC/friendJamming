@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
         NonInteractable, Interactable
     }
     [SerializeField] private MovementType startingMovement;
-    private MovementType currentMovement;
+    public MovementType currentMovement { get; private set; }
 
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float cameraSensitivity;
