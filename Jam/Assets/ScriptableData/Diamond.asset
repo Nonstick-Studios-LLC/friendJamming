@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemScriptable
   itemName: Diamond
   sellPrice: 50
-  purchasePrice: 40
+  purchasePrice: 50
   isMcGuffin: 0
   visual: {fileID: 7992078074451478227, guid: a2afabe6c8778194582e4cb3d8128a99, type: 3}

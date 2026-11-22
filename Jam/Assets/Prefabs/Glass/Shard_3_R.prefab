@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 11e194ef3c57db248a46b97df9ccbf1c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3e2e8723689d8c24ab57e90b807f73e4, type: 2}
     - target: {fileID: 919132149155446097, guid: 11e194ef3c57db248a46b97df9ccbf1c, type: 3}
       propertyPath: m_Name
       value: Shard_3_R

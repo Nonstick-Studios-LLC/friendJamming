@@ -9,45 +9,61 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 7.4261
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 7.4261
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 7.4261
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 269.65826
+      value: 399.74
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 240.58447
+      value: 285.02
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 14.982034
+      value: 172.75
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.57315725
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.44712174
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.5845538
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.3603746
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 110.955
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 76.541
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 162.149
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3e2e8723689d8c24ab57e90b807f73e4, type: 2}
     - target: {fileID: 919132149155446097, guid: fa85e64ca08afad4a8332d79f8563884, type: 3}
       propertyPath: m_Name
       value: BottleShard2
