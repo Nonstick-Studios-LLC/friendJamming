@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
 
     private void TetherOffUpdate()
     {
-        OxygenManager.Instance.StopPlayerOxygenDepletion();
+        OxygenManager.Instance.StopPlayerOxygenRegen();
         OxygenManager.Instance.StopPlayerOxygenDepletion();
         if(currentMovement == MovementType.Land)
         {
@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour
 
     private void TetherOnUpdate()
     {
-        OxygenManager.Instance.StopPlayerOxygenDepletion();
+        OxygenManager.Instance.StopPlayerOxygenRegen();
         OxygenManager.Instance.StopPlayerOxygenDepletion();
         OxygenManager.Instance.AddOxygenUntilFull(attatchedOxygenGainRate);
     }

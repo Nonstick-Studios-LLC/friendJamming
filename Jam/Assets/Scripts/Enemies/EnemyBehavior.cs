@@ -46,8 +46,12 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField, ShowIf("effectOnShip", FishEffect.StopPHISH), Tooltip("How long does this enemy disable the PHISH controls?")]
     int stunTime;
 
+
+    private Rigidbody rb;
+
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
         if(hasPath)
         {
             BeginSwimming();
@@ -64,13 +68,14 @@ public class EnemyBehavior : MonoBehaviour
         Vector3 currentCoordinate = pathingPoints[0].transform.position;
         int currentLoop = 1;
 
-        transform.rotation = Quaternion.LookRotation(currentCoordinate);
+        //transform.rotation = Quaternion.LookRotation(currentCoordinate);
+        transform.up = (currentCoordinate - transform.position).normalized;
 
         while (true)
         {
             transform.position = Vector3.MoveTowards(transform.position, currentCoordinate, idleSpeed * Time.deltaTime);
 
-            if(transform.position == currentCoordinate)
+            if (Vector3.Distance(transform.position, currentCoordinate) < 0.1f)
             {
                 currentLoop++;
 
@@ -80,7 +85,9 @@ public class EnemyBehavior : MonoBehaviour
                 }
 
                 currentCoordinate = pathingPoints[currentLoop - 1].transform.position;
-                transform.rotation = Quaternion.LookRotation(currentCoordinate);
+
+                Vector3 direction = (currentCoordinate - transform.position).normalized;
+                transform.up = direction;
             }
 
             yield return new WaitForFixedUpdate();
@@ -91,9 +98,15 @@ public class EnemyBehavior : MonoBehaviour
     {
         while(true)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, chaseSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.LookRotation(target.transform.position);
-            yield return new WaitForFixedUpdate();
+            //transform.position = Vector3.MoveTowards(transform.position, target.transform.position, chaseSpeed * Time.deltaTime);
+
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            rb.AddForce(direction * chaseSpeed, ForceMode.VelocityChange);
+
+            //transform.rotation = Quaternion.LookRotation(target.transform.position);
+            transform.up = direction;
+
+            yield return null;
         }
     }
 
@@ -137,7 +150,7 @@ public class EnemyBehavior : MonoBehaviour
         if(fishType == FishType.PlayerOriented && collision.gameObject.GetComponent<PlayerController>())
         {
             collision.gameObject.GetComponent<PlayerHealthManager>().ChangeHealthValue(damageToPlayer);
-            collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * knockback, ForceMode.Impulse);
+            collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.up * knockback, ForceMode.Impulse);
         }
 
         if(fishType == FishType.ShipOriented && collision.gameObject.GetComponent<SubmarineInputHandler>())
@@ -145,7 +158,7 @@ public class EnemyBehavior : MonoBehaviour
             if(effectOnShip == FishEffect.StopPHISH)
             {
                 //so that the phish doesn't get stunlocked
-                collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * knockback, ForceMode.Impulse);
+                collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.up * knockback, ForceMode.Impulse);
                 collision.gameObject.GetComponent<SubmarineInputHandler>().StartStunCycle(stunTime);
             }
             else if(effectOnShip == FishEffect.DrainPHISH)
@@ -155,7 +168,7 @@ public class EnemyBehavior : MonoBehaviour
             else if(effectOnShip == FishEffect.MovePHISH)
             {
                 //the phish has a shit ton of mass so the knockback will have to be super high for now lol
-                collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * knockback, ForceMode.Impulse);
+                collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.up * knockback, ForceMode.Impulse);
             }
         }
     }
