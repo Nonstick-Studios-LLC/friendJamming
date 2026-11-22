@@ -44,7 +44,11 @@ public class ShipController : MonoBehaviour, IInteractable
 
     public void ExitInteract()
     {
+
         PublicEvents.MoveDirection -= MoveControls_Held;
+        PublicEvents.MoveDirectionStarted -= Move_controls_staert;
+        PublicEvents.UpdownShipStarted -= Updownship_start;
+
         playerController.CanMoveDirections = true;
     }
 
