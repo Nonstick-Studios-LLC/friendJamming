@@ -37,6 +37,7 @@ public class TetherManager : Singleton<TetherManager>
 
     [Foldout("Audio")] public Transform soundPlayPoint;
     [Foldout("Audio")] public AudioClip unhookTetherSound;
+    [Foldout("Audio")] public AudioSource ziiiiipSound;
 
     private LineRenderer lineRenderer;
     private readonly List<Vector3> ropeNodes = new List<Vector3>();
@@ -346,7 +347,7 @@ public class TetherManager : Singleton<TetherManager>
 
         lineRenderer.positionCount = ropeNodes.Count;
         lineRenderer.SetPositions(ropeNodes.ToArray());
-        soundPlayPoint.position = ropeNodes[endIdx];
+        //soundPlayPoint.position = ropeNodes[endIdx];
     }
 
     void OnDrawGizmos()
