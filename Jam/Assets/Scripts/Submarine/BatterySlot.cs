@@ -10,6 +10,7 @@ public class BatterySlot : MonoBehaviour, IInteractable
     [SerializeField] private ShipOxygenStorage storage;
     [SerializeField] private ItemScriptable allowedItems;
     [SerializeField] private Transform snapPosition;
+    bool holdingBattery = false;
 
     private void Awake()
     {
@@ -17,6 +18,13 @@ public class BatterySlot : MonoBehaviour, IInteractable
         CurrentBattery.GetComponent<Rigidbody>().isKinematic = true;
         CurrentBattery.transform.parent = snapPosition;
         CurrentBattery.transform.localPosition = Vector3.zero;
+
+        PublicEvents.HoldingBattery += SetBatteryStatus;
+    }
+
+    private void SetBatteryStatus(bool b)
+    {
+        holdingBattery = b;
     }
 
     public void EnterHover()
@@ -39,9 +47,22 @@ public class BatterySlot : MonoBehaviour, IInteractable
             CurrentBattery = null;
         }
 
-        //If slot is empty and player is not holding battery do nothing
+        if(CurrentBattery == null && holdingBattery)
+        {
 
-        //If slot is empty and player is holding battery "INSERT BATTERY"
+        }
+
+        UpdateUIPopUp();
+        UpdateOxygenStorage();
+    }
+
+    public void Placed(OxygenBattery ob)
+    {
+        CurrentBattery = ob;
+        CurrentBattery.GetComponent<Collider>().enabled = false;
+        CurrentBattery.GetComponent<Rigidbody>().isKinematic = true;
+        CurrentBattery.transform.parent = snapPosition;
+        CurrentBattery.transform.localPosition = Vector3.zero;
 
         UpdateUIPopUp();
         UpdateOxygenStorage();
