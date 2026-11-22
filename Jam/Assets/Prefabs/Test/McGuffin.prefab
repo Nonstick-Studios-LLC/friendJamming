@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6576083744636815120}
   - component: {fileID: 3312849293581028779}
   - component: {fileID: 7453215087112076244}
+  - component: {fileID: 2664957402584975944}
   m_Layer: 0
   m_Name: McGuffin
   m_TagString: Untagged
@@ -1527,7 +1528,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 0.2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1543,3 +1544,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25cf68fac65238c40887979693432a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Treasure
+--- !u!54 &2664957402584975944
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937978921166524361}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
