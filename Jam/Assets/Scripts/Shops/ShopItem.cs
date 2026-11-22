@@ -75,6 +75,7 @@ public class ShopItem : MonoBehaviour, IInteractable
         GameObject visual = Instantiate(itemData.GetVisual(), this.gameObject.transform);
         visual.name = itemData.GetName();
         spawnedItem = visual.GetComponent<Treasure>();
+        spawnedItem.TogglePhysics(false);
         spawnedItem.ItemData = itemData;
         spawnedItem.SetPurchaseStatus(false);
         UpdatePriceColor(savedScrapCount);

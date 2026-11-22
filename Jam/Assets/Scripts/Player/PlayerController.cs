@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public Transform CameraRotationPoint { get { return cameraRotationParent; }}
     [SerializeField] private float minCameraYClamp = -60;
     [SerializeField] private float maxCameraYClamp = 60f;
+    [SerializeField] private GameObject arms;
 
     private Dictionary<MovementType, Movement> movementScripts;
 
@@ -41,6 +42,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Color standardCrosshairColor;
     [SerializeField] private char interactableCrosshair;
     [SerializeField] private Color interactableCrosshairColor;
+    private Vector3 landCollider = new Vector3(1, 2, 1);
+    private Vector3 waterCollider = new Vector3(1, 1, 2);
     Movement activeMovement;
     Vector2 cameraRotation;
 
@@ -107,11 +110,19 @@ public class PlayerController : MonoBehaviour
 
         if (activeMovement.LookingAtObject())
         {
-            SetCursorType(PlayerController.InteractStates.Interactable);
+            SetCursorType(InteractStates.Interactable);
         }
         else
         {
-            SetCursorType(PlayerController.InteractStates.NonInteractable);
+            SetCursorType(InteractStates.NonInteractable);
+        }
+
+        if (arms != null)
+        {
+            Vector3 armsRotation = arms.transform.localEulerAngles;
+            armsRotation.y = cameraRotation.y;
+            armsRotation.x = Mathf.Clamp(cameraRotation.x, -40, 40);
+            arms.transform.localEulerAngles = armsRotation;
         }
     }
 
@@ -164,6 +175,16 @@ public class PlayerController : MonoBehaviour
             }
 
         }
+
+        if(newType == MovementType.Land)
+        {
+            GetComponent<BoxCollider>().size = landCollider;
+        }
+        else
+        {
+            GetComponent<BoxCollider>().size = waterCollider;
+        }
+
         Debug.Log("Current movement set to " + newType.ToString());
     }
 
