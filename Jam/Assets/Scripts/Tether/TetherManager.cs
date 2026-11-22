@@ -262,7 +262,8 @@ public class TetherManager : Singleton<TetherManager>
                 float radialVelocity = Vector3.Dot(followRB.linearVelocity, outwardDir);
                 Vector3 dampingForce = -outwardDir * (radialVelocity * springDamping);
 
-                followRB.AddForce(springForce + dampingForce, ForceMode.Force);
+                // this makes the tether feel good but breaks literally everything
+                //followRB.AddForce(springForce + dampingForce, ForceMode.Force);
 
                 if (maxStretchLimit > maxTetherLength && currentLength > maxStretchLimit)
                 {

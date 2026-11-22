@@ -15,7 +15,6 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-
     public enum MovementType
     {
         Land, Water
