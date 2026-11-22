@@ -313,8 +313,6 @@ public class TetherManager : Singleton<TetherManager>
 
             if (lastSegmentDist > Mathf.Epsilon)
             {
-                
-
                 // this makes the tether feel good but breaks literally everything
                 //followRB.AddForce(springForce + dampingForce, ForceMode.Force);
 
@@ -347,7 +345,7 @@ public class TetherManager : Singleton<TetherManager>
 
         lineRenderer.positionCount = ropeNodes.Count;
         lineRenderer.SetPositions(ropeNodes.ToArray());
-        //soundPlayPoint.position = ropeNodes[endIdx];
+        soundPlayPoint.position = ropeNodes[endIdx];
     }
 
     void OnDrawGizmos()
