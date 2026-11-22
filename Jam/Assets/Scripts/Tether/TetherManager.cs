@@ -1,21 +1,34 @@
+/*
+ * Got a lot of this code online tbh but did have to repurpose sooo much its basically mine atp
+ * -Toby
+ */
+
 using NaughtyAttributes;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class TetherWrapper3D : MonoBehaviour
+public class TetherManager : MonoBehaviour
 {
     [Header("Tether Endpoints")]
     public Transform anchorPoint;   // Static or starting end of the tether
-    public Rigidbody followPoint;  // the player
+    public Rigidbody followRB;  // the player
+    public Transform followPoint;  // the player
 
     [Header("Collision Settings")]
     public float maxTetherLength = 10f;
+    public float maxStretchLimit = 12f;
+
     public LayerMask obstacleLayer;
     [Tooltip("Small offset along surface normal to prevent self-intersection")]
     public float surfaceOffset = 0.05f;
     public int maxWrapPoints = 32;
+
+    [Header("Spring")]
+    [Tooltip("How strongly the tether pulls back when stretched")]
+    public float springStiffness = 50f;
+    [Tooltip("Prevents endless bouncing/oscillation")]
+    public float springDamping = 5f;
 
     private LineRenderer lineRenderer;
     private readonly List<Vector3> ropeNodes = new List<Vector3>();
@@ -29,6 +42,13 @@ public class TetherWrapper3D : MonoBehaviour
 
     void Start()
     {
+        if(followRB == null)
+        {
+            var player = FindFirstObjectByType<PlayerController>();
+            followRB = player.GetComponent<Rigidbody>();
+            followPoint = player.tetherAnchorPoint;
+        }
+
         ResetTether();
     }
 
@@ -36,24 +56,24 @@ public class TetherWrapper3D : MonoBehaviour
     public void ResetTether()
     {
         ropeNodes.Clear();
-        if (anchorPoint != null && followPoint != null)
+        if (anchorPoint != null && followRB != null)
         {
             ropeNodes.Add(anchorPoint.position);
-            ropeNodes.Add(followPoint.position);
+            ropeNodes.Add(followRB.position);
         }
     }
 
     void LateUpdate()
     {
-        if (anchorPoint == null || followPoint == null || ropeNodes.Count < 2)
+        if (anchorPoint == null || followRB == null || ropeNodes.Count < 2)
             return;
 
         ropeNodes[0] = anchorPoint.transform.position;
-        ropeNodes[endIdx] = followPoint.transform.position;
+        ropeNodes[endIdx] = followRB.transform.position;
 
         HandleWrapping();
         HandleUnwrapping();
-        //CleanupSimilarNodes();
+        CleanupSimilarNodes();
         UpdateLineRenderer();
     }
 
@@ -62,6 +82,7 @@ public class TetherWrapper3D : MonoBehaviour
         float totalLength = 0f;
         for (int i = 0; i < ropeNodes.Count - 1; i++)
         {
+            // so inneficent who gaf
             totalLength += Vector3.Distance(ropeNodes[i], ropeNodes[i + 1]);
         }
         return totalLength;
@@ -121,7 +142,7 @@ public class TetherWrapper3D : MonoBehaviour
     {
         if (ropeNodes.Count <= 2) return;
 
-        for (int i = 0; i <= endIdx - 1; i++)
+        for (int i = endIdx-2; i <= endIdx - 1; i++)
         {
             Vector3 a = ropeNodes[i];
             Vector3 b = ropeNodes[i + 1];
@@ -138,10 +159,46 @@ public class TetherWrapper3D : MonoBehaviour
 
     void FixedUpdate()
     {
+        ropeNodes[endIdx] = followRB.position;
+
+        float currentLength = GetCurrentLength();
+        float stretch = currentLength - maxTetherLength;
+
+        // Only apply tension if the rope is taut (stretched past maxTetherLength)
+        if (stretch > 0f)
+        {
+            Vector3 lastPivot = ropeNodes[endIdx - 1];
+            Vector3 toPlayer = followRB.position - lastPivot;
+            float lastSegmentDist = toPlayer.magnitude;
+
+            if (lastSegmentDist > Mathf.Epsilon)
+            {
+                Vector3 outwardDir = toPlayer / lastSegmentDist;
+
+                Vector3 springForce = -outwardDir * (stretch * springStiffness);
+
+                float radialVelocity = Vector3.Dot(followRB.linearVelocity, outwardDir);
+                Vector3 dampingForce = -outwardDir * (radialVelocity * springDamping);
+
+                followRB.AddForce(springForce + dampingForce, ForceMode.Force);
+
+                if (maxStretchLimit > maxTetherLength && currentLength > maxStretchLimit)
+                {
+                    if (radialVelocity > 0f)
+                        followRB.linearVelocity -= outwardDir * radialVelocity;
+
+                    float hardOvershoot = currentLength - (maxStretchLimit);
+                    followRB.MovePosition(followRB.position - outwardDir * hardOvershoot);
+                }
+            }
+        }
+
         //if (ropeNodes.Count < 2)
-         //   return;
+        //   return;
 
         // Update the player's current position in the node list for accurate length math
+
+        /*
         ropeNodes[endIdx] = followPoint.position;
 
         float currentLength = GetCurrentLength();
@@ -155,21 +212,21 @@ public class TetherWrapper3D : MonoBehaviour
             {
                 Vector3 outwardDir = toPlayer / lastSegmentDist;
 
-                // 1. Strip out any velocity moving away from the pivot (preserves swinging/tangential movement)
+                // strip out any velocity moving away from the pivot (preserves swinging/tangential movement)
                 float outwardSpeed = Vector3.Dot(followPoint.linearVelocity, outwardDir);
                 if (outwardSpeed > 0f)
                 {
                     followPoint.linearVelocity -= outwardDir * outwardSpeed;
                 }
 
-                // 2. Clamp position so the player can't slowly drift past maxTetherLength
+                // clamp position so the player can't slowly drift past maxTetherLength
                 float overshoot = currentLength - maxTetherLength;
                 if (overshoot > 0f)
                 {
                     followPoint.MovePosition(followPoint.position - outwardDir * overshoot);
                 }
             }
-        }
+        }*/
     }
 
     private void UpdateLineRenderer()

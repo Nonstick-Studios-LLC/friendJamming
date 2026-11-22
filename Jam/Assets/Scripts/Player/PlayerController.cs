@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float cameraSensitivity;
     [SerializeField] private Transform cameraRotationParent;
+    [SerializeField] public Transform tetherAnchorPoint;
     public float CameraSensitivity {  get { return cameraSensitivity; }}
     public Transform CameraRotationPoint { get { return cameraRotationParent; }}
     [SerializeField] private float minCameraYClamp = -60;
@@ -56,6 +57,9 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         PublicEvents.MousePosition += OnMouseMove;
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnDestroy()
