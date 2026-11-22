@@ -8,11 +8,23 @@ public class BatterySlot : MonoBehaviour, IInteractable
 
     [SerializeField] private TextMeshProUGUI uiPopUp;
     [SerializeField] private ShipOxygenStorage storage;
+    [SerializeField] private ItemScriptable allowedItems;
+    [SerializeField] private Transform snapPosition;
+    bool holdingBattery = false;
 
     private void Awake()
     {
-        CurrentBattery.TogglePhysics(false);
-        CurrentBattery.GetComponent<Rigidbody>().useGravity = false;
+        CurrentBattery.GetComponent<Collider>().enabled = false;
+        CurrentBattery.GetComponent<Rigidbody>().isKinematic = true;
+        CurrentBattery.transform.parent = snapPosition;
+        CurrentBattery.transform.localPosition = Vector3.zero;
+
+        PublicEvents.HoldingBattery += SetBatteryStatus;
+    }
+
+    private void SetBatteryStatus(bool b)
+    {
+        holdingBattery = b;
     }
 
     public void EnterHover()
@@ -32,11 +44,25 @@ public class BatterySlot : MonoBehaviour, IInteractable
         if (CurrentBattery != null)
         {
             CurrentBattery.EnterInteract(pc);
+            CurrentBattery = null;
         }
 
-        //If slot is empty and player is not holding battery do nothing
+        if(CurrentBattery == null && holdingBattery)
+        {
 
-        //If slot is empty and player is holding battery "INSERT BATTERY"
+        }
+
+        UpdateUIPopUp();
+        UpdateOxygenStorage();
+    }
+
+    public void Placed(OxygenBattery ob)
+    {
+        CurrentBattery = ob;
+        CurrentBattery.GetComponent<Collider>().enabled = false;
+        CurrentBattery.GetComponent<Rigidbody>().isKinematic = true;
+        CurrentBattery.transform.parent = snapPosition;
+        CurrentBattery.transform.localPosition = Vector3.zero;
 
         UpdateUIPopUp();
         UpdateOxygenStorage();

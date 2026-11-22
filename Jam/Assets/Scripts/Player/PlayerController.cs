@@ -56,6 +56,9 @@ public class PlayerController : MonoBehaviour
     public LayerMask lm;
     [Layer] public int transitionLayer;
     private bool lookingAtShopkeeper = false;
+    private bool lookingAtBatterySlot = false;
+    private bool holdingBattery = false;
+    private RaycastHit hitInfo;
 
 
     private IInteractable lookingAt;
@@ -75,13 +78,19 @@ public class PlayerController : MonoBehaviour
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        PublicEvents.HoldingBattery += BatteryState;
     }
 
     private void OnDestroy()
     {
         PublicEvents.MousePosition -= OnMouseMove;
+        PublicEvents.HoldingBattery -= BatteryState;
     }
 
+    private void BatteryState(bool b)
+    {
+        holdingBattery = b;
+    }
 
     /// <summary>
     /// Start function
@@ -188,11 +197,10 @@ public class PlayerController : MonoBehaviour
     /// <returns>Returns true if they are</returns>
     public bool LookingAtObject()
     {
-        RaycastHit hit;
         Vector3 direction = CameraRotationPoint.forward;
 
         Debug.DrawRay(CameraRotationPoint.transform.position, direction);
-        if (Physics.Raycast(CameraRotationPoint.transform.position, direction, out hit, sightDistance, lm))
+        if (Physics.Raycast(CameraRotationPoint.transform.position, direction, out hitInfo, sightDistance, lm))
         {
             var hitObject = hit.collider.transform;
             var hitInteractable = hit.collider.transform.GetComponent<IInteractable>();
@@ -200,10 +208,24 @@ public class PlayerController : MonoBehaviour
 
             if (hitInteractable != null)
             {
-                if(hitObject.GetComponent<Shopkeeper>()!=null)
+                // put the poor brackets back toby :(
+                if (hitObject.GetComponent<Shopkeeper>() != null)
+                {
                     lookingAtShopkeeper = true;
+                }
                 else
+                {
                     lookingAtShopkeeper = false;
+                }
+
+                if(hitObject.GetComponent<BatterySlot>()!=null)
+                {
+                    lookingAtBatterySlot = true;
+                }
+                else
+                {
+                    lookingAtBatterySlot = false;
+                }
 
                 if (interactingWith != null && hitInteractable == interactingWith)
                 {
@@ -254,7 +276,13 @@ public class PlayerController : MonoBehaviour
 
         if (lookingAt != null)
         {
-            if(lookingAtShopkeeper)
+            // this is janky asf but it works for jam code
+            if(lookingAtBatterySlot && holdingBattery)
+            {
+                GetComponentInChildren<OxygenBattery>().PlaceBattery(hitInfo.transform.GetComponent<BatterySlot>());
+                return;
+            }
+            if (lookingAtShopkeeper || lookingAtBatterySlot)
             {
                 lookingAt.EnterInteract(this);
                 return;
