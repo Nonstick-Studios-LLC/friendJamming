@@ -41,9 +41,10 @@ public class TreasureSpawner : MonoBehaviour
         int spawnIndex = UnityEngine.Random.Range(0, potentialTreasures.Count - 1);
         itemToSpawn = potentialTreasures[spawnIndex].GetVisual();
         GameObject spawnedItem = Instantiate(itemToSpawn, gameObject.transform);
+        spawnedItem.transform.localPosition = Vector3.zero;
         spawnedItemCount++;
         Treasure t = spawnedItem.GetComponent<Treasure>();
-        t.ItemData = potentialTreasures[spawnIndex];
+        t.SetItemScriptableStatus(potentialTreasures[spawnIndex]);
         t.TogglePhysics(true);
     }
 

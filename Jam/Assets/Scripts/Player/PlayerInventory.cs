@@ -10,13 +10,13 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private GameObject sellMenu;
     [SerializeField] private TMP_Text sellMenuText;
     [SerializeField] private Button sellButton;
-    [SerializeField] private Button nextItemButton;
+    //[SerializeField] private Button nextItemButton;
     [SerializeField] private GameObject buyMenu;
     [SerializeField] private Button buyButton;
 
     [SerializeField] private TMP_Text buyMenuText;
 
-    [SerializeField] private List<ItemScriptable> personalTreasure;
+    [SerializeField, ReadOnly] private List<ItemScriptable> personalTreasure;
     private ItemScriptable heldData;
     private int localScrapReference = 0;
     private PlayerController pc;
@@ -34,13 +34,27 @@ public class PlayerInventory : MonoBehaviour
         PublicEvents.UpdateScrapCount += UpdateScrapUI;
         PublicEvents.StartBuyInteraction += ToggleBuyMenu;
         PublicEvents.StartSellInteraction += ToggleSellMenu;
+        PublicEvents.AddToInventory += AddItem;
+        personalTreasure.Clear();
     }
 
     private void OnDisable()
     {
         PublicEvents.UpdateScrapCount -= UpdateScrapUI;
+        PublicEvents.StartBuyInteraction -= ToggleBuyMenu;
+        PublicEvents.StartSellInteraction -= ToggleSellMenu;
+        PublicEvents.AddToInventory -= AddItem;
     }
 
+    private void AddItem(ItemScriptable item)
+    {
+        personalTreasure.Add(item);
+    }
+
+    private void ClearInventory()
+    {
+        personalTreasure.Clear();
+    }
 
     private void UpdateScrapUI(int scrapCount)
     {
@@ -58,6 +72,7 @@ public class PlayerInventory : MonoBehaviour
         {
             if (!personalTreasure[itemSellIndex].GetMcGuffin())
             {
+                PublicEvents.RemoveFromInventory?.Invoke();
                 localScrapReference += personalTreasure[itemSellIndex].GetSellPrice();
                 personalTreasure.Remove(personalTreasure[itemSellIndex]);
                 PublicEvents.UpdateScrapCount?.Invoke(localScrapReference);
@@ -78,9 +93,10 @@ public class PlayerInventory : MonoBehaviour
                 else
                 {
                     sellMenuText.text = "You have no treasure to sell";
-                    nextItemButton.enabled = false;
                     sellButton.enabled = false;
                 }
+
+
             }
         }
 
@@ -95,7 +111,6 @@ public class PlayerInventory : MonoBehaviour
             sellMenu.SetActive(false);
             itemSellIndex = 0;
             sellButton.enabled = false;
-            nextItemButton.enabled = false;
         }
         else
         {
@@ -105,10 +120,6 @@ public class PlayerInventory : MonoBehaviour
             if (personalTreasure.Count > 0)
             {
                 sellMenuText.text = $"Sell {personalTreasure[itemSellIndex].GetName()} for {personalTreasure[itemSellIndex].GetSellPrice().ToString()} Scrap?";
-                if (personalTreasure.Count > 1)
-                {
-                    nextItemButton.enabled = true;
-                }
                 sellButton.enabled = true;
             }
             else
@@ -118,15 +129,6 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public void ViewNextSellableItem()
-    {
-        itemSellIndex++;
-        if (itemSellIndex >= personalTreasure.Count)
-        {
-            itemSellIndex = 0;
-        }
-        sellMenuText.text = $"Sell {personalTreasure[itemSellIndex].GetName()} for {personalTreasure[itemSellIndex].GetSellPrice().ToString()} Scrap?";
-    }
 
     #endregion
 

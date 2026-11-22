@@ -75,8 +75,8 @@ public class ShopItem : MonoBehaviour, IInteractable
         GameObject visual = Instantiate(itemData.GetVisual(), this.gameObject.transform);
         visual.name = itemData.GetName();
         spawnedItem = visual.GetComponent<Treasure>();
+        spawnedItem.SetItemScriptableStatus(itemData);
         spawnedItem.TogglePhysics(false);
-        spawnedItem.ItemData = itemData;
         spawnedItem.SetPurchaseStatus(false);
         UpdatePriceColor(savedScrapCount);
         itemCostDisplay.text = "$" + itemData.GetCost().ToString();
@@ -92,7 +92,7 @@ public class ShopItem : MonoBehaviour, IInteractable
         GameObject visual = Instantiate(itemData.GetVisual(), this.gameObject.transform);
         visual.name = itemData.GetName();
         spawnedItem = visual.GetComponent<Treasure>();
-        spawnedItem.ItemData = itemData;
+        spawnedItem.SetItemScriptableStatus(itemData);
         spawnedItem.SetPurchaseStatus(false);
         UpdatePriceColor(savedScrapCount);
         itemCostDisplay.text = "$" + itemData.GetCost().ToString();
