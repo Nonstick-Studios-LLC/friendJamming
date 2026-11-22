@@ -2123,7 +2123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Propeller
   MaxHealth: 10
   currentHealth: 0
-  acceleration: 1
+  acceleration: 100
   rb: {fileID: 2045159811146982684}
   physicsApplyPoint: {x: 0, y: 0, z: 0}
   _realForce: 0
@@ -20161,18 +20161,18 @@ MonoBehaviour:
   MaxVerticalAccelerationIncrements: 2
   angularDamping: 1
   velocityDamping: 0.5
-  totalMaxSpeed: 16
-  backPropellerForwardForce: 10
-  damagedBackPropellerForwardForce: 2
+  totalMaxSpeed: 25
+  backPropellerForwardForce: 25
+  damagedBackPropellerForwardForce: 12.5
   backPropellerContributesToReverse: 0
-  sidePropellersForwardForce: 3
-  damagedSidePropellersForwardForce: 1
-  floaterUpwardForce: 1
-  damagedFloaterUpwardForce: 0.125
-  floaterDownwardForce: 3
-  damagedFloaterDownwardForce: 0.25
-  maxHorizontalTurnForce: 2
-  damagedMaxHorizontalTurnFoce: 0.5
+  sidePropellersForwardForce: 12.5
+  damagedSidePropellersForwardForce: 6.25
+  floaterUpwardForce: 25
+  damagedFloaterUpwardForce: 12.5
+  floaterDownwardForce: 25
+  damagedFloaterDownwardForce: 12.5
+  maxHorizontalTurnForce: 5
+  damagedMaxHorizontalTurnFoce: 2.5
   leftPropeller: {fileID: 3400377958567953729}
   rightPropeller: {fileID: 7896301250943802916}
   backPropeller: {fileID: 6293874089295466696}
@@ -20184,7 +20184,6 @@ MonoBehaviour:
   leverRotateRadius: {x: 0, y: -160}
   reversingAudio: {fileID: 981829260722070994}
   rb: {fileID: 2045159811146982684}
-  currentForwardControls: 1
 --- !u!82 &981829260722070994
 AudioSource:
   m_ObjectHideFlags: 0
@@ -24124,6 +24123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2f6ca7e014517740bdabde7035c229c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipInteriorTrigger
+  ChildPlayer: 0
+  shipParent: {fileID: 0}
 --- !u!1 &4798332800928045896
 GameObject:
   m_ObjectHideFlags: 0
@@ -55343,10 +55344,6 @@ PrefabInstance:
       propertyPath: rb
       value: 
       objectReference: {fileID: 2045159811146982684}
-    - target: {fileID: 8459547509331766935, guid: 2cf41528635a08f4aac955f046e579f3, type: 3}
-      propertyPath: acceleration
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -55550,6 +55547,10 @@ PrefabInstance:
       propertyPath: rb
       value: 
       objectReference: {fileID: 2045159811146982684}
+    - target: {fileID: 1497915912395073136, guid: 13e99f092717bb24084befe44f13f63d, type: 3}
+      propertyPath: acceleration
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 3746002228521006215, guid: 13e99f092717bb24084befe44f13f63d, type: 3}
       propertyPath: m_Name
       value: Right Propeller
@@ -55560,7 +55561,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3772727279534670459, guid: 13e99f092717bb24084befe44f13f63d, type: 3}
       propertyPath: m_VersionIndex
-      value: 1987
+      value: 2050
       objectReference: {fileID: 0}
     - target: {fileID: 4238353947948572164, guid: 13e99f092717bb24084befe44f13f63d, type: 3}
       propertyPath: m_LocalPosition.x
