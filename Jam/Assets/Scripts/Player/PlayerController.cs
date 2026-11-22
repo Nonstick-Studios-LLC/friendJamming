@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float cameraSensitivity;
     [SerializeField] private Transform cameraRotationParent;
+    [SerializeField] public Transform tetherAnchorPoint;
     public float CameraSensitivity {  get { return cameraSensitivity; }}
     public Transform CameraRotationPoint { get { return cameraRotationParent; }}
     [SerializeField] private float minCameraYClamp = -60;
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour
     private Dictionary<MovementType, Movement> movementScripts;
 
     [SerializeField] private TMP_Text playerCrosshair;
+    [SerializeField] private Slider reelInTimer;
     [SerializeField] private char standardCrosshair;
     [SerializeField] private Color standardCrosshairColor;
     [SerializeField] private char interactableCrosshair;
@@ -49,6 +51,7 @@ public class PlayerController : MonoBehaviour
     Movement activeMovement;
     Vector2 cameraRotation;
     [SerializeField] private float sightDistance = 10f;
+    [SerializeField] private float secondsToReelIn = 2;
 
     public Transform PickupPoint;
     [Layer] public int transitionLayer;
@@ -62,12 +65,16 @@ public class PlayerController : MonoBehaviour
 
     //this sucks but i just want a solution rn man
     [SerializeField] private bool canMoveDirections = true;
-    public bool CanMove { get { return canMove; } set { canMove = value; } }
-    public bool CanMoveDirections { get { return canMoveDirections; } set { canMoveDirections = value; } }
+    [SerializeField] public bool ActivelyGettingReeled = false;
+    public bool CanMove { get { return canMove && !ActivelyGettingReeled; } set { canMove = value; } }
+    public bool CanMoveDirections { get { return canMoveDirections && !ActivelyGettingReeled; } set { canMoveDirections = value; } }
 
     private void Awake()
     {
         PublicEvents.MousePosition += OnMouseMove;
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnDestroy()
@@ -85,7 +92,8 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.visible = false;
         SetCursorType(InteractStates.NonInteractable);
-        
+        reelInTimer.value = 0;
+
         movementScripts = new Dictionary<MovementType, Movement>()
             {
                 { MovementType.Land, GetComponent<LandMovement>() },
@@ -105,7 +113,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="cameraVector">Vector2 containing the mouse's delta </param>
     private void OnMouseMove(Vector2 cameraVector)
     {
-        if (!CanMove)
+        if (!CanMove || ActivelyGettingReeled)
         {
             return;
         }
@@ -156,6 +164,8 @@ public class PlayerController : MonoBehaviour
     {
         PublicEvents.ToggleMovement += ToggleMovement;
         PublicEvents.InteractStarted += OnInteractStart;
+        PublicEvents.ReelHeld += WhileReelHeld;
+        PublicEvents.Reeleased += OnReeleased;
     }
 
     /// <summary>
@@ -165,8 +175,11 @@ public class PlayerController : MonoBehaviour
     {
         PublicEvents.ToggleMovement -= ToggleMovement;
         PublicEvents.InteractStarted -= OnInteractStart;
-
+        PublicEvents.ReelHeld -= WhileReelHeld;
+        PublicEvents.Reeleased -= OnReeleased;
     }
+
+    #region interac
 
     /// <summary>
     /// Checks if the player is looking at an object that can be interacted with
@@ -275,6 +288,29 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
+    #endregion
+
+    #region Reeling in
+    // hmm this seems like a good place to put this region,. yes.
+    void WhileReelHeld(float duration)
+    {
+        reelInTimer.value = duration / secondsToReelIn;
+    }
+
+    void OnReeleased(float duration)
+    {
+        //reelInTimer.value = 0;
+
+        //if (duration > secondsToReelIn)
+        if(reelInTimer.value >= 1)
+        {
+            TetherManager.Instance.ReeelItInBuddy();
+        }
+        reelInTimer.value = 0;
+    }
+
+    #endregion
 
     /// <summary>
     /// Toggles movement based on event call

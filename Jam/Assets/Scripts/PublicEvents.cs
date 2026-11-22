@@ -24,6 +24,9 @@ public static class PublicEvents
     public static Action LeftClickStarted;
     public static Action LeftClickEnded;
     public static Action<PlayerController.MovementType> ToggleMovement;
+    public static Action ReelStarted;
+    public static Action<float> ReelHeld; // float duration
+    public static Action<float> Reeleased; // get it
 
     public static Action<ItemScriptable> AddToInventory;
     public static Action RemoveFromInventory;

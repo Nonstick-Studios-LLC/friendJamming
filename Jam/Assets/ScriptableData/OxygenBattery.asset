@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bf43865344a3ae4ea03b4bce86b94fd, type: 3}
+  m_Name: OxygenBattery
+  m_EditorClassIdentifier: Assembly-CSharp::ItemScriptable
+  itemName: Oxygen Battery
+  sellPrice: 1
+  purchasePrice: 1
+  isMcGuffin: 0
+  visual: {fileID: 2935292588462759640, guid: b61fea6947ff5614099f3bb119d10efd, type: 3}

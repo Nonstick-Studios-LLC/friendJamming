@@ -222,12 +222,15 @@ public class WaterMovement : Movement
         Vector3 newValue;
         while(true)
         {
-            newValue = rb.linearVelocity;
-            if(!moving && !ascending && !descending)
+            if (!pc.ActivelyGettingReeled)
             {
-                newValue.y = waterGravity;
+                newValue = rb.linearVelocity;
+                if (!moving && !ascending && !descending)
+                {
+                    newValue.y = waterGravity;
+                }
+                rb.linearVelocity = newValue;
             }
-            rb.linearVelocity = newValue;
 
             yield return null;
         }
@@ -277,6 +280,7 @@ public class WaterMovement : Movement
 
     protected override void OnControlEnded()
     {
+
         descending = false;
 
         if (holdingOtherYAffecter)
@@ -284,6 +288,6 @@ public class WaterMovement : Movement
             holdingOtherYAffecter = false;
             OnSpaceStarted();
         }
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        //rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
     }
 }
