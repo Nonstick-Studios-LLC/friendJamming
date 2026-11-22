@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class OxygenBattery : Treasure, IInteractable
+public class OxygenBattery : Pickup, IInteractable
 {
     public int CurrentOxygenPercentage = 100;
 }

@@ -8,15 +8,18 @@ public class BatterySlot : MonoBehaviour, IInteractable
 
     [SerializeField] private TextMeshProUGUI uiPopUp;
     [SerializeField] private ShipOxygenStorage storage;
+    [SerializeField] private ItemScriptable allowedItems;
+    [SerializeField] private Transform snapPosition;
 
     private void Awake()
     {
-        CurrentBattery.TogglePhysics(false);
-        CurrentBattery.GetComponent<Rigidbody>().useGravity = false;
+        CurrentBattery.GetComponent<Collider>().enabled = false;
+        CurrentBattery.GetComponent<Rigidbody>().isKinematic = true;
     }
 
     public void EnterHover()
     {
+        Debug.Log("Hif thkl");
         if(CurrentBattery != null)
         {
             Debug.Log($"Eject battery " + batterySlotID);
@@ -32,6 +35,7 @@ public class BatterySlot : MonoBehaviour, IInteractable
         if (CurrentBattery != null)
         {
             CurrentBattery.EnterInteract(pc);
+            CurrentBattery = null;
         }
 
         //If slot is empty and player is not holding battery do nothing
