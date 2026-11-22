@@ -15,11 +15,12 @@ public class BatterySlot : MonoBehaviour, IInteractable
     {
         CurrentBattery.GetComponent<Collider>().enabled = false;
         CurrentBattery.GetComponent<Rigidbody>().isKinematic = true;
+        CurrentBattery.transform.parent = snapPosition;
+        CurrentBattery.transform.localPosition = Vector3.zero;
     }
 
     public void EnterHover()
     {
-        Debug.Log("Hif thkl");
         if(CurrentBattery != null)
         {
             Debug.Log($"Eject battery " + batterySlotID);
