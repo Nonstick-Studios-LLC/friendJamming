@@ -137,8 +137,9 @@ MonoBehaviour:
   idleSpeed: 0
   chaseSpeed: 0
   damageToPlayer: 0
-  knockback: 0
+  knockback: 25
   effectOnShip: 1
+  drainAmount: 1
   stunTime: 0
 --- !u!135 &266309876183743979
 SphereCollider:
