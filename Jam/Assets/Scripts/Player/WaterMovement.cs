@@ -1,10 +1,9 @@
 /*************************************************
-Author Names : 		    Cade Naylor
-Date Created : 		    07/30/2026
-Date Last Modified : 	07/30/2026
-Brief Description : 	Actually defines and handles water movement
+Author Names        : 	Cade Naylor
+Date Created        :   11/21/2026
+Brief Description   : 	Handles unique water movement functionality and checks
 
-External Resources :    	
+External Resources  :   Stolen from previous PHISH prototype	
 ***************************************************/
 using System.Collections;
 using UnityEngine;
@@ -35,7 +34,6 @@ public class WaterMovement : Movement
 
     private IInteractable lookingAt;
     private IInteractable interactingWith;
-    [SerializeField] private float sightDistance = 2f;
     private float scalarValue = 3f;
     private float magicNumber = 2f;
     private bool holdingOtherYAffecter = false;
@@ -60,7 +58,6 @@ public class WaterMovement : Movement
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y * .5f, rb.linearVelocity.z);
-        //waterGravityCour = StartCoroutine(WaterGravity());
 
     }
 
@@ -72,49 +69,16 @@ public class WaterMovement : Movement
     {
         base.OnDisable();
         rb.useGravity = true;
-        //StopCoroutine(waterGravityCour);
     }
 
     /// <summary>
     /// Override from Movement base class
-    /// Adjusts the delta using sensitivity and fixed timee
-    /// Rotates the camera between clamps
-    /// </summary>
-    /// <param name="cameraVector">Vector2 containing the mouse's delta </param>
-    protected override void OnMouseMove(Vector2 cameraVector)
-    {
-        /*if (!pc.CanMove)
-        {
-            return;
-        }
-        Vector2 adjustedDelta = cameraVector * pc.CameraSensitivity * Time.fixedDeltaTime;
-
-        cameraRotation.x -= adjustedDelta.y;
-        cameraRotation.x = Mathf.Clamp(cameraRotation.x, minCameraYClamp, maxCameraYClamp);
-        cameraRotation.y += adjustedDelta.x;
-
-        pc.CameraRotationPoint.localEulerAngles = cameraRotation;
-
-
-        if (LookingAtObject())
-        {
-            pc.SetCursorType(PlayerController.InteractStates.Interactable);
-        }
-        else
-        {
-            pc.SetCursorType(PlayerController.InteractStates.NonInteractable);
-        }*/
-
-    }
-
-    /// <summary>
-    /// Override from Movement base class
-    /// Reads a value from the OnMove event and adjust velocity accordingly
+    /// Reads a value from the OnMove event
     /// </summary>
     /// <param name="moveVector"></param>
     protected override void OnMove(Vector2 moveVector)
     {
-        if (!pc.CanMove)
+        if (!pc.CanMove || !pc.CanMoveDirections)
         {
             return;
         }
@@ -123,16 +87,21 @@ public class WaterMovement : Movement
 
         movementValue = newValue;
 
-        //rb.linearVelocity = newValue;
 
     }
 
+    /// <summary>
+    /// Handles final movement calculations and actual moving
+    /// </summary>
     private void FixedUpdate()
     {
+        // If the player gave input, calculate the new value
         if (moving || ascending || descending)
         {
             movementValue.y += yAdjustment;
 
+            // Checks to stop them from launching up/down when trying to go the other wat
+            // They briefly do; this is intended behavior
             while(ascending && movementValue.y < -.5f*magicNumber)
             {
                 movementValue.y += .2f * yAdjustment;
@@ -143,9 +112,10 @@ public class WaterMovement : Movement
             }
 
             movementValue.y = Mathf.Clamp(movementValue.y, -(maxAccelerationMultiplier*descentWaterMovementSpeed*.5f), maxAccelerationMultiplier*ascentWaterMovementSpeed*.5f);
-            movementValue.y*= accelleration;
+            movementValue.y *= accelleration;
             rb.linearVelocity = movementValue;
         }
+        // Otherwise, apply gravity
         else
         {
             rb.linearVelocity = new Vector3(0f, waterGravity, 0f);
@@ -154,48 +124,7 @@ public class WaterMovement : Movement
     }
 
 
-    /// <summary>
-    /// Override from Movement base class
-    /// </summary>
-    protected override void OnInteractStart()
-    {
-        if (!pc.CanMove)
-        {
-            return;
-        }
-        if (lookingAt != null)
-        {
-            if (interactingWith == null)
-            {
-                interactingWith = lookingAt;
-                interactingWith.EnterInteract(pc);
-            }
-            else
-            {
-                if (lookingAt != interactingWith)
-                {
-                    interactingWith.ExitInteract();
-                    interactingWith = lookingAt;
-                    interactingWith.EnterInteract(pc);
-                }
-                else
-                {
-                    interactingWith.ExitInteract();
-                    interactingWith = null;
-                }
-            }
-        }
-        else if (interactingWith != null)
-        {
-            interactingWith.ExitInteract();
-            if (interactingWith == lookingAt)
-            {
-                interactingWith.EnterHover();
-            }
-            interactingWith = null;
-        }
 
-    }
 
     /// <summary>
     /// Override from movement base class
@@ -263,51 +192,7 @@ public class WaterMovement : Movement
 
 
 
-    /// <summary>
-    /// Checks if the player is looking at an object that can be interacted with
-    /// </summary>
-    /// <returns>Returns true if they are</returns>
-    public override bool LookingAtObject()
-    {
-        RaycastHit hit;
-        Vector3 direction = pc.CameraRotationPoint.forward;
 
-        if (Physics.Raycast(pc.CameraRotationPoint.transform.position, direction, out hit, sightDistance))
-        {
-            if (hit.transform.GetComponent<IInteractable>() != null)
-            {
-
-                if (interactingWith != null && hit.transform.GetComponent<IInteractable>() == interactingWith)
-                {
-                    return true;
-                }
-
-                if (lookingAt != null && hit.transform.GetComponent<IInteractable>() != lookingAt)
-                {
-                    lookingAt.ExitHover();
-                }
-
-                lookingAt = hit.transform.GetComponent<IInteractable>();
-                lookingAt.EnterHover();
-
-                pc.SetCursorType(PlayerController.InteractStates.Interactable);
-
-                return true;
-            }
-        }
-
-        if (lookingAt != null)
-        {
-            if (lookingAt != interactingWith)
-            {
-                lookingAt.ExitHover();
-            }
-            lookingAt = null;
-        }
-
-        pc.SetCursorType(PlayerController.InteractStates.NonInteractable);
-        return false;
-    }
 
     /// <summary>
     /// Accellerates the player while shift is held

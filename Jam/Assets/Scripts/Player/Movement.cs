@@ -17,8 +17,6 @@ public abstract class Movement: MonoBehaviour
     {
         PublicEvents.MoveDirection += OnMove;
         PublicEvents.MoveDirectionStopped += OnMoveEnd;
-        PublicEvents.MousePosition += OnMouseMove;
-        PublicEvents.InteractStarted += OnInteractStart;
         PublicEvents.InteractCancelled += OnInteractEnd;
         PublicEvents.SpaceStarted += OnSpaceStarted;
         PublicEvents.SpaceEnded += OnSpaceFinished;
@@ -38,8 +36,6 @@ public abstract class Movement: MonoBehaviour
     {
         PublicEvents.MoveDirection -= OnMove;
         PublicEvents.MoveDirectionStopped -= OnMoveEnd;
-        PublicEvents.MousePosition -= OnMouseMove;
-        PublicEvents.InteractStarted -= OnInteractStart;
         PublicEvents.InteractCancelled -= OnInteractEnd;
         PublicEvents.SpaceStarted -= OnSpaceStarted;
         PublicEvents.SpaceEnded -= OnSpaceFinished;
@@ -55,8 +51,6 @@ public abstract class Movement: MonoBehaviour
 
     protected abstract void OnMove(Vector2 moveVector);
     protected abstract void OnMoveEnd();
-    protected abstract void OnMouseMove(Vector2 cameraVector);
-    protected abstract void OnInteractStart();
     protected abstract void OnInteractEnd();
     protected abstract void OnSpaceStarted();
     protected abstract void OnSpaceFinished();
@@ -69,7 +63,6 @@ public abstract class Movement: MonoBehaviour
     protected abstract void OnLeftClickStarted();
     protected abstract void OnLeftClickFinished();
 
-    public abstract bool LookingAtObject();
 
 
 

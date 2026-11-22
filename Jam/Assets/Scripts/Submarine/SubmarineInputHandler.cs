@@ -7,8 +7,12 @@
  * We dont need to store a current turn speed variable because physics actually handle that for us!!
  */
 
+using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
+
+public enum TurnDirection { None, Left, Right }
+public enum ForwardDirection { None, Forward, Reverse }
 
 public class SubmarineInputHandler : MonoBehaviour
 {
@@ -69,12 +73,11 @@ public class SubmarineInputHandler : MonoBehaviour
     [Header("My variables dont touch")]
     [SerializeField] private Rigidbody rb;
 
-    public enum TurnDirection{ None, Left, Right }
-    public enum ForwardDirection{ None,Forward, Reverse }
-
     [Header("Debug Values")] 
     public int currentTargetTurnAcceleration { get; private set; }
     public int currentVerticalAcceleration { get; private set; }
+
+    bool controlsDisabled = false;
 
     [SerializeField, ReadOnly] private ForwardDirection currentForwardControls = ForwardDirection.Forward;
 
@@ -89,33 +92,28 @@ public class SubmarineInputHandler : MonoBehaviour
         rb.linearDamping = velocityDamping;
     }
 
-    private void Update()
+    public void StartStunCycle(int stunTime)
     {
-        // every frame so i can test in editor
-        rb.angularDamping = angularDamping;
-        rb.linearDamping = velocityDamping;
+        if(!controlsDisabled)
+        {
+            controlsDisabled = true;
+        }
 
-        // debug for now @jay get rid of this
-        if (Input.GetKey(KeyCode.Q))
-            SetForwardMode(ForwardDirection.Forward);
-        else if (Input.GetKey(KeyCode.E))
-            SetForwardMode(ForwardDirection.Reverse);
-        else
-            SetForwardMode(ForwardDirection.None);
-
-        // @jay remove this
-        if (Input.GetKeyDown(KeyCode.A))
-            SetTargetTurnSpeed(currentTargetTurnAcceleration - 1);
-        if (Input.GetKeyDown(KeyCode.D))
-            SetTargetTurnSpeed(currentTargetTurnAcceleration + 1);
-
-        // @jay remove this too
-        if (Input.GetKeyDown(KeyCode.W))
-            SetTargetVerticalSpeed(currentVerticalAcceleration + 1);
-        if (Input.GetKeyDown(KeyCode.S))
-            SetTargetVerticalSpeed(currentVerticalAcceleration - 1);
+        StartCoroutine(StunCountdown(stunTime));
     }
 
+    IEnumerator StunCountdown(int stunTime)
+    {
+        int timer = 0;
+
+        while(timer < stunTime)
+        {
+            timer++;
+            yield return new WaitForSeconds(1f);
+        }
+
+        controlsDisabled = false;
+    }
 
     private void FixedUpdate()
     {
@@ -235,12 +233,9 @@ public class SubmarineInputHandler : MonoBehaviour
 
     #region Player Input Interface
 
-    /*
-     * @jay: set tha forward mode
-     */
     public void SetForwardMode(ForwardDirection forwardDirection)
     {
-        if (forwardDirection == currentForwardControls) return;
+        if (forwardDirection == currentForwardControls || controlsDisabled ) return;
 
         currentForwardControls = forwardDirection;
 
@@ -263,11 +258,11 @@ public class SubmarineInputHandler : MonoBehaviour
 
     /*
      * -2 for all the way left. 0 for no turn. 2 for all the way right
-     * 
-     * @jay: add code that calls this function. the rest should be handled tbh
      */
     public void SetTargetTurnSpeed(int targetSpeed)
     {
+        if (controlsDisabled) return;
+
         currentTargetTurnAcceleration = targetSpeed;
         currentTargetTurnAcceleration = (int)Mathf.Clamp(currentTargetTurnAcceleration, -MaxRotationAccelerationIncrements, MaxRotationAccelerationIncrements);
         Debug.Log($"New Turning acceleration: {currentTargetTurnAcceleration}");
@@ -278,11 +273,12 @@ public class SubmarineInputHandler : MonoBehaviour
 
     /*
      * -2 for all the way left. 0 for no turn. 2 for all the way right
-     * 
-     * @jay: add code that calls this function. the rest should be handled tbh
      */
     public void SetTargetVerticalSpeed(int targetSpeed)
     {
+
+        if (controlsDisabled) return;
+
         currentVerticalAcceleration = targetSpeed;
         currentVerticalAcceleration = (int)Mathf.Clamp(currentVerticalAcceleration, -MaxVerticalAccelerationIncrements, MaxVerticalAccelerationIncrements);
         Debug.Log($"New Vertical acceleration: {currentVerticalAcceleration}");
