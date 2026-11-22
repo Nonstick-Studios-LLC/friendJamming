@@ -95,6 +95,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Reel In",
+                    "type": "Button",
+                    "id": "09132625-ea08-4dd0-99b5-ffd65e6b38d9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -436,6 +445,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Why",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d12b101e-8121-425c-ba66-794e2ecaf266",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Reel In",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

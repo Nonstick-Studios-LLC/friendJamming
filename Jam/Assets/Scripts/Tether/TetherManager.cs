@@ -4,16 +4,18 @@
  */
 
 using NaughtyAttributes;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class TetherManager : MonoBehaviour
+public class TetherManager : Singleton<TetherManager>
 {
     [Header("Tether Endpoints")]
     public Transform anchorPoint;   // Static or starting end of the tether
     public Rigidbody followRB;  // the player
     public Transform followPoint;  // the player
+    private PlayerController playerController;  // the player
 
     [Header("Collision Settings")]
     public float maxTetherLength = 10f;
@@ -30,23 +32,28 @@ public class TetherManager : MonoBehaviour
     [Tooltip("Prevents endless bouncing/oscillation")]
     public float springDamping = 5f;
 
+    [Header("Reels")] // like instagram
+    [SerializeField] float ReelSpeed = 5;
+
     private LineRenderer lineRenderer;
     private readonly List<Vector3> ropeNodes = new List<Vector3>();
     private int endIdx => ropeNodes.Count - 1;
 
-    void Awake()
-    {
-        lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.useWorldSpace = true;
-    }
+    private bool calculateTether = true; // uhh TODO set to false if player starts in the phish
 
     void Start()
     {
-        if(followRB == null)
+
+        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.useWorldSpace = true;
+
+        // dont even.
+        playerController = FindFirstObjectByType<PlayerController>();
+
+        if (followRB == null)
         {
-            var player = FindFirstObjectByType<PlayerController>();
-            followRB = player.GetComponent<Rigidbody>();
-            followPoint = player.tetherAnchorPoint;
+            followRB = playerController.GetComponent<Rigidbody>();
+            followPoint = playerController.tetherAnchorPoint;
         }
 
         ResetTether();
@@ -56,20 +63,20 @@ public class TetherManager : MonoBehaviour
     public void ResetTether()
     {
         ropeNodes.Clear();
-        if (anchorPoint != null && followRB != null)
+        if (anchorPoint != null && followPoint != null)
         {
             ropeNodes.Add(anchorPoint.position);
-            ropeNodes.Add(followRB.position);
+            ropeNodes.Add(followPoint.position);
         }
     }
 
     void LateUpdate()
     {
-        if (anchorPoint == null || followRB == null || ropeNodes.Count < 2)
+        if (!calculateTether || anchorPoint == null || followPoint == null || ropeNodes.Count < 2)
             return;
 
         ropeNodes[0] = anchorPoint.transform.position;
-        ropeNodes[endIdx] = followRB.transform.position;
+        ropeNodes[endIdx] = followPoint.transform.position;
 
         HandleWrapping();
         HandleUnwrapping();
@@ -157,9 +164,56 @@ public class TetherManager : MonoBehaviour
     }
     #endregion
 
+    #region reeling
+    
+    /// <summary>
+    /// Either youre going to get dumb fuck function names like this or youre not getting any work from me. so pick your poison, man.
+    /// This is my cost. This is my price.
+    /// </summary>
+    public void ReeelItInBuddy()
+    {
+        calculateTether = false;
+        playerController.ActivelyGettingReeled = true;
+
+        StartCoroutine(ReeeelItInBuddy2());
+    }
+
+    private IEnumerator ReeeelItInBuddy2()
+    {
+        int currentNodeIdx = endIdx-1;
+        float timeAtThisNode = 0;
+        while(ropeNodes.Count > 2)
+        {
+            timeAtThisNode += Time.deltaTime;
+
+            // were close enough! yay!
+            // or
+            // ur taking too long. just fuckin teleport
+            if(Vector3.Distance(followPoint.position, ropeNodes[currentNodeIdx]) < 0 || timeAtThisNode > 2)
+            {
+                followRB.position = ropeNodes[currentNodeIdx];
+                ropeNodes.RemoveAt(currentNodeIdx);
+                currentNodeIdx = endIdx - 1;
+                timeAtThisNode = 0;
+            }
+
+            Vector3 direction = (ropeNodes[currentNodeIdx] - followPoint.position).normalized;
+            followRB.linearVelocity = direction * ReelSpeed;
+
+            yield return new WaitForFixedUpdate();
+        }
+
+        calculateTether = true;
+        playerController.ActivelyGettingReeled = false;
+    }
+
+    #endregion
+
     void FixedUpdate()
     {
-        ropeNodes[endIdx] = followRB.position;
+        if (!calculateTether) return;
+
+        ropeNodes[endIdx] = followPoint.position;
 
         float currentLength = GetCurrentLength();
         float stretch = currentLength - maxTetherLength;
@@ -228,6 +282,8 @@ public class TetherManager : MonoBehaviour
             }
         }*/
     }
+
+    
 
     private void UpdateLineRenderer()
     {

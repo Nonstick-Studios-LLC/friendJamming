@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     private Dictionary<MovementType, Movement> movementScripts;
 
     [SerializeField] private TMP_Text playerCrosshair;
+    [SerializeField] private Slider reelInTimer;
     [SerializeField] private char standardCrosshair;
     [SerializeField] private Color standardCrosshairColor;
     [SerializeField] private char interactableCrosshair;
@@ -50,6 +51,7 @@ public class PlayerController : MonoBehaviour
     Movement activeMovement;
     Vector2 cameraRotation;
     [SerializeField] private float sightDistance = 10f;
+    [SerializeField] private float secondsToReelIn = 2;
 
     public Transform PickupPoint;
     [Layer] public int transitionLayer;
@@ -63,8 +65,9 @@ public class PlayerController : MonoBehaviour
 
     //this sucks but i just want a solution rn man
     [SerializeField] private bool canMoveDirections = true;
-    public bool CanMove { get { return canMove; } set { canMove = value; } }
-    public bool CanMoveDirections { get { return canMoveDirections; } set { canMoveDirections = value; } }
+    [SerializeField] public bool ActivelyGettingReeled = false;
+    public bool CanMove { get { return canMove && !ActivelyGettingReeled; } set { canMove = value; } }
+    public bool CanMoveDirections { get { return canMoveDirections && !ActivelyGettingReeled; } set { canMoveDirections = value; } }
 
     private void Awake()
     {
@@ -89,7 +92,8 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.visible = false;
         SetCursorType(InteractStates.NonInteractable);
-        
+        reelInTimer.value = 0;
+
         movementScripts = new Dictionary<MovementType, Movement>()
             {
                 { MovementType.Land, GetComponent<LandMovement>() },
@@ -160,6 +164,8 @@ public class PlayerController : MonoBehaviour
     {
         PublicEvents.ToggleMovement += ToggleMovement;
         PublicEvents.InteractStarted += OnInteractStart;
+        PublicEvents.ReelHeld += WhileReelHeld;
+        PublicEvents.Reeleased += OnReeleased;
     }
 
     /// <summary>
@@ -169,8 +175,11 @@ public class PlayerController : MonoBehaviour
     {
         PublicEvents.ToggleMovement -= ToggleMovement;
         PublicEvents.InteractStarted -= OnInteractStart;
-
+        PublicEvents.ReelHeld -= WhileReelHeld;
+        PublicEvents.Reeleased -= OnReeleased;
     }
+
+    #region interac
 
     /// <summary>
     /// Checks if the player is looking at an object that can be interacted with
@@ -279,6 +288,27 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
+    #endregion
+
+    #region Reeling in
+    // hmm this seems like a good place to put this region,. yes.
+    void WhileReelHeld(float duration)
+    {
+        reelInTimer.value = duration / secondsToReelIn;
+    }
+
+    void OnReeleased(float duration)
+    {
+        reelInTimer.value = 0;
+
+        if (duration > secondsToReelIn)
+        {
+            TetherManager.Instance.ReeelItInBuddy();
+        }
+    }
+
+    #endregion
 
     /// <summary>
     /// Toggles movement based on event call

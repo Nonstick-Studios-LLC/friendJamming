@@ -70,7 +70,7 @@ public class LandMovement : Movement
     /// <param name="moveVector"></param>
     protected override void OnMove(Vector2 moveVector)
     {
-        if (!pc.CanMove || !pc.CanMoveDirections)
+        if (!pc.CanMove || !pc.CanMoveDirections || pc.ActivelyGettingReeled)
         {
             return;
         }
@@ -96,7 +96,7 @@ public class LandMovement : Movement
     /// </summary>
     protected override void OnSpaceStarted()
     {
-        if (!pc.CanMove)
+        if (!pc.CanMove || pc.ActivelyGettingReeled)
         {
             return;
         }
@@ -122,7 +122,7 @@ public class LandMovement : Movement
     /// </summary>
     protected override void OnShiftStarted()
     {
-        if (!pc.CanMove)
+        if (!pc.CanMove || pc.ActivelyGettingReeled)
         {
             return;
         }
