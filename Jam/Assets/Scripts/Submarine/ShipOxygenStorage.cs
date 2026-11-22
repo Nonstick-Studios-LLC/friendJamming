@@ -7,7 +7,8 @@ public class ShipOxygenStorage : MonoBehaviour
     //call me paparazzi or whatever caleb said
     [HideInInspector] public int DrainModifier = 0;
 
-    private float totalOxygen => Mathf.Clamp((batteries[0].CurrentOxygenPercentage + batteries[1].CurrentOxygenPercentage) / 2f, 0f, 100f);
+    private float totalOxygen => Mathf.Clamp(((batteries[0]!=null? batteries[0].CurrentOxygenPercentage : 0) + 
+                                                (batteries[1] != null ? batteries[1].CurrentOxygenPercentage : 0)) / 2f, 0f, 100f);
     [SerializeField] private float drainRate = 1;
     [SerializeField] private int drainAmount = 1;
     [Tooltip("Time in seconds before game over once all oxygen batteries are empty")]
@@ -42,9 +43,9 @@ public class ShipOxygenStorage : MonoBehaviour
     {
         for(; ; )
         {
-            if (batteries[0].CurrentOxygenPercentage > 0)
+            if (batteries[0] != null && batteries[0].CurrentOxygenPercentage > 0)
                 batteries[0].CurrentOxygenPercentage -= (drainAmount + DrainModifier);
-            else if (batteries[1].CurrentOxygenPercentage > 0)
+            else if (batteries[1] != null && batteries[1].CurrentOxygenPercentage > 0)
                 batteries[1].CurrentOxygenPercentage -= (drainAmount + DrainModifier);
             else
             {
