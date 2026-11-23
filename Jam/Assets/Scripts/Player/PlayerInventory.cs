@@ -74,7 +74,7 @@ public class PlayerInventory : MonoBehaviour
         {
             if (!personalTreasure[itemSellIndex].GetMcGuffin() && personalTreasure[itemSellIndex].GetSellStatus())
             {
-                PublicEvents.RemoveFromInventory?.Invoke();
+                
                 localScrapReference += personalTreasure[itemSellIndex].GetSellPrice();
                 personalTreasure.Remove(personalTreasure[itemSellIndex]);
                 PublicEvents.UpdateScrapCount?.Invoke(localScrapReference);
