@@ -18,13 +18,10 @@ public class OxygenManager : Singleton<OxygenManager>
     protected override void Awake()
     {
         base.Awake();
+        pc = FindFirstObjectByType<PlayerController>();
         RegisterActivePlayer();
     }
 
-    private void Start()
-    {
-        pc = FindFirstObjectByType<PlayerController>();
-    }
 
     /// <summary>
     /// Registers an active player.
@@ -95,7 +92,7 @@ public class OxygenManager : Singleton<OxygenManager>
     {
         foreach(Coroutine c in activeRegenCoroutines)
         {
-            StopCoroutine(c);
+            if(c != null) StopCoroutine(c);
         }
 
         activeRegenCoroutines.Clear();
