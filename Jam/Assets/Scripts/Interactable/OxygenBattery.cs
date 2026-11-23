@@ -13,6 +13,7 @@ public class OxygenBattery : Pickup, IInteractable
         transform.localPosition = Vector3.zero;
         PublicEvents.AddToInventory(batteryData);
         PublicEvents.HoldingBattery(true);
+        PublicEvents.InteractOverride(this);
     }
 
     public void PlaceBattery(BatterySlot bs)

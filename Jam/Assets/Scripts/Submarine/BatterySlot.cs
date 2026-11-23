@@ -44,6 +44,7 @@ public class BatterySlot : MonoBehaviour, IInteractable
         if (CurrentBattery != null)
         {
             CurrentBattery.EnterInteract(pc);
+            CurrentBattery.GetComponent<Rigidbody>().useGravity = true;
             CurrentBattery = null;
         }
 

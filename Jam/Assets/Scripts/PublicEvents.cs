@@ -40,5 +40,6 @@ public static class PublicEvents
     public static Action<bool> HoldingBattery;
     public static Action<bool> TetherAttatchmentStatusChanged;
     public static Action<EndStateManager.EndType> CallEndState;
+    public static Action<IInteractable> InteractOverride;
 
 }

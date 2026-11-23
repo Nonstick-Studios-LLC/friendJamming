@@ -83,6 +83,7 @@ public class PlayerController : MonoBehaviour
         PublicEvents.HoldingBattery += BatteryState;
         PublicEvents.DisconnectTetherStarted += TetherOffUpdate;
         PublicEvents.JoinTether += TetherOnUpdate;
+        PublicEvents.InteractOverride += SetInteractable;
 
     }
 
@@ -92,6 +93,7 @@ public class PlayerController : MonoBehaviour
         PublicEvents.HoldingBattery -= BatteryState;
         PublicEvents.DisconnectTetherStarted -= TetherOffUpdate;
         PublicEvents.JoinTether -= TetherOnUpdate;
+        PublicEvents.InteractOverride -= SetInteractable;
     }
 
     private void TetherOffUpdate()
@@ -181,6 +183,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void SetInteractable(IInteractable newObj)
+    {
+        if(interactingWith == newObj)
+        {
+            return;
+        }
+        if (interactingWith != null)
+        {
+            interactingWith.ExitInteract();
+            if (lookingAt != null && interactingWith == lookingAt)
+            {
+                interactingWith.EnterHover();
+            }
+        }
+        interactingWith = newObj;
+    }
     public void ResetInteraction()
     {
         interactingWith = null;
