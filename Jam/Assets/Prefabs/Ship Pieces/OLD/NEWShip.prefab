@@ -20295,9 +20295,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipOxygenStorage
   DrainModifier: 0
-  drainRate: 1
+  drainRate: 2
   drainAmount: 1
-  gameOverBufferTime: 5
+  gameOverBufferTime: 15
   batteries:
   - {fileID: 1879131194605863282}
   - {fileID: 7706119616017347972}
