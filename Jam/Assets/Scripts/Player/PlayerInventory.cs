@@ -119,6 +119,12 @@ public class PlayerInventory : MonoBehaviour
             Cursor.lockState = CursorLockMode.Confined;
             pc.CanMove = false;
             sellMenu.SetActive(true);
+
+            //These are the lines of code after running into shop errors at the end of the game jam
+            if(personalTreasure[itemSellIndex] == null)
+            {       
+                Debug.LogWarning("im the problem");
+            }
             if (personalTreasure.Count > 0 && personalTreasure[itemSellIndex].GetSellStatus() && !personalTreasure[itemSellIndex].GetMcGuffin())
             {
                 sellMenuText.text = $"Sell {personalTreasure[itemSellIndex].GetName()} for {personalTreasure[itemSellIndex].GetSellPrice().ToString()} Scrap?";
