@@ -40,8 +40,6 @@ public class PlayerController : MonoBehaviour
 
     private Dictionary<MovementType, Movement> movementScripts;
 
-    [SerializeField] private TMP_Text playerCrosshair;
-    [SerializeField] private Slider reelInTimer;
     [SerializeField] private char standardCrosshair;
     [SerializeField] private Color standardCrosshairColor;
     [SerializeField] private char interactableCrosshair;
@@ -56,6 +54,14 @@ public class PlayerController : MonoBehaviour
     public Transform PickupPoint;
     public LayerMask lm;
     [Layer] public int transitionLayer;
+
+    [Header("UI")]
+    [SerializeField] private TMP_Text playerCrosshair;
+    [SerializeField] private Slider reelInTimer;
+    [SerializeField] public Slider personalOxygenRadial;
+
+
+
     private bool lookingAtShopkeeper = false;
     private bool lookingAtBatterySlot = false;
     private bool holdingBattery = false;

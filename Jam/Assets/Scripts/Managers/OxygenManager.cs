@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OxygenManager : Singleton<OxygenManager>
 {
@@ -11,10 +12,18 @@ public class OxygenManager : Singleton<OxygenManager>
     private List<Coroutine> activeDepletionCoroutines = new List<Coroutine>();
     private float oxygenValues;
 
+    private PlayerController pc;
+    private Slider oxygenRadial=> pc.personalOxygenRadial;
+
     protected override void Awake()
     {
         base.Awake();
         RegisterActivePlayer();
+    }
+
+    private void Start()
+    {
+        pc = FindFirstObjectByType<PlayerController>();
     }
 
     /// <summary>
@@ -46,7 +55,9 @@ public class OxygenManager : Singleton<OxygenManager>
         if (oxygenValues == maxOxygen)
         {
             Debug.LogFormat("<color=green>The player has full personal oxygen reserves</color>");
+            
         }
+        oxygenRadial.value = oxygenValues / maxOxygen;
     }
 
     /// <summary>
@@ -72,6 +83,7 @@ public class OxygenManager : Singleton<OxygenManager>
     /// <param name="regenRate"> Amount of oxygen a player gains per second. </param>
     public void AddOxygenUntilFull(float regenRate)
     {
+        if (activeRegenCoroutines == null) activeRegenCoroutines = new();
         activeRegenCoroutines.Add(StartCoroutine(OxygenRegenUntilFull( regenRate)));
     }
 
@@ -124,6 +136,7 @@ public class OxygenManager : Singleton<OxygenManager>
         for(int i = 0; i < time; i++)
         {
             oxygenValues = Mathf.Clamp(oxygenValues + rate, 0, maxOxygen);
+            oxygenRadial.value = oxygenValues / maxOxygen;
             yield return new WaitForSeconds(1f);
         }
     }
@@ -139,6 +152,7 @@ public class OxygenManager : Singleton<OxygenManager>
         while (oxygenValues < maxOxygen)
         {
             oxygenValues = Mathf.Clamp(oxygenValues + rate, 0, maxOxygen);
+            oxygenRadial.value = oxygenValues / maxOxygen;
             yield return new WaitForSeconds(1f);
         }
         Debug.LogFormat("<color=green>The player has full personal oxygen reserves</color>");
@@ -149,6 +163,7 @@ public class OxygenManager : Singleton<OxygenManager>
         while (oxygenValues > 0)
         {
             oxygenValues = Mathf.Clamp(oxygenValues - rate, 0, maxOxygen);
+            oxygenRadial.value = oxygenValues / maxOxygen;
             yield return new WaitForSeconds(1f);
         }
         Debug.LogFormat("<color=red>The player has lost all personal oxygen</color>");
