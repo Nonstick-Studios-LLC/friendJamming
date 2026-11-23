@@ -35,6 +35,7 @@ public class PlayerInventory : MonoBehaviour
         PublicEvents.StartBuyInteraction += ToggleBuyMenu;
         PublicEvents.StartSellInteraction += ToggleSellMenu;
         PublicEvents.AddToInventory += AddItem;
+        PublicEvents.RemoveFromInventory += ClearInventory;
         personalTreasure.Clear();
     }
 
@@ -44,6 +45,7 @@ public class PlayerInventory : MonoBehaviour
         PublicEvents.StartBuyInteraction -= ToggleBuyMenu;
         PublicEvents.StartSellInteraction -= ToggleSellMenu;
         PublicEvents.AddToInventory -= AddItem;
+        PublicEvents.RemoveFromInventory -= ClearInventory;
     }
 
     private void AddItem(ItemScriptable item)
