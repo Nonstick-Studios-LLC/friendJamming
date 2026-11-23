@@ -78,6 +78,7 @@ public class PlayerInventory : MonoBehaviour
                 localScrapReference += personalTreasure[itemSellIndex].GetSellPrice();
                 personalTreasure.Remove(personalTreasure[itemSellIndex]);
                 PublicEvents.UpdateScrapCount?.Invoke(localScrapReference);
+                PublicEvents.RemoveFromInventory?.Invoke();
 
                 itemSellIndex--;
                 if (itemSellIndex < 0)
