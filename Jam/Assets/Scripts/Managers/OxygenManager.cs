@@ -141,7 +141,7 @@ public class OxygenManager : Singleton<OxygenManager>
             oxygenValues = Mathf.Clamp(oxygenValues + rate, 0, maxOxygen);
             yield return new WaitForSeconds(1f);
         }
-        Debug.LogFormat("<color=green>The player has full personal oxygen reserves/color>");
+        Debug.LogFormat("<color=green>The player has full personal oxygen reserves</color>");
     }
 
     private IEnumerator OxygenDepletionUntilEmpty(float rate)
