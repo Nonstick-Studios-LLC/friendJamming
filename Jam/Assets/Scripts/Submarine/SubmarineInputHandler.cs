@@ -70,7 +70,7 @@ public class SubmarineInputHandler : MonoBehaviour
     [Header("Audio")]
     [SerializeField, Foldout("Audio")] AudioSource reversingAudio;
 
-    [Header("My variables dont touch")]
+    [Header("My variables dont touch")] // what if i do anyway >:)
     [SerializeField] private Rigidbody rb;
 
     [Header("Debug Values")]
@@ -310,6 +310,16 @@ public class SubmarineInputHandler : MonoBehaviour
     }
 
     #endregion
+
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.name.ToLower().Contains("abyss") && SubmarineUpgrades.Instance.McGuffinObtained)
+        {
+            PublicEvents.CallEndState(EndStateManager.EndType.Next_Area);
+        }
+    }
 
     /*
     public void WhileMoveForward()
