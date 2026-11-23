@@ -176,7 +176,7 @@ public class PlayerInventory : MonoBehaviour
 
             if (heldData.GetMcGuffin())
             {
-                SubmarineUpgrades.Instance.McGuffinObtained = true;
+                Debug.Log("McGuffin Obtained. Add logic to end game");
                 heldData = null;
                 return;
             }
