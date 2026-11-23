@@ -58,7 +58,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         reel.canceled += Reeleased;
         disconnectTether.started += DisconnectTether_Started;
         updownship.started += Updownship_started;
-        updownship.canceled += Updownship_canceled; ;
+        updownship.canceled += Updownship_canceled;
     }
 
     
@@ -74,6 +74,8 @@ public class PlayerInputManager : Singleton<PlayerInputManager>
         leftClick.Disable();
         secrets.Disable();
         reel.Disable();
+        updownship.Disable();
+        disconnectTether.Disable();
     }
 
     private void LeftClick_canceled(InputAction.CallbackContext obj)
