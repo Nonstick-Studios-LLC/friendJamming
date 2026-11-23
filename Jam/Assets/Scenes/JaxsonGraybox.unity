@@ -3164,16 +3164,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5147551775088770834, guid: 30af77f8f0749934fbbb9556ff82a89b, type: 3}
+    - {fileID: 4579374399634158055, guid: 30af77f8f0749934fbbb9556ff82a89b, type: 3}
+    - {fileID: 6506256649127249382, guid: 30af77f8f0749934fbbb9556ff82a89b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8836057193476298755, guid: 30af77f8f0749934fbbb9556ff82a89b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 130585877}
-    - targetCorrespondingSourceObject: {fileID: 8836057193476298755, guid: 30af77f8f0749934fbbb9556ff82a89b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 130585883}
   m_SourcePrefab: {fileID: 100100000, guid: 30af77f8f0749934fbbb9556ff82a89b, type: 3}
 --- !u!1 &130585876 stripped
 GameObject:
@@ -3195,19 +3195,6 @@ MonoBehaviour:
   winScreen: {fileID: 749689038}
   loseScreen: {fileID: 927903941}
   loseText: {fileID: 383344714}
---- !u!114 &130585883
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 130585876}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 877da95bd75ee01459d639042b7d27de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OxygenManager
-  maxOxygen: 10
 --- !u!43 &132043650
 Mesh:
   m_ObjectHideFlags: 0
