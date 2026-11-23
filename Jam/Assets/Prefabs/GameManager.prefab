@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 2087116864326192887}
   - component: {fileID: 54155241447386202}
   - component: {fileID: 1297843716675747130}
+  - component: {fileID: 4579374399634158055}
+  - component: {fileID: 6506256649127249382}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -48,6 +50,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputManager
   input: {fileID: 2087116864326192887}
+  updownship:
+    m_Name: Updownship
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e4743387-2131-4bf2-afc2-ae46de7c7370
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  secrets:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 98672b7c-8ceb-4f09-bbca-41c79c2791b7
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  controlHeld: 0
+  spaceHeld: 0
+  updownship_held: 0
 --- !u!114 &2087116864326192887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,3 +147,31 @@ MonoBehaviour:
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
   m_ScrollDeltaPerTick: 6
+--- !u!114 &4579374399634158055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8836057193476298755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfcc39774474d4a4ba0685ee82d71693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EndStateManager
+  winScreen: {fileID: 0}
+  loseScreen: {fileID: 0}
+  loseText: {fileID: 0}
+--- !u!114 &6506256649127249382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8836057193476298755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 877da95bd75ee01459d639042b7d27de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OxygenManager
+  maxOxygen: 60

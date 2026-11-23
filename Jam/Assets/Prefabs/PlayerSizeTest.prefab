@@ -314,7 +314,7 @@ MonoBehaviour:
   canMoveDirections: 1
   ActivelyGettingReeled: 0
   detattchedOxygenDepletionRate: 1
-  attatchedOxygenGainRate: 0.3
+  attatchedOxygenGainRate: 3
 --- !u!54 &5543190634974756408
 Rigidbody:
   m_ObjectHideFlags: 0
