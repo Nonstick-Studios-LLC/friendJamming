@@ -14,14 +14,21 @@ public class OxygenManager : Singleton<OxygenManager>
 
     private PlayerController pc;
     private Slider oxygenRadial=> pc.personalOxygenRadial;
+    private CanvasGroup oxygenRadialGroup;
+    private bool showOxygenRadial => pc.currentMovement != PlayerController.MovementType.Land || oxygenValues < maxOxygen;
 
     protected override void Awake()
     {
         base.Awake();
         pc = FindFirstObjectByType<PlayerController>();
+        oxygenRadialGroup = oxygenRadial.GetComponent<CanvasGroup>();
         RegisterActivePlayer();
     }
 
+    private void Update()
+    {
+        oxygenRadialGroup.alpha = showOxygenRadial ? 1 : 0;
+    }
 
     /// <summary>
     /// Registers an active player.

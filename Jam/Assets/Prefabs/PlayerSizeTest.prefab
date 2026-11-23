@@ -3707,6 +3707,7 @@ GameObject:
   - component: {fileID: 4878964320213277187}
   - component: {fileID: 6722302391041884596}
   - component: {fileID: 7319665330037488741}
+  - component: {fileID: 7093955714242232398}
   m_Layer: 7
   m_Name: Oxygen Circle
   m_TagString: Untagged
@@ -3793,6 +3794,18 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &7093955714242232398
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6490147049525512903}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &6888255804564492188
 GameObject:
   m_ObjectHideFlags: 0

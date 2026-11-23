@@ -43627,9 +43627,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerSizeTest
       objectReference: {fileID: 0}
-    - target: {fileID: 1581048692775013036, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
-      propertyPath: detattchedOxygenDepletionRate
-      value: 1
+    - target: {fileID: 2824143215914802333, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2824143215914802333, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5504982264192665151, guid: 556b8779381e5f84e9b4e40dcb033cf4, type: 3}
       propertyPath: m_LocalPosition.x
