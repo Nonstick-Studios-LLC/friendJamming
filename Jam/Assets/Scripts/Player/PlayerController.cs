@@ -12,6 +12,7 @@ using UnityEngine.UI;
 using NaughtyAttributes;
 using System.Collections;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -440,6 +441,20 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Current movement set to " + newType.ToString());
     }
 
+
+    #endregion
+
+    #region ui stuff
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 
     #endregion
 
