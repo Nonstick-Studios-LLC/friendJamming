@@ -307,7 +307,7 @@ MonoBehaviour:
   PickupPoint: {fileID: 6818088809401137259}
   lm:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 375
   transitionLayer: 6
   canMove: 1
   canMoveDirections: 1
