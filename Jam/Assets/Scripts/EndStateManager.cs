@@ -27,6 +27,10 @@ public class EndStateManager : MonoBehaviour
     public void ShowEndState(EndType type)
     {
         FindFirstObjectByType<PlayerController>().CanMove = false;
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
+
         if(type == EndType.Next_Area)
         {
             winScreen.SetActive(true);

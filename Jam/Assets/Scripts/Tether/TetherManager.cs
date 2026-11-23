@@ -195,11 +195,13 @@ public class TetherManager : Singleton<TetherManager>
     /// </summary>
     public void ReeelItInBuddy()
     {
+        if(!playerConnected) return;
+
         Debug.Log("reeling it in!");
         reelingIn = true;
         playerController.ActivelyGettingReeled = true;
 
-        if (reelCoroutine != null) return;
+        if (reelCoroutine != null) StopCoroutine(reelCoroutine);
 
         reelCoroutine = StartCoroutine(ReeeelItInBuddy2());
     }
